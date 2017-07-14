@@ -32,7 +32,9 @@ FreqCenter = sysPara.FreqCenter;
 AzimuthScanAngles = sysPara.AzimuthScanAngles;
 ElevationScanAngles = sysPara.ElevationScanAngles;
 NumTarget = sysPara.NumTarget;
+NumElements = getNumElements(hArray);
 LenWaveform = sysPara.LenWaveform;
+StvIncludeElementResponse = sysPara.StvIncludeElementResponse;
 
 %% Flags
 GlobalDebugPlot = sysPara.GlobalDebugPlot;
@@ -71,8 +73,96 @@ switch lower(DoaEstimator)
                 legend('Spatial Spectrum', 'Target', 'Interference', 'DOA', 'Location', 'best')
             end
         end
+    case 'cbf'
+        spacialSpectrum = zeros(length(ElevationScanAngles), length(AzimuthScanAngles), NumTarget);
+        LenRS = 256;  % RS length
+        if LenWaveform < LenRS, error('Waveform length < RS length!'); end  % check length
+        idxRS = (1:LenRS) + 0; % RS indices
+        Pxs = waveformRx(idxRS,:).'*conj(waveformPilot(idxRS,:))/LenRS;   % cross-correlation vector
+        hSteeringVector = phased.SteeringVector('SensorArray', hArray,...
+            'PropagationSpeed', physconst('LightSpeed'),...
+            'IncludeElementResponse', StvIncludeElementResponse,...
+            'NumPhaseShifterBits', 0 ...    'EnablePolarization', false ...
+            );
+        elevationScanVector = ones(size(AzimuthScanAngles))*ElevationScanAngles;
+        angleScanVector = [AzimuthScanAngles, elevationScanVector];
+        steeringVector = step(hSteeringVector, FreqCenter, angleScanVector.');
+        steeringVector = steeringVector./repmat(rms(steeringVector), NumElements, 1);
+        angleMatchVector = abs(steeringVector'*Pxs);
+        [~, idxPeak] = max(angleMatchVector);
+        doa = angleScanVector(idxPeak, :).';
+        spacialSpectrum(1,:,:) = angleMatchVector;
+        if FlagDebugPlot
+            TargetAngle = sysPara.TargetAngle;
+            for idxTarget = 1:NumTarget
+                figure(figureStartNum + idxTarget);
+                hold off;
+                plot(AzimuthScanAngles, mag2db(spacialSpectrum(1,:,idxTarget)), 'b-');
+                hold on;
+                plot([TargetAngle(1,idxTarget), TargetAngle(1,idxTarget)],...
+                    [min(mag2db(spacialSpectrum(1,:,idxTarget))),...
+                    mag2db(spacialSpectrum(1,(TargetAngle(1,idxTarget) - AzimuthScanAngles(1))/(AzimuthScanAngles(2) - AzimuthScanAngles(1)) + 1,idxTarget))], 'b-');
+                plot([doa(1,idxTarget), doa(1,idxTarget)],...
+                    [min(mag2db(spacialSpectrum(1,:,idxTarget))),...
+                    mag2db(spacialSpectrum(1,(doa(1,idxTarget) - AzimuthScanAngles(1))/(AzimuthScanAngles(2) - AzimuthScanAngles(1)) + 1,idxTarget))], 'bo-');
+                grid on;
+                axis([min(AzimuthScanAngles), max(AzimuthScanAngles), min(mag2db(spacialSpectrum(1,:,idxTarget))), max(mag2db(spacialSpectrum(1,:,idxTarget)))]);
+                title(['Target ', num2str(idxTarget), ': Common Beamform Spatial Spectrum at Elevation 0 Degree']);
+                xlabel('Azimuth Angle(degree)');
+                ylabel('Power(dB)');
+                legend('Spatial Spectrum', 'Target', 'DOA');
+            end
+        end
     case 'music'
-        error('Not implemented yet.')
+        spacialSpectrum = zeros(length(ElevationScanAngles), length(AzimuthScanAngles), NumTarget);
+        LenRS = 256;  % RS length
+        if LenWaveform < LenRS, error('Waveform length < RS length!'); end  % check length
+        idxRS = (1:LenRS) + 0; % RS indices
+        hSteeringVector = phased.SteeringVector('SensorArray', hArray,...
+            'PropagationSpeed', physconst('LightSpeed'),...
+            'IncludeElementResponse', StvIncludeElementResponse,...
+            'NumPhaseShifterBits', 0 ...    'EnablePolarization', false ...
+            );
+        elevationScanVector = ones(size(AzimuthScanAngles))*ElevationScanAngles;
+        angleScanVector = [AzimuthScanAngles, elevationScanVector];
+        steeringVector = step(hSteeringVector, FreqCenter, angleScanVector.');
+        steeringVector = steeringVector./repmat(rms(steeringVector), NumElements, 1);
+        Pxs = waveformRx(idxRS,:).'*conj(waveformPilot(idxRS,:))/LenRS;   % cross-correlation vector
+        doa = zeros(2, size(Pxs, 2));
+        for idxTarget = 1:size(Pxs, 2)
+            Rxx = Pxs(:, idxTarget)*Pxs(:, idxTarget)';
+            [eigV, eigD] = eig(Rxx);
+            eigD = diag(eigD);
+            [~, idxMaxEig] = max(eigD);
+            unitI = eye(size(Rxx, 1));
+            unitI(idxMaxEig, idxMaxEig) = 0;
+            noiseSpace = eigV*unitI*eigV';
+            Pmusic = 1./abs(sum((steeringVector'*noiseSpace.*steeringVector.').').');
+            [~, idxPeak] = max(Pmusic);
+            doa(:, idxTarget) = angleScanVector(idxPeak, :).';
+            spacialSpectrum(1,:,idxTarget) = Pmusic;
+        end
+        if FlagDebugPlot
+            TargetAngle = sysPara.TargetAngle;
+            for idxTarget = 1:NumTarget
+                figure(figureStartNum + idxTarget);
+                hold off;
+                plot(AzimuthScanAngles, mag2db(spacialSpectrum(1,:,idxTarget)), 'b-');
+                hold on;
+                plot([TargetAngle(1,idxTarget), TargetAngle(1,idxTarget)],...
+                    [min(mag2db(spacialSpectrum(1,:,idxTarget))),...
+                    mag2db(spacialSpectrum(1,(TargetAngle(1,idxTarget) - AzimuthScanAngles(1))/(AzimuthScanAngles(2) - AzimuthScanAngles(1)) + 1,idxTarget))], 'b-');
+                plot([doa(1,idxTarget), doa(1,idxTarget)],...
+                    [min(mag2db(spacialSpectrum(1,:,idxTarget))),...
+                    mag2db(spacialSpectrum(1,(doa(1,idxTarget) - AzimuthScanAngles(1))/(AzimuthScanAngles(2) - AzimuthScanAngles(1)) + 1,idxTarget))], 'bo-');
+                grid on;
+                axis([min(AzimuthScanAngles), max(AzimuthScanAngles), min(mag2db(spacialSpectrum(1,:,idxTarget))), max(mag2db(spacialSpectrum(1,:,idxTarget)))]);
+                title(['Target ', num2str(idxTarget), ': MUSIC Spatial Spectrum at Elevation 0 Degree']);
+                xlabel('Azimuth Angle(degree)');
+                ylabel('Power(dB)');
+                legend('Spatial Spectrum', 'Target', 'DOA');
+            end
+        end
     otherwise
         error('Unsupported DOA estimator.');
 end

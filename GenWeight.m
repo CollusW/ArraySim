@@ -20,6 +20,7 @@ function [ weight] = GenWeight(sysPara, hArray, waveformRx, waveformPilot)
 %  * @remark   { revision history: V1.0, 2017.05.25. Collus Wang, first draft }
 %  * @remark   { revision history: V1.1, 2017.07.12. Wayne Zhang, add lms method }
 %  * @remark   { revision history: V1.1, 2017.07.12. Collus Wang, 1.steering vector calculation can include element response. StvIncludeElementResponse; 2. add DiagonalLoadingFactor for mvdr}
+%  * @remark   { revision history: V1.2, 2017.07.14. Wayne Zhang, lms method add break }
 %  */
 
 %% Get used field
@@ -98,7 +99,11 @@ switch lower(BeamformerType)
         weight = Rxx\Pxs;
     case 'lms'
         LenRS = 256;  % RS length
-        FlagBreak = false;
+        LenJudgConv = 10;   % minimun number of iterations
+        FlagConvSwitch = 1; % true = turn on convergency break for faster calculation. false = turn off convergency break
+        ThresholdConv = 0.03;  % threshold of convergence.
+        ThresholdConv = ThresholdConv*ones(NumTarget, 1);
+        flagConv = zeros(NumTarget, 1);
         if LenWaveform < LenRS, error('Waveform length < RS length!'); end  % check length
         idxRS = (1:LenRS) + 0; % RS indices
         Pxs = waveformRx(idxRS,:).'*conj(waveformPilot(idxRS,:))/LenRS;   % cross-correlation vector
@@ -106,14 +111,23 @@ switch lower(BeamformerType)
         betaStep = 1/trace(Rxx);
         alphaStep = 50;
         weight = Pxs;   % init. with Pxs.
-        errIterVector = zeros(LenRS, size(Pxs, 2));
+        errIterVector = zeros(LenRS, NumTarget);
         for idxIter = 1:LenRS
             errIter = waveformPilot(idxIter,:).' - weight'*waveformRx(idxIter,:).';
             errIterVector(idxIter, :) = abs(errIter).';
-            stepLen = betaStep*(1 - exp(-alphaStep*abs(errIter).^2));      %stepLen = betaStep*(1./(1 + exp(-alphaStep*abs(errRS).^2)) - 0.5);
+            if idxIter > LenJudgConv
+                sigmaErrIter = rms(errIterVector(idxIter - LenJudgConv + 1:idxIter, :)).';
+                flagConv = sigmaErrIter.*~flagConv < ThresholdConv;
+                flagConv = flagConv*FlagConvSwitch;
+            end
+            stepLen = betaStep*(1 - exp(-alphaStep*abs(errIter).^2)).*~flagConv;      %stepLen = betaStep*(1./(1 + exp(-alphaStep*abs(errRS).^2)) - 0.5);
             weight = weight + waveformRx(idxIter,:).'*errIter'*diag(stepLen);
+            if sum(flagConv) == NumTarget
+                break;
+            end
         end
         if FlagDebugPlot
+            fprintf('LMS iteration times = %d\n', idxIter);
             figure(figureStartNum)
             plot(errIterVector, '.-');
             grid on

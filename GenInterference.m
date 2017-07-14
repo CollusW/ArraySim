@@ -27,7 +27,6 @@ SIR = sysPara.SIR;                    % SIR in dB.
 InterferenceFreq = sysPara.InterferenceFreq;    % double scaler. interfence frequency at baseband, in Hz.
 Duration = sysPara.Duration;
 SampleRate = sysPara.SampleRate;
-NumElements = getNumElements(hArray);
 FreqCenter = sysPara.FreqCenter;
 StvIncludeElementResponse = sysPara.StvIncludeElementResponse;
 
@@ -77,5 +76,5 @@ hSteeringVector = phased.SteeringVector('SensorArray', hArray,...
     'NumPhaseShifterBits', 0 ...   %'EnablePolarization', false ...
     );
 steeringVector = step(hSteeringVector, FreqCenter, InterferenceAngle);
-steeringVector = steeringVector/rms(steeringVector); % in case of IncludeElementResponse=true. Normalize to 1, but keep element response
+steeringVector = steeringVector*diag(rms(steeringVector).^-1); % in case of IncludeElementResponse=true. Normalize to 1, but keep element response
 waveformInt = waveformOriginal*steeringVector.';
