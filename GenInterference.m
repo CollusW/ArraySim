@@ -27,6 +27,7 @@ SIR = sysPara.SIR;                    % SIR in dB.
 InterferenceFreq = sysPara.InterferenceFreq;    % double scaler. interfence frequency at baseband, in Hz.
 Duration = sysPara.Duration;
 SampleRate = sysPara.SampleRate;
+NumElements = getNumElements(hArray);
 FreqCenter = sysPara.FreqCenter;
 StvIncludeElementResponse = sysPara.StvIncludeElementResponse;
 
