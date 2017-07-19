@@ -85,11 +85,11 @@ switch lower(BeamformerType)
             [~, weight(:,idxTarget)] = step(hBeamformer,waveformRx);
         end
     case 'mmse'
-        lenRS = 256;  % RS length
-        if LenWaveform < lenRS, error('Waveform length < RS length!'); end  % check length
-        idxRS = (1:lenRS) + 0; % RS indices
-        Rxx = waveformRx(idxRS,:).'*conj(waveformRx(idxRS,:))/lenRS;    % auto-correlation matix
-        Pxs = waveformRx(idxRS,:).'*conj(waveformPilot(idxRS,:))/lenRS;   % cross-correlation vector
+        LenRS = 256;  % RS length
+        if LenWaveform < LenRS, error('Waveform length < RS length!'); end  % check length
+        idxRS = (1:LenRS) + 0; % RS indices
+        Rxx = waveformRx(idxRS,:).'*conj(waveformRx(idxRS,:))/LenRS;    % auto-correlation matix
+        Pxs = waveformRx(idxRS,:).'*conj(waveformPilot(idxRS,:))/LenRS;   % cross-correlation vector
         if FlagDebugPlot
             fprintf('Condition number of Rxx = %f\n', cond(Rxx));
             fprintf('Eigen value decomposition of Rxx:\n');
@@ -97,27 +97,27 @@ switch lower(BeamformerType)
         end
         weight = Rxx\Pxs;
     case 'lms'
-        lenRS = 256;  % RS length
-        lenJudgConv = 10;
-        flagConvSwitch = 1;
-        threshConv = 0.03;
-        threshConv = threshConv*ones(NumTarget, 1);
+        LenRS = 256;  % RS length
+        LenJudgConv = 10;
+        FlagConvSwitch = 1;
+        ThreshConv = 0.03;
+        ThreshConv = ThreshConv*ones(NumTarget, 1);
         flagConv = zeros(NumTarget, 1);
-        if LenWaveform < lenRS, error('Waveform length < RS length!'); end  % check length
-        idxRS = (1:lenRS) + 0; % RS indices
-        Pxs = waveformRx(idxRS,:).'*conj(waveformPilot(idxRS,:))/lenRS;   % cross-correlation vector
-        Rxx = waveformRx(idxRS,:).'*conj(waveformRx(idxRS,:))/lenRS;    % auto-correlation matix
+        if LenWaveform < LenRS, error('Waveform length < RS length!'); end  % check length
+        idxRS = (1:LenRS) + 0; % RS indices
+        Pxs = waveformRx(idxRS,:).'*conj(waveformPilot(idxRS,:))/LenRS;   % cross-correlation vector
+        Rxx = waveformRx(idxRS,:).'*conj(waveformRx(idxRS,:))/LenRS;    % auto-correlation matix
         betaStep = 1/trace(Rxx);
         alphaStep = 50;
         weight = Pxs;   % init. with Pxs.
-        errIterVector = zeros(lenRS, NumTarget);
-        for idxIter = 1:lenRS
+        errIterVector = zeros(LenRS, NumTarget);
+        for idxIter = 1:LenRS
             errIter = waveformPilot(idxIter,:).' - weight'*waveformRx(idxIter,:).';
             errIterVector(idxIter, :) = abs(errIter).';
-            if idxIter > lenJudgConv
-                sigmaErrIter = rms(errIterVector(idxIter - lenJudgConv + 1:idxIter, :)).';
-                flagConv = sigmaErrIter.*~flagConv < threshConv;
-                flagConv = flagConv*flagConvSwitch;
+            if idxIter > LenJudgConv
+                sigmaErrIter = rms(errIterVector(idxIter - LenJudgConv + 1:idxIter, :)).';
+                flagConv = sigmaErrIter.*~flagConv < ThreshConv;
+                flagConv = flagConv*FlagConvSwitch;
             end
             stepLen = betaStep*(1 - exp(-alphaStep*abs(errIter).^2)).*~flagConv;      %stepLen = betaStep*(1./(1 + exp(-alphaStep*abs(errRS).^2)) - 0.5);
             weight = weight + waveformRx(idxIter,:).'*errIter'*diag(stepLen);

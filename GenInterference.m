@@ -77,5 +77,5 @@ hSteeringVector = phased.SteeringVector('SensorArray', hArray,...
     'NumPhaseShifterBits', 0 ...   %'EnablePolarization', false ...
     );
 steeringVector = step(hSteeringVector, FreqCenter, InterferenceAngle);
-steeringVector = steeringVector./repmat(rms(steeringVector), NumElements, 1); % in case of IncludeElementResponse=true. Normalize to 1, but keep element response
+steeringVector = steeringVector*diag(rms(steeringVector).^-1); % in case of IncludeElementResponse=true. Normalize to 1, but keep element response
 waveformInt = waveformOriginal*steeringVector.';

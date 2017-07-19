@@ -79,18 +79,18 @@ sysPara.NumWeightsQuantizationBits = 0; % 1x1 integer. Number of phase shifter q
                                         % Specify the number of bits as a non-negative integer. A value of zero indicates that no quantization is performed.
 
 % DOA estimation Parameters
-sysPara.DoaEstimator = 'ToolboxMusicEstimator2D';     % string. DOA estimator type. valid value = {'ToolboxMusicEstimator2D', 'CBF', 'MUSIC', 'AntiInterMUSIC'}
+sysPara.DoaEstimator = 'CBF';     % string. DOA estimator type. valid value = {'ToolboxMusicEstimator2D', 'CBF', 'MUSIC', 'AntiInterMUSIC'}
 sysPara.AzimuthScanAngles = [-30:0.5:30].';           % double vector. Azimuth scan angles, Specify the azimuth scan angles (in degrees) as a real vector. 
                                                       % The angles must be between ¨C180 and 180, inclusive. You must specify the angles in ascending order.
 sysPara.ElevationScanAngles = 0;                    % double vector. Elevation scan angles. Specify the elevation scan angles (in degrees) as a real vector or scalar. 
                                                     % The angles must be within [¨C90 90]. You must specify the angles in an ascending order.
 
 % Flags
-sysPara.GlobalDebugPlot = false;     % false = close mudule debug plot information; true = debug plot information depends on each module.
-sysPara.FlagPrintResult = ~false;
-sysPara.FlagAnalyzeWaveform = ~false;
-sysPara.FlagBeamforming = ~false;
-sysPara.FlagDOAEsti = ~false;
+sysPara.GlobalDebugPlot = false;                      % false = close mudule debug plot information; true = debug plot information depends on each module.
+sysPara.FlagPrintResult = ~false;                     % false = close mudule print result information; true = print result information.
+sysPara.FlagAnalyzeWaveform = ~false;                 % false = close mudule analyze waveform; true = analyze waveform.
+sysPara.FlagBeamforming = ~false;                     % false = close mudule beamforming; true = beamforming.
+sysPara.FlagDOAEsti = ~false;                         % false = close mudule DOA estimation; true =  DOA estimation.
 
 %% check input
 % check Target number consistency

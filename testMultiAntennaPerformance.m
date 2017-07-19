@@ -28,7 +28,7 @@ fprintf('############################### SIMULATION BEGIN ######################
 %% SIMULATION CASE: DOA ERROR - SNR
 % simulation setup: CBF/ToolboxMusicEstimator2D/MUSIC, NumTarget = 1, target angle = [-30, 30]random; no interference;  SNR = -10:3:20dB;  NumLoop = 1e4;
 fprintf('\n=================== SIMULATION CASE: DOA ERROR - SNR ===================\n')
-NumLoop = 1e1;
+NumLoop = 1e4;
 SNRVector = -10:3:20;
 azimuthVector = -30:30;
 DoaEstiRange = {'CBF', 'MUSIC', 'AntiInterMUSIC'};
@@ -125,8 +125,8 @@ zlabel('PDF');
 %% SIMULATION CASE: DOA ERROR - AZIMUTH
 % simulation setup: CBF/ToolboxMusicEstimator2D/MUSIC, NumTarget = 1, target angle = [-30, 30]; no interference;  SNR = 0dB;  NumLoop = 1e4;
 fprintf('\n=================== SIMULATION CASE: DOA ERROR - AZIMUTH ===================\n')
-NumLoop = 1e1;
-azimuthVector = -30:30;
+NumLoop = 1e4;
+azimuthVector = -30:3:30;
 DoaEstiRange = {'CBF', 'MUSIC', 'AntiInterMUSIC'};
 doaErrVector = zeros(NumLoop, length(azimuthVector), length(DoaEstiRange));
 sysPara = GenSysPara();                         %% Gen. System para.

@@ -24,6 +24,7 @@ function [doa, spacialSpectrum] = DoaEstimation(sysPara, hArray, waveformRx, wav
 %  *  @copyright Collus Wang all rights reserved.
 %  * @remark   { revision history: V1.0, 2017.05.25. Collus Wang,  first draft }
 %  * @remark   { revision history: V1.1, 2017.07.12. Collus Wang,  change output parameter spacialSpectrum from 2D to 3D. }
+%  * @remark   { revision history: V1.1, 2017.07.19. Wayne Zang,  differentiate common MUSIC and anti-interference MUSIC algorithm. }
 %  */
 
 %% Get used field
@@ -90,7 +91,7 @@ switch lower(DoaEstimator)
         elevationScanVector = ones(size(AzimuthScanAngles))*ElevationScanAngles;
         angleScanVector = [AzimuthScanAngles, elevationScanVector];
         steeringVector = step(hSteeringVector, FreqCenter, angleScanVector.');
-        steeringVector = steeringVector./repmat(rms(steeringVector), NumElements, 1);
+        steeringVector = steeringVector*diag(rms(steeringVector).^-1);
         angleMatchVector = abs(steeringVector'*Pxs);
         [~, idxPeak] = max(angleMatchVector);
         doa = angleScanVector(idxPeak, :).';
@@ -129,7 +130,7 @@ switch lower(DoaEstimator)
         elevationScanVector = ones(size(AzimuthScanAngles))*ElevationScanAngles;
         angleScanVector = [AzimuthScanAngles, elevationScanVector];
         steeringVector = step(hSteeringVector, FreqCenter, angleScanVector.');
-        steeringVector = steeringVector./repmat(rms(steeringVector), NumElements, 1);
+        steeringVector = steeringVector*diag(rms(steeringVector).^-1);
         Rxx = waveformRx(idxRS,:).'*conj(waveformRx(idxRS,:))/LenRS;
         [eigV, eigD] = eig(Rxx);
         eigD = diag(eigD);
@@ -176,7 +177,7 @@ switch lower(DoaEstimator)
         elevationScanVector = ones(size(AzimuthScanAngles))*ElevationScanAngles;
         angleScanVector = [AzimuthScanAngles, elevationScanVector];
         steeringVector = step(hSteeringVector, FreqCenter, angleScanVector.');
-        steeringVector = steeringVector./repmat(rms(steeringVector), NumElements, 1);
+        steeringVector = steeringVector*diag(rms(steeringVector).^-1);
         Pxs = waveformRx(idxRS,:).'*conj(waveformPilot(idxRS,:))/LenRS;   % cross-correlation vector
         doa = zeros(2, size(Pxs, 2));
         for idxTarget = 1:size(Pxs, 2)
