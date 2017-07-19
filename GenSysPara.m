@@ -33,13 +33,13 @@ sysPara.ArrayType = 'Conformal';      % string. Array type. valid value = {'Conf
 sysPara.NumElements = 24;       % interger scaler. number of antenna elements
 sysPara.NumChannel = 4;         % interger scaler. number of used channels
 sysPara.Radius = 0.162;         % double scaler. radius of UCA array, in meter. e.g. 3rd Gen = 0.162;
-sysPara.StvIncludeElementResponse = false; % boolen scaler. Include individual element response in the calculation of steering vector
+sysPara.StvIncludeElementResponse = ~false; % boolen scaler. Include individual element response in the calculation of steering vector
                                           % If this property is true, the steering vector includes the individual element responses.
                                           % If this property is false, the computation of the steering vector assumes the elements are isotropic.
 
 % Target parameter
 sysPara.TargetSigType = 'QPSK';     % string. target singal type. valid value = {'QPSK', '16QAM', '64QAM'}
-sysPara.NumTarget = 1;              % interger scaler. number of target
+sysPara.NumTarget = 2;              % interger scaler. number of target
 sysPara.TargetAngle = [[-10; 0], [+10;0]];      % double 2xN matrix. incoming wave direction in degree, [azimuth; elevation]. Each column represents one target.
                                                 % The azimuth angle must be between 每180 and 180 degrees, and the elevation angle must be between 每90 and 90 degrees.
                                                 % N<=NumTarget is the number of targets. if N < NumTarget, use the first NumTarget columns as targets. 
@@ -50,7 +50,7 @@ sysPara.SymbolRate = sysPara.SampleRate;      % double scaler. symbol rate
 sysPara.SwitchInterence = true;    % boolen scaler. true = enable interference; false = disable interference.
 sysPara.InterferenceType = 'Sine';  % string. interferece type, valid value = {'Sine'}
 sysPara.NumInterference = 2;        % interger scaler. number of interference
-sysPara.InterferenceFreq = [10e3; 20e3];    % Nx1 double column vector. interfence frequency at baseband, in Hz. N is the number of interference.
+sysPara.InterferenceFreq = [10e6; 20e6];    % Nx1 double column vector. interfence frequency at baseband, in Hz. N is the number of interference.
                                             % N<=NumInterference is the number of interferences. if N < NumInterference, use the first NumInterference columns. 
 sysPara.SIR = [-10; -3];                      % Nx1 double column vector. SIR in dB. each row represents one interference SIR. N is the number of interference.
                                             % N<=NumInterference is the number of interferences. if N < NumInterference, use the first NumInterference columns. 
@@ -79,14 +79,18 @@ sysPara.NumWeightsQuantizationBits = 0; % 1x1 integer. Number of phase shifter q
                                         % Specify the number of bits as a non-negative integer. A value of zero indicates that no quantization is performed.
 
 % DOA estimation Parameters
-sysPara.DoaEstimator = 'ToolboxMusicEstimator2D';     % string. DOA estimator type. valid value = {'ToolboxMusicEstimator2D'}
+sysPara.DoaEstimator = 'ToolboxMusicEstimator2D';     % string. DOA estimator type. valid value = {'ToolboxMusicEstimator2D', 'CBF', 'MUSIC', 'AntiInterMUSIC'}
 sysPara.AzimuthScanAngles = [-30:0.5:30].';           % double vector. Azimuth scan angles, Specify the azimuth scan angles (in degrees) as a real vector. 
                                                       % The angles must be between 每180 and 180, inclusive. You must specify the angles in ascending order.
 sysPara.ElevationScanAngles = 0;                    % double vector. Elevation scan angles. Specify the elevation scan angles (in degrees) as a real vector or scalar. 
                                                     % The angles must be within [每90 90]. You must specify the angles in an ascending order.
 
 % Flags
-sysPara.GlobalDebugPlot = ~false;     % false = close mudule debug plot information; true = debug plot information depends on each module.
+sysPara.GlobalDebugPlot = false;     % false = close mudule debug plot information; true = debug plot information depends on each module.
+sysPara.FlagPrintResult = ~false;
+sysPara.FlagAnalyzeWaveform = ~false;
+sysPara.FlagBeamforming = ~false;
+sysPara.FlagDOAEsti = ~false;
 
 %% check input
 % check Target number consistency

@@ -31,43 +31,56 @@ waveformInt = GenInterference(sysPara, hArray); %% Gen. interference
 waveformNoise = GenNoise(sysPara, hArray);      %% Gen. noise
 %% Rx
 waveformRx = waveformArray + waveformInt + waveformNoise;           %% Rx waveform
-[snrSingle, berSingle, evmSingle] = AnalyzeWaveform(sysPara, waveformRx(:,1)*conj(steeringVector(1)), waveformArray(:,1)*conj(steeringVector(1)), 10000);  %% analze single antenna result. cal SNR BER EVM etc.
+if sysPara.FlagAnalyzeWaveform
+    [snrSingle, berSingle, evmSingle] = AnalyzeWaveform(sysPara, waveformRx(:,1)*conj(steeringVector(1)), waveformArray(:,1)*conj(steeringVector(1)), 10000);  %% analze single antenna result. cal SNR BER EVM etc.
+end
 %% Beamforming
-weight = GenWeight(sysPara, hArray, waveformRx, waveformSignal);             %% Gen. Beamforming weight
-waveformBeamform = RxBeamforming(sysPara, waveformRx, weight);               %% Beamforming
-[snrBf, berBf, evmBf] = AnalyzeWaveform(sysPara, waveformBeamform, waveformSignal, 20000);                 %% analze beamforming result. cal SNR BER EVM etc.
+if sysPara.FlagBeamforming
+    weight = GenWeight(sysPara, hArray, waveformRx, waveformSignal);             %% Gen. Beamforming weight
+    waveformBeamform = RxBeamforming(sysPara, waveformRx, weight);               %% Beamforming
+end
 %% analyze Beamforming
-gainSnr = snrBf - snrSingle;
-gainBer = berSingle - berBf;
-gainEvm = evmSingle - evmBf;
+if sysPara.FlagAnalyzeWaveform
+    [snrBf, berBf, evmBf] = AnalyzeWaveform(sysPara, waveformBeamform, waveformSignal, 20000);                 %% analze beamforming result. cal SNR BER EVM etc.
+    gainSnr = snrBf - snrSingle;
+    gainBer = berSingle - berBf;
+    gainEvm = evmSingle - evmBf;
+end
 %% DOA estimation
-[doa, spatialSpectrum] = DoaEstimation(sysPara, hArray, waveformRx, waveformSignal);
-%% analyze DOA
-doaErr = sysPara.TargetAngle - doa;
+if sysPara.FlagDOAEsti
+    [doa, spatialSpectrum] = DoaEstimation(sysPara, hArray, waveformRx, waveformSignal);
+    doaErr = sysPara.TargetAngle - doa;
+end
 %% print result
-fprintf('\n------------Report Results----------------\n')
-fprintf('\n----Beamforming----\n')
-fprintf('Sigle antenna:\n')
-fprintf('\tSNR = %.2f (dB)\n', snrSingle);
-fprintf('\tBER = %.1e = %.2f%%\n', berSingle, berSingle*100);
-fprintf('\tEVM = %.2f%% \n\n', evmSingle);
-fprintf('Multi-antenna:\n')
-for idxTarget = 1:sysPara.NumTarget
-    fprintf('Target #%d:\n', idxTarget);
-    fprintf('Multi-antenna:\n')
-    fprintf('\tSNR = %.2f (dB)\n', snrBf(idxTarget));
-    fprintf('\tBER = %.1e = %.2f%%\n', berBf(idxTarget), berBf(idxTarget)*100);
-    fprintf('\tEVM = %.2f%% \n', evmBf(idxTarget));
-    fprintf('Multi-antenna Gain:\n')
-    fprintf('\tSNR Gain = %.2f (dB)\n', gainSnr(idxTarget));
-    fprintf('\tBER Gain = %.1e = %.2f%%\n', gainBer(idxTarget), gainBer(idxTarget)*100);
-    fprintf('\tEVM Gain = %.2f%% \n', gainEvm(idxTarget));
+if sysPara.FlagPrintResult
+    fprintf('\n------------Report Results----------------\n')
+    fprintf('\n----Beamforming----\n')
+    if sysPara.FlagBeamforming
+        fprintf('Sigle antenna:\n')
+        fprintf('\tSNR = %.2f (dB)\n', snrSingle);
+        fprintf('\tBER = %.1e = %.2f%%\n', berSingle, berSingle*100);
+        fprintf('\tEVM = %.2f%% \n\n', evmSingle);
+        fprintf('Multi-antenna:\n')
+        for idxTarget = 1:sysPara.NumTarget
+            fprintf('Target #%d:\n', idxTarget);
+            fprintf('Multi-antenna:\n')
+            fprintf('\tSNR = %.2f (dB)\n', snrBf(idxTarget));
+            fprintf('\tBER = %.1e = %.2f%%\n', berBf(idxTarget), berBf(idxTarget)*100);
+            fprintf('\tEVM = %.2f%% \n', evmBf(idxTarget));
+            fprintf('Multi-antenna Gain:\n')
+            fprintf('\tSNR Gain = %.2f (dB)\n', gainSnr(idxTarget));
+            fprintf('\tBER Gain = %.1e = %.2f%%\n', gainBer(idxTarget), gainBer(idxTarget)*100);
+            fprintf('\tEVM Gain = %.2f%% \n', gainEvm(idxTarget));
+        end
+    end
+    
+    if sysPara.FlagDOAEsti
+        fprintf('\n----DOA Estimation----\n')
+        for idxDoa = 1:size(doa, 2)
+            fprintf('\tDOA #%2d: [AZ, EL] = [%+7.2f, %+7.2f] (degree)\n', idxDoa, doa(1,idxDoa), doa(2,idxDoa));
+            fprintf('\t            Error = [%+7.2f, %+7.2f] (degree)\n',  doaErr(1,idxDoa), doaErr(2,idxDoa));
+        end
+    end
+    fprintf('\n------------End of Report-----------------\n')
+    if ~exist('ScriptCall', 'var'), toc, end % print elapsed time
 end
-
-fprintf('\n----DOA Estimation----\n')
-for idxDoa = 1:size(doa, 2)
-    fprintf('\tDOA #%2d: [AZ, EL] = [%+7.2f, %+7.2f] (degree)\n', idxDoa, doa(1,idxDoa), doa(2,idxDoa));
-    fprintf('\t            Error = [%+7.2f, %+7.2f] (degree)\n',  doaErr(1,idxDoa), doaErr(2,idxDoa));
-end
-fprintf('\n------------End of Report-----------------\n')
-if ~exist('ScriptCall', 'var'), toc, end % print elapsed time

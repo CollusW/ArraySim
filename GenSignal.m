@@ -82,7 +82,7 @@ hSteeringVector = phased.SteeringVector('SensorArray', hArray,...
     'NumPhaseShifterBits', 0 ...    'EnablePolarization', false ...
     );
 steeringVector = step(hSteeringVector, FreqCenter, TargetAngle);
-steeringVector = steeringVector*diag(rms(steeringVector).^-1); % in case of IncludeElementResponse=true. Normalize to 1, but keep element response
+steeringVector = steeringVector./repmat(rms(steeringVector), NumElements, 1); % in case of IncludeElementResponse=true. Normalize to 1, but keep element response
 waveformArray = waveformSignal*steeringVector.';
 
 if FlagDebugPlot
