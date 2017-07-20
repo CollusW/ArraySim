@@ -24,6 +24,7 @@ function [doa, spacialSpectrum] = DoaEstimation(sysPara, hArray, waveformRx, wav
 %  *  @copyright Collus Wang all rights reserved.
 %  * @remark   { revision history: V1.0, 2017.05.25. Collus Wang,  first draft }
 %  * @remark   { revision history: V1.1, 2017.07.12. Collus Wang,  change output parameter spacialSpectrum from 2D to 3D. }
+%  * @remark   { revision history: V1.1, 2017.07.19. Wayne Zang,  differentiate common MUSIC and anti-interference MUSIC algorithm. }
 %  */
 
 %% Get used field
@@ -45,13 +46,16 @@ figureStartNum = 6000;
 switch lower(DoaEstimator)
     case 'toolboxmusicestimator2d'
         spacialSpectrum = zeros(length(ElevationScanAngles), length(AzimuthScanAngles), 1); % this method does not distinguish targets, therefore the third dimension is 1.
+        LenRS = 256;  % RS length
+        if LenWaveform < LenRS, error('Waveform length < RS length!'); end  % check length
+        idxRS = (1:LenRS) + 0; % RS indices
         hDoaEstimator = phased.BeamscanEstimator2D('SensorArray',hArray,...
             'OperatingFrequency',FreqCenter,...
             'DOAOutputPort',true,...
             'NumSignals',NumTarget,...
             'AzimuthScanAngles',AzimuthScanAngles.',...
             'ElevationScanAngles',ElevationScanAngles.');
-        [spacialSpectrum(:,:,1), doa] = step(hDoaEstimator, waveformRx);
+        [spacialSpectrum(:,:,1), doa] = step(hDoaEstimator, waveformRx(idxRS,:));
         % sort DOA azimuth angles in ascending order
         [~,idxTmp] = sort(doa(1,:), 'ascend');
         doa = doa(:,idxTmp);
@@ -87,7 +91,7 @@ switch lower(DoaEstimator)
         elevationScanVector = ones(size(AzimuthScanAngles))*ElevationScanAngles;
         angleScanVector = [AzimuthScanAngles, elevationScanVector];
         steeringVector = step(hSteeringVector, FreqCenter, angleScanVector.');
-        steeringVector = steeringVector./repmat(rms(steeringVector), NumElements, 1);
+        steeringVector = steeringVector*diag(rms(steeringVector).^-1);
         angleMatchVector = abs(steeringVector'*Pxs);
         [~, idxPeak] = max(angleMatchVector);
         doa = angleScanVector(idxPeak, :).';
@@ -126,7 +130,54 @@ switch lower(DoaEstimator)
         elevationScanVector = ones(size(AzimuthScanAngles))*ElevationScanAngles;
         angleScanVector = [AzimuthScanAngles, elevationScanVector];
         steeringVector = step(hSteeringVector, FreqCenter, angleScanVector.');
-        steeringVector = steeringVector./repmat(rms(steeringVector), NumElements, 1);
+        steeringVector = steeringVector*diag(rms(steeringVector).^-1);
+        Rxx = waveformRx(idxRS,:).'*conj(waveformRx(idxRS,:))/LenRS;
+        [eigV, eigD] = eig(Rxx);
+        eigD = diag(eigD);
+        [~, idxMaxEig] = sort(eigD, 'descend');
+        unitI = eye(size(Rxx, 1));
+        unitI(idxMaxEig(1:NumTarget), idxMaxEig(1:NumTarget)) = 0;
+        noiseSpace = eigV*unitI*eigV';
+        Pmusic = 1./abs(sum((steeringVector'*noiseSpace.*steeringVector.').').');
+        [~, idxPeak] = findpeaks(Pmusic);
+        [~, idxSortPeak] = sort(Pmusic(idxPeak), 'descend');
+        doa = angleScanVector(idxPeak(idxSortPeak(1:NumTarget)), :).';
+        spacialSpectrum(:,:,1) = Pmusic;
+        if FlagDebugPlot
+            TargetAngle = sysPara.TargetAngle;
+            figure(figureStartNum);
+            hold off;
+            plot(AzimuthScanAngles, mag2db(spacialSpectrum(1,:,1)), 'b-');
+            hold on;
+            for idxTarget = 1:NumTarget
+                plot([TargetAngle(1,idxTarget), TargetAngle(1,idxTarget)],...
+                    [min(mag2db(spacialSpectrum(1,:,1))),...
+                    mag2db(spacialSpectrum(1,(TargetAngle(1,idxTarget) - AzimuthScanAngles(1))/(AzimuthScanAngles(2) - AzimuthScanAngles(1)) + 1,1))], 'b-');
+                plot([doa(1,idxTarget), doa(1,idxTarget)],...
+                    [min(mag2db(spacialSpectrum(1,:,1))),...
+                    mag2db(spacialSpectrum(1,(doa(1,idxTarget) - AzimuthScanAngles(1))/(AzimuthScanAngles(2) - AzimuthScanAngles(1)) + 1,1))], 'bo-');
+                grid on;
+                axis([min(AzimuthScanAngles), max(AzimuthScanAngles), min(mag2db(spacialSpectrum(1,:,1))), max(mag2db(spacialSpectrum(1,:,1)))]);
+                title(['Target ', num2str(idxTarget), ': MUSIC Spatial Spectrum at Elevation 0 Degree']);
+                xlabel('Azimuth Angle(degree)');
+                ylabel('Power(dB)');
+                legend('Spatial Spectrum', 'Target', 'DOA');
+            end
+        end
+    case 'antiintermusic'
+        spacialSpectrum = zeros(length(ElevationScanAngles), length(AzimuthScanAngles), NumTarget);
+        LenRS = 256;  % RS length
+        if LenWaveform < LenRS, error('Waveform length < RS length!'); end  % check length
+        idxRS = (1:LenRS) + 0; % RS indices
+        hSteeringVector = phased.SteeringVector('SensorArray', hArray,...
+            'PropagationSpeed', physconst('LightSpeed'),...
+            'IncludeElementResponse', StvIncludeElementResponse,...
+            'NumPhaseShifterBits', 0 ...    'EnablePolarization', false ...
+            );
+        elevationScanVector = ones(size(AzimuthScanAngles))*ElevationScanAngles;
+        angleScanVector = [AzimuthScanAngles, elevationScanVector];
+        steeringVector = step(hSteeringVector, FreqCenter, angleScanVector.');
+        steeringVector = steeringVector*diag(rms(steeringVector).^-1);
         Pxs = waveformRx(idxRS,:).'*conj(waveformPilot(idxRS,:))/LenRS;   % cross-correlation vector
         doa = zeros(2, size(Pxs, 2));
         for idxTarget = 1:size(Pxs, 2)
@@ -157,7 +208,7 @@ switch lower(DoaEstimator)
                     mag2db(spacialSpectrum(1,(doa(1,idxTarget) - AzimuthScanAngles(1))/(AzimuthScanAngles(2) - AzimuthScanAngles(1)) + 1,idxTarget))], 'bo-');
                 grid on;
                 axis([min(AzimuthScanAngles), max(AzimuthScanAngles), min(mag2db(spacialSpectrum(1,:,idxTarget))), max(mag2db(spacialSpectrum(1,:,idxTarget)))]);
-                title(['Target ', num2str(idxTarget), ': MUSIC Spatial Spectrum at Elevation 0 Degree']);
+                title(['Target ', num2str(idxTarget), ': Anti-Inter MUSIC Spatial Spectrum at Elevation 0 Degree']);
                 xlabel('Azimuth Angle(degree)');
                 ylabel('Power(dB)');
                 legend('Spatial Spectrum', 'Target', 'DOA');
