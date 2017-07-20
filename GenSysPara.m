@@ -91,10 +91,10 @@ sysPara.ElevationScanAngles = 0;                    % double vector. Elevation s
 
 % Flags
 sysPara.GlobalDebugPlot = false;                      % false = close mudule debug plot information; true = debug plot information depends on each module.
-sysPara.FlagPrintResult = false;                     % false = close mudule print result information; true = print result information.
-sysPara.FlagAnalyzeWaveform = false;                 % false = close mudule analyze waveform; true = analyze waveform.
-sysPara.FlagBeamforming = false;                     % false = close mudule beamforming; true = beamforming.
-sysPara.FlagDOAEsti = false;                         % false = close mudule DOA estimation; true =  DOA estimation.
+sysPara.FlagPrintResult = true;                     % false = close mudule print result information; true = print result information.
+sysPara.FlagAnalyzeWaveform = true;                 % false = close mudule analyze waveform; true = analyze waveform.
+sysPara.FlagBeamforming = true;                     % false = close mudule beamforming; true = beamforming.
+sysPara.FlagDOAEsti = true;                         % false = close mudule DOA estimation; true =  DOA estimation.
 
 %% check input
 % check Target number consistency
