@@ -20,6 +20,7 @@ function [ weight] = GenWeight(sysPara, hArray, waveformRx, waveformPilot)
 %  * @remark   { revision history: V1.0, 2017.05.25. Collus Wang, first draft }
 %  * @remark   { revision history: V1.1, 2017.07.12. Wayne Zhang, add lms method }
 %  * @remark   { revision history: V1.1, 2017.07.12. Collus Wang, 1.steering vector calculation can include element response. StvIncludeElementResponse; 2. add DiagonalLoadingFactor for mvdr}
+%  * @remark   { revision history: V1.2, 2017.07.14. Wayne Zhang, lms method add break }
 %  */
 
 %% Get used field
@@ -98,10 +99,10 @@ switch lower(BeamformerType)
         weight = Rxx\Pxs;
     case 'lms'
         LenRS = 256;  % RS length
-        LenJudgConv = 10;
-        FlagConvSwitch = 1;
-        ThreshConv = 0.03;
-        ThreshConv = ThreshConv*ones(NumTarget, 1);
+        LenJudgConv = 10;   % minimun number of iterations
+        FlagConvSwitch = 1; % true = turn on convergency break for faster calculation. false = turn off convergency break
+        ThresholdConv = 0.03;  % threshold of convergence.
+        ThresholdConv = ThresholdConv*ones(NumTarget, 1);
         flagConv = zeros(NumTarget, 1);
         if LenWaveform < LenRS, error('Waveform length < RS length!'); end  % check length
         idxRS = (1:LenRS) + 0; % RS indices
@@ -116,7 +117,7 @@ switch lower(BeamformerType)
             errIterVector(idxIter, :) = abs(errIter).';
             if idxIter > LenJudgConv
                 sigmaErrIter = rms(errIterVector(idxIter - LenJudgConv + 1:idxIter, :)).';
-                flagConv = sigmaErrIter.*~flagConv < ThreshConv;
+                flagConv = sigmaErrIter.*~flagConv < ThresholdConv;
                 flagConv = flagConv*FlagConvSwitch;
             end
             stepLen = betaStep*(1 - exp(-alphaStep*abs(errIter).^2)).*~flagConv;      %stepLen = betaStep*(1./(1 + exp(-alphaStep*abs(errRS).^2)) - 0.5);
@@ -126,6 +127,7 @@ switch lower(BeamformerType)
             end
         end
         if FlagDebugPlot
+            fprintf('LMS iteration times = %d\n', idxIter);
             figure(figureStartNum)
             plot(errIterVector, '.-');
             grid on
