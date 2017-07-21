@@ -13,6 +13,7 @@ function [ hAntennaElement] = GenAntennaElement(sysPara)
 %  *  @date      2017.05.25.
 %  *  @copyright Collus Wang all rights reserved.
 %  * @remark   { revision history: V1.0, 2017.05.25. Collus Wang,  first draft }
+%  * @remark   { revision history: V1.1, 2017.07.21. Collus Wang,  add isotropic antenna and cosine antenna }
 %  */
 
 %% get used field
@@ -35,7 +36,7 @@ end
 
 %% load antenna pattern
 switch lower(AntennaType)
-    case 'custom'
+    case 'custom'   % Antenna pattern that load form HFSS CSV file.
         tableAntenna = csvread(AntennaPatternFileName, 1, 0);  % import from HFSS csv file
         phi = tableAntenna(:,1);
         theta = tableAntenna(:,2);
@@ -48,6 +49,15 @@ switch lower(AntennaType)
             'AzimuthAngles',az,...
             'ElevationAngles',el,...
             'RadiationPattern',pattern_azel);
+    case 'isotropic' % ideal isotropic antenna
+        hAntennaElement = phased.IsotropicAntennaElement(...
+            'FrequencyRange',FrequencyRange);
+    case 'cosine' % Cosine Antenna Element
+        ExpEL = 40;     % should be 15d 3dB beamwidth
+        ExpAZ = 2.4;    % should be 60d 3dB beamwidth
+        hAntennaElement = phased.CosineAntennaElement(...
+            'FrequencyRange',FrequencyRange,...
+            'CosinePower',  [ExpAZ ExpEL]);
     otherwise
         error('Unsupported antenna type.')
 end

@@ -23,8 +23,12 @@ sysPara.SampleRate = 18.432e6;    % double scaler, sample rate in SPS
 sysPara.Duration = 1e-3;          % double scaler, simulation duration
 
 % Antenna parameter
-sysPara.AntennaType = 'Custom';  % string. Antenna type. valid value = {'Custom', };
-sysPara.AntennaPatternFileName = '.\AntennaPattern\C_5G7_Gen3_Antenna_Filled.csv'; % string. csv antenna pattern file exported from HFSS.
+sysPara.AntennaType = 'Custom';  % string. Antenna type. valid value = {'Custom', 'Isotropic', 'Cosine'};
+                                 % 'Custom' = Antenna pattern that load form HFSS CSV file.
+                                 % 'Isotropic' = Ideal isotropic antenna
+                                 % 'Cosine' = Cosine antenna element
+sysPara.AntennaPatternFileName = '.\AntennaPattern\C_5G7_Gen3_Antenna_Filled.csv'; % string. csv antenna pattern file exported from HFSS. 
+                                                                                   % Only valide if AntennaType = 'Custom'
 sysPara.FreqCenter = 5725e6;    % double scaler. Center frequency, Unit in Hz.  e.g. 5725e6, 34e9
 sysPara.FreqSpan = 200e6;       % double scaler. Frequency span, unit in Hz.
 
@@ -90,7 +94,7 @@ sysPara.ElevationScanAngles = 0;                    % double vector. Elevation s
                                                     % The angles must be within [¨C90 90]. You must specify the angles in an ascending order.
 
 % Flags
-sysPara.GlobalDebugPlot = false;                      % false = close mudule debug plot information; true = debug plot information depends on each module.
+sysPara.GlobalDebugPlot = false;                    % false = close mudule debug plot information; true = debug plot information depends on each module.
 sysPara.FlagPrintResult = true;                     % false = close mudule print result information; true = print result information.
 sysPara.FlagAnalyzeWaveform = true;                 % false = close mudule analyze waveform; true = analyze waveform.
 sysPara.FlagBeamforming = true;                     % false = close mudule beamforming; true = beamforming.
