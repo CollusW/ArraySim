@@ -21,6 +21,7 @@ function [ weight] = GenWeight(sysPara, hArray, waveformRx, waveformPilot)
 %  * @remark   { revision history: V1.1, 2017.07.12. Wayne Zhang, add lms method }
 %  * @remark   { revision history: V1.1, 2017.07.12. Collus Wang, 1.steering vector calculation can include element response. StvIncludeElementResponse; 2. add DiagonalLoadingFactor for mvdr}
 %  * @remark   { revision history: V1.2, 2017.07.14. Wayne Zhang, lms method add break }
+%  * @remark   { revision history: V1.2, 2017.07.28. Wayne Zhang, modify lms variable step lenght strategy }
 %  */
 
 %% Get used field
@@ -100,7 +101,7 @@ switch lower(BeamformerType)
     case 'lms'
         LenRS = 256;  % RS length
         LenJudgConv = 10;   % minimun number of iterations
-        FlagConvSwitch = 1; % true = turn on convergency break for faster calculation. false = turn off convergency break
+        FlagConvSwitch = 0; % true = turn on convergency break for faster calculation. false = turn off convergency break
         ThresholdConv = 0.03;  % threshold of convergence.
         ThresholdConv = ThresholdConv*ones(NumTarget, 1);
         flagConv = zeros(NumTarget, 1);
@@ -108,8 +109,11 @@ switch lower(BeamformerType)
         idxRS = (1:LenRS) + 0; % RS indices
         Pxs = waveformRx(idxRS,:).'*conj(waveformPilot(idxRS,:))/LenRS;   % cross-correlation vector
         Rxx = waveformRx(idxRS,:).'*conj(waveformRx(idxRS,:))/LenRS;    % auto-correlation matix
-        betaStep = 1/trace(Rxx);
-        alphaStep = 50;
+        betaStepLen = 1/trace(Rxx);
+        AlphaStepLen = 50;
+        ConvSecendValStepLen = betaStepLen*1e-2*ones(NumTarget, 1);
+        GammaStepLen = 1/10;
+        NumFirstVarStepLen = 100;
         weight = Pxs;   % init. with Pxs.
         errIterVector = zeros(LenRS, NumTarget);
         for idxIter = 1:LenRS
@@ -120,7 +124,14 @@ switch lower(BeamformerType)
                 flagConv = sigmaErrIter.*~flagConv < ThresholdConv;
                 flagConv = flagConv*FlagConvSwitch;
             end
-            stepLen = betaStep*(1 - exp(-alphaStep*abs(errIter).^2)).*~flagConv;      %stepLen = betaStep*(1./(1 + exp(-alphaStep*abs(errRS).^2)) - 0.5);
+            if idxIter <= NumFirstVarStepLen
+                stepLen = betaStepLen*(1 - exp(-AlphaStepLen*abs(errIter).^2)).*~flagConv;      %stepLen = betaStep*(1./(1 + exp(-alphaStep*abs(errRS).^2)) - 0.5);
+                if idxIter == NumFirstVarStepLen
+                    OrigSecondValStepLen = stepLen;
+                end
+            else
+                stepLen = ((OrigSecondValStepLen - ConvSecendValStepLen)*exp(-GammaStepLen*(idxIter - NumFirstVarStepLen)) + ConvSecendValStepLen).*~flagConv;
+            end
             weight = weight + waveformRx(idxIter,:).'*errIter'*diag(stepLen);
             if sum(flagConv) == NumTarget
                 break;
