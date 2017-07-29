@@ -17,11 +17,11 @@ tested on Matlab version 2016a or later (2017a may have warnings but work.) with
 ## Simulation result ##
 
 ### DOA estimation ###
-1. CBF, MUSIC, Anti-MUSIC algorithm performance (unbiasedness, robustness) under different SNR (-10~20dB) and random azimuth within a certain range (-30~30 degree).
-2. CBF, MUSIC, Anti-MUSIC algorithm performance (unbiasedness, robustness) under different azimuth (-30~30 degree) and fixed SNR (5dB).
+1. CBF, MUSIC, Anti-MUSIC algorithm performance (unbiasedness, robustness) under different SNR (-10:5:20dB) and random azimuth within a certain range (-30:3:30 degree).
+2. CBF, MUSIC, Anti-MUSIC algorithm performance (unbiasedness, robustness) under different azimuth (-30:3:30 degree) and fixed SNR (5dB).
 
 ### Directivity ###
-MMSE, LMS algorithm adaptive beamform directivity at target azimuth traversing within a certain range (-30~30 degree).
+MMSE, LMS algorithm adaptive beamform directivity at target azimuth traversing within a certain range (-30:3:30 degree).
 
 ### Anti-Interference ###
-MMSE, LMS algorithm adaptive anti-interference (6dB similarity between signal and interference) performance under different SIR (-10~20dB).
+MMSE, LMS algorithm adaptive anti-interference (6dB similarity between signal and interference) performance under different SIR (-10:5:20dB).
