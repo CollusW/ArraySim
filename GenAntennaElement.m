@@ -51,12 +51,12 @@ switch lower(AntennaType)
             'RadiationPattern',pattern_azel);
     case 'isotropic' % ideal isotropic antenna
         hAntennaElement = phased.IsotropicAntennaElement(...
-            'FrequencyRange',FrequencyRange);
+            'FrequencyRange',FrequencyRange.');
     case 'cosine' % Cosine Antenna Element
         ExpEL = 40;     % should be 15d 3dB beamwidth
         ExpAZ = 2.4;    % should be 60d 3dB beamwidth
         hAntennaElement = phased.CosineAntennaElement(...
-            'FrequencyRange',FrequencyRange,...
+            'FrequencyRange',FrequencyRange.',...
             'CosinePower',  [ExpAZ ExpEL]);
     otherwise
         error('Unsupported antenna type.')
