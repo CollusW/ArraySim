@@ -1,4 +1,4 @@
-function [ weight] = GenWeight(sysPara, hArray, waveformRx, waveformPilot)
+function [ weight, errVector] = GenWeight(sysPara, hArray, waveformRx, waveformPilot)
 % /*!
 %  *  @brief     This function generate the rx weight according to the beamforming method.
 %  *  @details   . 
@@ -41,6 +41,8 @@ FlagDebugPlot = true && GlobalDebugPlot;
 figureStartNum = 5000;
 
 %% process
+LenRS = 256;  % RS length
+idxRS = (1:LenRS) + 0; % RS indices
 switch lower(BeamformerType)
     case 'mvdr'
         DiagonalLoadingFactor = sysPara.MvdrPara.DiagonalLoadingFactor;
@@ -49,13 +51,15 @@ switch lower(BeamformerType)
             'OperatingFrequency',FreqCenter,...
             'DiagonalLoadingFactor', DiagonalLoadingFactor,...
             'WeightsOutputPort',true);
-            [~, weight] = step(hBeamformer,waveformRx);
+        [~, weight] = step(hBeamformer,waveformRx);
+        errVector = abs(waveformPilot(idxRS,:).' - weight'*waveformRx(idxRS,:).').';
     case 'mrc'
         hBeamformer = phased.PhaseShiftBeamformer('SensorArray',hArray,...
             'Direction',TargetAngle,...
             'OperatingFrequency',FreqCenter,...
             'WeightsOutputPort', true);
         [~, weight] = step(hBeamformer,waveformRx);
+        errVector = abs(waveformPilot(idxRS,:).' - weight'*waveformRx(idxRS,:).').';
     case 'lcmv'
         % get used field.
         AngleToleranceAZ = sysPara.LcmvPara.AngleToleranceAZ;
@@ -86,10 +90,9 @@ switch lower(BeamformerType)
             hBeamformer.DesiredResponse = DesiredResponse;
             [~, weight(:,idxTarget)] = step(hBeamformer,waveformRx);
         end
+        errVector = abs(waveformPilot(idxRS,:).' - weight'*waveformRx(idxRS,:).').';
     case 'mmse'
-        LenRS = 256;  % RS length
         if LenWaveform < LenRS, error('Waveform length < RS length!'); end  % check length
-        idxRS = (1:LenRS) + 0; % RS indices
         Rxx = waveformRx(idxRS,:).'*conj(waveformRx(idxRS,:))/LenRS;    % auto-correlation matix
         Pxs = waveformRx(idxRS,:).'*conj(waveformPilot(idxRS,:))/LenRS;   % cross-correlation vector
         if FlagDebugPlot
@@ -98,15 +101,14 @@ switch lower(BeamformerType)
             [V,D] = eig(Rxx)   %#ok<ASGLU,NOPRT>
         end
         weight = Rxx\Pxs;
+        errVector = abs(waveformPilot(idxRS,:).' - weight'*waveformRx(idxRS,:).').';
     case 'lms'
-        LenRS = 256;  % RS length
         LenJudgConv = 10;   % minimun number of iterations
         FlagConvSwitch = 0; % true = turn on convergency break for faster calculation. false = turn off convergency break
         ThresholdConv = 0.03;  % threshold of convergence.
         ThresholdConv = ThresholdConv*ones(NumTarget, 1);
         flagConv = zeros(NumTarget, 1);
         if LenWaveform < LenRS, error('Waveform length < RS length!'); end  % check length
-        idxRS = (1:LenRS) + 0; % RS indices
         Pxs = waveformRx(idxRS,:).'*conj(waveformPilot(idxRS,:))/LenRS;   % cross-correlation vector
         Rxx = waveformRx(idxRS,:).'*conj(waveformRx(idxRS,:))/LenRS;    % auto-correlation matix
         betaStepLen = 1/trace(Rxx);
@@ -115,12 +117,12 @@ switch lower(BeamformerType)
         GammaStepLen = 1/10;
         NumFirstVarStepLen = 100;
         weight = Pxs;   % init. with Pxs.
-        errIterVector = zeros(LenRS, NumTarget);
+        errVector = zeros(LenRS, NumTarget);
         for idxIter = 1:LenRS
             errIter = waveformPilot(idxIter,:).' - weight'*waveformRx(idxIter,:).';
-            errIterVector(idxIter, :) = abs(errIter).';
+            errVector(idxIter, :) = abs(errIter).';
             if idxIter > LenJudgConv
-                sigmaErrIter = rms(errIterVector(idxIter - LenJudgConv + 1:idxIter, :)).';
+                sigmaErrIter = rms(errVector(idxIter - LenJudgConv + 1:idxIter, :)).';
                 flagConv = sigmaErrIter.*~flagConv < ThresholdConv;
                 flagConv = flagConv*FlagConvSwitch;
             end
@@ -140,7 +142,7 @@ switch lower(BeamformerType)
         if FlagDebugPlot
             fprintf('LMS iteration times = %d\n', idxIter);
             figure(figureStartNum)
-            plot(errIterVector, '.-');
+            plot(errVector, '.-');
             grid on
             xlabel('Iteration')
             ylabel('Error')
