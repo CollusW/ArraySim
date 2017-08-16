@@ -4,6 +4,9 @@ function [ weight, errVector] = GenWeight(sysPara, hArray, waveformRx, waveformP
 %  *  @details   . 
 %  *  @param[out] weight, MxK complex doulbe. array channel weight. M is the number of channel, K is the
 %                   number of targets.
+%  *  @param[out] errVector, Lx1 complex doulbe. error vector between local RS and combined RS. M is the length of RS
+%       for LMS algorithm, each error vector element is corresponding to current iterated weight.
+%       for other algorithm, each error vector element is corresponding to final weight.
 %  *  @param[in] sysPara, 1x1 struct, which contains the following field:
 %       see get used field for detail.
 %  *  @param[in] hArray, 1x1 antenna array system object.

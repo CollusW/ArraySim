@@ -51,10 +51,14 @@ if sysPara.SwitchChannelImplementation
 else
     fprintf('\tSwitch of channel implementation: Disable\n');
 end
-fprintf('\tMean value of channel amplitude: %ddB\n',sysPara.MeanAmpl);
-fprintf('\tSingle band range of channel amplitude: %ddB\n',sysPara.MaxAmplSBRange);
-fprintf('\tMean value of channel phase error: %ddB\n',sysPara.MeanPhaseErr);
-fprintf('\tSingle band range of channel phase error: %ddB\n',sysPara.MaxPhaseErrSBRange);
+fprintf('\tChannel amplitude error:\n');
+for idxChannel = 1:sysPara.NumChannel
+    fprintf('\t\tChannel #%2d:%+7.2f dB\n',idxChannel, sysPara.ChannelAmpliErr(idxChannel));
+end
+fprintf('\tChannel phase error:\n');
+for idxChannel = 1:sysPara.NumChannel
+    fprintf('\t\tChannel #%2d:%+7.2f degree\n',idxChannel, sysPara.ChannelPhaseErr(idxChannel));
+end
 
 fprintf('Interfence parameter:\n');
 if sysPara.SwitchInterence

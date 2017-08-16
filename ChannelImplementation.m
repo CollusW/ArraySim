@@ -16,18 +16,15 @@ function [waveformArrayChannel] = ChannelImplementation(sysPara, waveformArray)
 %  * @remark   { revision history: V1.0, 2017.08.03. Wayne Zhang,  first draft }
 %  */
 %% get used field
-NumChannel = sysPara.NumChannel;                                       % interger scaler. number of used channels
 SwitchChannelImplementation = sysPara.SwitchChannelImplementation;     % boolen scaler. true = enable channel implementation; false = disable channel implementation.
-MeanAmpl = sysPara.MeanAmpl;                                           % double scaler. mean value of channel amplitude. unit in dB.
-MaxAmplSBRange = sysPara.MaxAmplSBRange;                               % double scaler. single band range of channel amplitude. unit in dB.
-MeanPhaseErr = sysPara.MeanPhaseErr;                                   % double scaler. mean value of channel phase error. unit in degree.
-MaxPhaseErrSBRange = sysPara.MaxPhaseErrSBRange;                       % double scaler. single band range of channel phase error. unit in degree.
+ChannelAmpliErr = sysPara.ChannelAmpliErr;       % double Mx1 vector. channel amplitude vector. unit in dB. M is number of channel.
+ChannelPhaseErr = sysPara.ChannelPhaseErr;      % double Mx1 vector. channel phase vector. unit in degree . M is number of channel.
 %% process
 if ~SwitchChannelImplementation
     waveformArrayChannel = waveformArray;
     return;
 end
 %% process
-waveformArrayChannel = waveformArray*diag(10.^(((rand(NumChannel, 1)*2 - 1)*MaxAmplSBRange + MeanAmpl)/20))...
-    *diag(exp(1i*(rand(NumChannel, 1)*2 - 1)*(MaxPhaseErrSBRange/180*pi) + (MeanPhaseErr/180*pi)));
+waveformArrayChannel = waveformArray*diag(10.^(ChannelAmpliErr/20))...
+    *diag(exp(1i*ChannelPhaseErr/180*pi));
 end

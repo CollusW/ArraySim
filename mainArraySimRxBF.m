@@ -29,9 +29,10 @@ end
 [waveformArray, waveformSignal, steeringVector] = GenSignal(sysPara, hArray);       %% Gen. signal
 waveformArrayChannel = ChannelImplementation(sysPara, waveformArray);
 waveformInt = GenInterference(sysPara, hArray); %% Gen. interference
+waveformIntChannel = ChannelImplementation(sysPara, waveformInt);
 waveformNoise = GenNoise(sysPara, hArray);      %% Gen. noise
 %% Rx
-waveformRx = waveformArrayChannel + waveformInt + waveformNoise;           %% Rx waveform
+waveformRx = waveformArrayChannel + waveformIntChannel + waveformNoise;           %% Rx waveform
 if sysPara.FlagAnalyzeWaveform
     [snrSingle, berSingle, evmSingle] = AnalyzeWaveform(sysPara, waveformRx(:,1)*conj(steeringVector(1)), waveformArrayChannel(:,1)*conj(steeringVector(1)), 10000);  %% analze single antenna result. cal SNR BER EVM etc.
 end

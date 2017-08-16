@@ -37,7 +37,7 @@ sysPara.ArrayType = 'Conformal';      % string. Array type. valid value = {'Conf
 sysPara.NumElements = 24;       % interger scaler. number of antenna elements
 sysPara.NumChannel = 4;         % interger scaler. number of used channels
 sysPara.Radius = 0.162;         % double scaler. radius of UCA array, in meter. e.g. 3rd Gen = 0.162;
-sysPara.StvIncludeElementResponse = true; % boolen scaler. Include individual element response in the calculation of steering vector
+sysPara.StvIncludeElementResponse = true; % boolen scaler. Include individual element response in the calculation of steering vector when generating the received waveforms from channels.
                                           % If this property is true, the steering vector includes the individual element responses.
                                           % If this property is false, the computation of the steering vector assumes the elements are isotropic.
 
@@ -52,10 +52,8 @@ sysPara.SymbolRate = sysPara.SampleRate;      % double scaler. symbol rate
 
 % Channel Implementation
 sysPara.SwitchChannelImplementation = false;     % boolen scaler. true = enable channel implementation; false = disable channel implementation.
-sysPara.MeanAmpl = 0;                           % double scaler. mean value of channel amplitude. unit in dB.
-sysPara.MaxAmplSBRange = 5;                     % double scaler. single band range of channel amplitude. unit in dB.
-sysPara.MeanPhaseErr = 0;                       % double scaler. mean value of channel phase error. unit in degree.
-sysPara.MaxPhaseErrSBRange = 10;                % double scaler. single band range of channel phase error. unit in degree.
+sysPara.ChannelAmpliErr = (rand(sysPara.NumChannel, 1)*2 - 1)*5 + 0;       % double Mx1 vector. channel amplitude vector. unit in dB. M is number of channel.
+sysPara.ChannelPhaseErr = (rand(sysPara.NumChannel, 1)*2 - 1)*10 + 0;      % double Mx1 vector. channel phase vector. unit in degree . M is number of channel.
 
 % Interfence parameter
 sysPara.SwitchInterence = true;    % boolen scaler. true = enable interference; false = disable interference.
