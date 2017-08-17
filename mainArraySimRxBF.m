@@ -27,16 +27,18 @@ if ~exist('ScriptCall', 'var')
     hArray = GenArray(sysPara, hAntennaElement);    %% Gen. array
 end
 [waveformArray, waveformSignal, steeringVector] = GenSignal(sysPara, hArray);       %% Gen. signal
+waveformArrayChannel = ChannelImplementation(sysPara, waveformArray);
 waveformInt = GenInterference(sysPara, hArray); %% Gen. interference
+waveformIntChannel = ChannelImplementation(sysPara, waveformInt);
 waveformNoise = GenNoise(sysPara, hArray);      %% Gen. noise
 %% Rx
-waveformRx = waveformArray + waveformInt + waveformNoise;           %% Rx waveform
+waveformRx = waveformArrayChannel + waveformIntChannel + waveformNoise;           %% Rx waveform
 if sysPara.FlagAnalyzeWaveform
-    [snrSingle, berSingle, evmSingle] = AnalyzeWaveform(sysPara, waveformRx(:,1)*conj(steeringVector(1)), waveformArray(:,1)*conj(steeringVector(1)), 10000);  %% analze single antenna result. cal SNR BER EVM etc.
+    [snrSingle, berSingle, evmSingle] = AnalyzeWaveform(sysPara, waveformRx(:,1)*conj(steeringVector(1)), waveformArrayChannel(:,1)*conj(steeringVector(1)), 10000);  %% analze single antenna result. cal SNR BER EVM etc.
 end
 %% Beamforming
 if sysPara.FlagBeamforming
-    weight = GenWeight(sysPara, hArray, waveformRx, waveformSignal);             %% Gen. Beamforming weight
+    [weight, errVector] = GenWeight(sysPara, hArray, waveformRx, waveformSignal);             %% Gen. Beamforming weight
     waveformBeamform = RxBeamforming(sysPara, waveformRx, weight);               %% Beamforming
 end
 %% analyze Beamforming

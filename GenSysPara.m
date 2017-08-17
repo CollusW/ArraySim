@@ -37,7 +37,7 @@ sysPara.ArrayType = 'Conformal';      % string. Array type. valid value = {'Conf
 sysPara.NumElements = 24;       % interger scaler. number of antenna elements
 sysPara.NumChannel = 4;         % interger scaler. number of used channels
 sysPara.Radius = 0.162;         % double scaler. radius of UCA array, in meter. e.g. 3rd Gen = 0.162;
-sysPara.StvIncludeElementResponse = false; % boolen scaler. Include individual element response in the calculation of steering vector
+sysPara.StvIncludeElementResponse = true; % boolen scaler. Include individual element response in the calculation of steering vector when generating the received waveforms from channels.
                                           % If this property is true, the steering vector includes the individual element responses.
                                           % If this property is false, the computation of the steering vector assumes the elements are isotropic.
 
@@ -49,6 +49,11 @@ sysPara.TargetAngle = [[-10; 0], [+10;0]];      % double 2xN matrix. incoming wa
                                                 % N<=NumTarget is the number of targets. if N < NumTarget, use the first NumTarget columns as targets. 
 sysPara.TargetPower = [0; 0];                % double vector. target relative power above 1W in dB.
 sysPara.SymbolRate = sysPara.SampleRate;      % double scaler. symbol rate
+
+% Channel Implementation
+sysPara.SwitchChannelImplementation = false;     % boolen scaler. true = enable channel implementation; false = disable channel implementation.
+sysPara.ChannelAmpliErr = (rand(sysPara.NumChannel, 1)*2 - 1)*5 + 0;       % double Mx1 vector. channel amplitude vector. unit in dB. M is number of channel.
+sysPara.ChannelPhaseErr = (rand(sysPara.NumChannel, 1)*2 - 1)*10 + 0;      % double Mx1 vector. channel phase vector. unit in degree . M is number of channel.
 
 % Interfence parameter
 sysPara.SwitchInterence = true;    % boolen scaler. true = enable interference; false = disable interference.
@@ -83,6 +88,9 @@ sysPara.NumWeightsQuantizationBits = 0; % 1x1 integer. Number of phase shifter q
                                         % Specify the number of bits as a non-negative integer. A value of zero indicates that no quantization is performed.
 
 % DOA estimation Parameters
+sysPara.DOAIncludeElementResponse = false; % boolen scaler. Include individual element response in the calculation of DOA
+                                           % If this property is true, the calculation of DOA includes the individual element responses.
+                                           % If this property is false, the calculation of DOA assumes the elements are isotropic.
 sysPara.DoaEstimator = 'ToolboxMusicEstimator2D';     % string. DOA estimator type. valid value = {'ToolboxMusicEstimator2D', 'CBF', 'MUSIC', 'AntiInterMUSIC'}
 													  % 'ToolboxMusicEstimator2D' = using system toolbox for music estimator.
 												      % 'CBF' = Conventional Beamforming DOA

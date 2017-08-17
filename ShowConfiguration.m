@@ -45,6 +45,21 @@ for idxTarget = 1:sysPara.NumTarget
 end
 fprintf('\tSymbol rate: %.6fMSPS\n',sysPara.SymbolRate/1e6);
 
+fprintf('Channel implementation parameter:\n');
+if sysPara.SwitchChannelImplementation
+    fprintf('\tSwitch of channel implementation: Enable\n');
+else
+    fprintf('\tSwitch of channel implementation: Disable\n');
+end
+fprintf('\tChannel amplitude error:\n');
+for idxChannel = 1:sysPara.NumChannel
+    fprintf('\t\tChannel #%2d:%+7.2f dB\n',idxChannel, sysPara.ChannelAmpliErr(idxChannel));
+end
+fprintf('\tChannel phase error:\n');
+for idxChannel = 1:sysPara.NumChannel
+    fprintf('\t\tChannel #%2d:%+7.2f degree\n',idxChannel, sysPara.ChannelPhaseErr(idxChannel));
+end
+
 fprintf('Interfence parameter:\n');
 if sysPara.SwitchInterence
     fprintf('\tSwitch of interfence: Enable\n');
@@ -81,6 +96,7 @@ fprintf('\tWeights normalization: %s\n',sysPara.WeightsNormalization);
 fprintf('\tNumber of bits for weights quantization (0=No quantization): %d\n',sysPara.NumWeightsQuantizationBits);
 
 fprintf('Direction of Arrival Estimation:\n');
+fprintf('\tDOA calculation include element response: %d\n', sysPara.DOAIncludeElementResponse);
 fprintf('\tDOA Estimator: %s\n',sysPara.DoaEstimator);
 fprintf('\tAzimuth scan angles in degree:');
 fprintf('\t[%.2f : %.2f : %.2f]\n', sysPara.AzimuthScanAngles(1), sysPara.AzimuthScanAngles(2)-sysPara.AzimuthScanAngles(1), sysPara.AzimuthScanAngles(end)); 
