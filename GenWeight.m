@@ -24,7 +24,8 @@ function [ weight, errVector] = GenWeight(sysPara, hArray, waveformRx, waveformP
 %  * @remark   { revision history: V1.1, 2017.07.12. Wayne Zhang, add lms method }
 %  * @remark   { revision history: V1.1, 2017.07.12. Collus Wang, 1.steering vector calculation can include element response. StvIncludeElementResponse; 2. add DiagonalLoadingFactor for mvdr}
 %  * @remark   { revision history: V1.2, 2017.07.14. Wayne Zhang, lms method add break }
-%  * @remark   { revision history: V1.2, 2017.07.28. Wayne Zhang, modify lms variable step lenght strategy }
+%  * @remark   { revision history: V1.3, 2017.07.28. Wayne Zhang, modify lms variable step lenght strategy }
+%  * @remark   { revision history: V1.4, 2017.09.21. Collus Wang, add method 2 for MRC (commented). }
 %  */
 
 %% Get used field
@@ -57,19 +58,24 @@ switch lower(BeamformerType)
         [~, weight] = step(hBeamformer,waveformRx);
         errVector = abs(waveformPilot(idxRS,:).' - weight'*waveformRx(idxRS,:).').';
     case 'mrc'
+        % method 1: use MRC system object. This cannot include element response
         hBeamformer = phased.PhaseShiftBeamformer('SensorArray',hArray,...
             'Direction',TargetAngle,...
             'OperatingFrequency',FreqCenter,...
             'WeightsOutputPort', true);
         [~, weight] = step(hBeamformer,waveformRx);
+%         % method 2: use steering vector. This may include element response
+%         hSteeringVector = phased.SteeringVector('SensorArray',hArray, ...
+%             'IncludeElementResponse', StvIncludeElementResponse);
+%         weight = step(hSteeringVector, FreqCenter, TargetAngle)/NumChannel;
         errVector = abs(waveformPilot(idxRS,:).' - weight'*waveformRx(idxRS,:).').';
     case 'lcmv'
         % get used field.
         AngleToleranceAZ = sysPara.LcmvPara.AngleToleranceAZ;
+        FlagSuppressInterference = sysPara.LcmvPara.FlagSuppressInterference;
         hBeamformer = phased.LCMVBeamformer('WeightsOutputPort',true);
         hSteeringVector = phased.SteeringVector('SensorArray',hArray, ...
             'IncludeElementResponse', StvIncludeElementResponse);
-        FlagSuppressInterference = false;
         weight = zeros(NumChannel, NumTarget);
         for idxTarget = 1:NumTarget
             if AngleToleranceAZ == 0
@@ -172,7 +178,7 @@ switch lower(WeightsNormalization)
         end
         weight = weight*diag(1./normWeight);
     case 'minquantizationerror'
-        weight = weight/max(abs(weight));
+        weight = weight/max(abs(weight)+eps);
     case 'bypass'
         weight = weight;
     otherwise

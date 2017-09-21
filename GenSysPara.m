@@ -14,7 +14,8 @@ function [ sysPara] = GenSysPara()
 %  *  @copyright Collus Wang all rights reserved.
 %  * @remark   { revision history: V1.0, 2017.05.25. Collus Wang,  first draft }
 %  * @remark   { revision history: V1.1, 2017.05.25. Collus Wang,  support multiple targets and interference. use the first NumTarget/NumInterference as valid input. }
-%  * @remark   { revision history: V1.1, 2017.05.25. Collus Wang, 1.steering vector calculation can include element response. StvIncludeElementResponse; 2. add DiagonalLoadingFactor for mvdr}
+%  * @remark   { revision history: V1.2, 2017.05.25. Collus Wang, 1.steering vector calculation can include element response. StvIncludeElementResponse; 2. add DiagonalLoadingFactor for mvdr}
+%  * @remark   { revision history: V1.3, 2017.09.21. Collus Wang, add flag: sysPara.LcmvPara.FlagSuppressInterference: swith flag of generating interference suppression weight.}
 %  */
 
 %% system parameter settings
@@ -75,6 +76,7 @@ sysPara.SNR = 30;                   % double scaler. SNR, in dB, in-channel SNR.
 sysPara.BeamformerType = 'MMSE';        % string. beamformer type. valid value = {'MVDR', 'LCMV', 'MRC', 'MMSE'}
 % beamformer para.
 sysPara.LcmvPara.AngleToleranceAZ = 15; % double scaler. The angle (in degree) tolerance for LCVM constraints. The desired azimuth angle is set to [TargetAngle, TargetAngle-AngleToleranceAZ, TargetAngle+AngleToleranceAZ] with response of [1;1;1]
+sysPara.LcmvPara.FlagSuppressInterference = false;  % boolen scaler. swith flag of generating interference suppression weight.
 sysPara.MvdrPara.DiagonalLoadingFactor = 0; % double scaler. Specify the diagonal loading factor as a positive scalar. Diagonal loading is a technique used to achieve robust beamforming performance, especially when the sample support is small.
 
 % WeightsNormalization
@@ -84,7 +86,7 @@ sysPara.WeightsNormalization = 'Bypass';% string. valid value = {'Distortionless
                                         % If you set this property value to 'MinQuantizationError', the weight are normalized by max(abs(weight)) so that quantization error is minimized.
                                         % If you set this property value to 'Bypass', the weight normalization process is skipped.
 % NumWeightsQuantizationBits
-sysPara.NumWeightsQuantizationBits = 0; % 1x1 integer. Number of phase shifter quantization bits. The number of bits used to quantize beamformer weights. 
+sysPara.NumWeightsQuantizationBits = 0; % 1x1 integer. Number of phase shifter quantization bits, including sign bit. The number of bits used to quantize beamformer weights. 
                                         % Specify the number of bits as a non-negative integer. A value of zero indicates that no quantization is performed.
 
 % DOA estimation Parameters
