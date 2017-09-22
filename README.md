@@ -12,7 +12,8 @@ tested on Matlab version 2016a or later (2017a may have warnings but work.) with
 ## File descriptions ##
 
 1. mainArraySimRxBF.m is the main entry file.
-2. Result folder include multi-antenna performance simulation result.
+2. Result folder include multi-antenna performance simulation result and the generated C-file for fixed weights.
+3. Toolkits folder stores some useful tools that relies on the main algorithms.
 
 ## Simulation result ##
 
@@ -34,3 +35,6 @@ MMSE, LMS algorithm adaptive anti-interference (6dB similarity between signal an
 ### Channel Error ###
 1. CBF, MUSIC, Anti-MUSIC algorithm performance (unbiasedness, robustness) under different amplitude error (0:1:10dB), random azimuth within a certain range (-30:3:30 degree) and fixed SNR (20dB).
 2. CBF, MUSIC, Anti-MUSIC algorithm performance (unbiasedness, robustness) under different phase error (0:0.5:5 degree), random azimuth within a certain range (-30:3:30 degree) and fixed SNR (20dB).
+
+### WeightGenerationForC ###
+The generated C-files for fixed weights are stored here.
