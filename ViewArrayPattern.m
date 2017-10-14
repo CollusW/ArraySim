@@ -1,4 +1,4 @@
-function [  ] = ViewArrayPattern( hArray, FreqCenter , ELofAZCut, AZofELCut, weight, figureStartNum )
+function [ PATAZ, PATEL ] = ViewArrayPattern( hArray, FreqCenter , ELofAZCut, AZofELCut, weight, figureStartNum )
 % view Array Pattern
 % input: hArray, handle of Antenna Array
 % FreqCenter: 1x1 doulbe, center frequency
@@ -6,9 +6,18 @@ function [  ] = ViewArrayPattern( hArray, FreqCenter , ELofAZCut, AZofELCut, wei
 % AZofELCut: 1x1 double, azimuth angle of the elevation cut view
 % weight: Nx1 colum vector, complex, weight of the array, N should be equal
 %           to the number of antenna elements in the array
+% output: PATAZ, 1x1 struct of AZ pattern, which includes the following fields:
+%			 PAT, the array pattern in PAT. 
+%			 AZ_ANG, contains the coordinate values corresponding to the rows of PAT. 
+%			 EL_ANG, contains the coordinate values corresponding to the columns of PAT.
+% 		  PATEL, 1x1 struct of EL pattern, which includes the following fields:
+%			 PAT, the array pattern in PAT. 
+%			 AZ_ANG, contains the coordinate values corresponding to the rows of PAT. 
+%			 EL_ANG, contains the coordinate values corresponding to the columns of PAT.
 % 2016-04-16 V0.1 Collus Wang
 % 2017-07-05 V1.0 Collus Wang, add pattern normalize = false.
 % 2017-07-08 V1.1 Collus Wang, add pattern type switch.
+% 2017-10-14 V1.2 Collus Wang, export pattern.
 
 % Flags and Switches
 SwitchPattern = 'powerdb';    % control the AZ and EL cut pattern type {'directivity' | 'powerdb'}
@@ -62,6 +71,9 @@ xlabel('Azimuth (degree)')
 ylabel('Normalized Power (dB)')
 legend('Norm. Power', '-3dB', 'Location', 'Best')
 grid on
+PATAZ.PAT = PAT;
+PATAZ.AZ_ANG = AZ_ANG;
+PATAZ.EL_ANG = EL_ANG;
 
 % Array EL cut
 figure(figureStartNum+30)
@@ -103,5 +115,9 @@ xlabel('Elevation (degree)')
 ylabel('Normalized Power (dB)')
 legend('Norm. Power', '-3dB', 'Location', 'Best')
 grid on
+PATEL.PAT = PAT;
+PATEL.AZ_ANG = AZ_ANG;
+PATEL.EL_ANG = EL_ANG;
+
 
 end

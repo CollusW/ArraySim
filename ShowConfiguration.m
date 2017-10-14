@@ -12,6 +12,7 @@ function [ ] = ShowConfiguration( sysPara)
 %  *  @date       2017.06.06.
 %  *  @copyright Collus Wang all rights reserved.
 %  * @remark   { revision history: V1.0, 2017.06.06. Collus Wang,  first draft }
+%  * @remark   { revision history: V1.1, 2017.10.14. Collus Wang,  show channel amplitude/phase error only if channel implementation option is enabled. }
 %  */
 
 fprintf('\n------------Configuration Info.----------------\n')
@@ -48,16 +49,16 @@ fprintf('\tSymbol rate: %.6fMSPS\n',sysPara.SymbolRate/1e6);
 fprintf('Channel implementation parameter:\n');
 if sysPara.SwitchChannelImplementation
     fprintf('\tSwitch of channel implementation: Enable\n');
+    fprintf('\tChannel amplitude error:\n');
+    for idxChannel = 1:sysPara.NumChannel
+        fprintf('\t\tChannel #%2d:%+7.2f dB\n',idxChannel, sysPara.ChannelAmpliErr(idxChannel));
+    end
+    fprintf('\tChannel phase error:\n');
+    for idxChannel = 1:sysPara.NumChannel
+        fprintf('\t\tChannel #%2d:%+7.2f degree\n',idxChannel, sysPara.ChannelPhaseErr(idxChannel));
+    end
 else
     fprintf('\tSwitch of channel implementation: Disable\n');
-end
-fprintf('\tChannel amplitude error:\n');
-for idxChannel = 1:sysPara.NumChannel
-    fprintf('\t\tChannel #%2d:%+7.2f dB\n',idxChannel, sysPara.ChannelAmpliErr(idxChannel));
-end
-fprintf('\tChannel phase error:\n');
-for idxChannel = 1:sysPara.NumChannel
-    fprintf('\t\tChannel #%2d:%+7.2f degree\n',idxChannel, sysPara.ChannelPhaseErr(idxChannel));
 end
 
 fprintf('Interfence parameter:\n');
