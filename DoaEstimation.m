@@ -24,7 +24,8 @@ function [doa, spacialSpectrum] = DoaEstimation(sysPara, hArray, waveformRx, wav
 %  *  @copyright Collus Wang all rights reserved.
 %  * @remark   { revision history: V1.0, 2017.05.25. Collus Wang,  first draft }
 %  * @remark   { revision history: V1.1, 2017.07.12. Collus Wang,  change output parameter spacialSpectrum from 2D to 3D. }
-%  * @remark   { revision history: V1.1, 2017.07.19. Wayne Zang,  differentiate common MUSIC and anti-interference MUSIC algorithm. }
+%  * @remark   { revision history: V1.2, 2017.07.19. Wayne Zang,  differentiate common MUSIC and anti-interference MUSIC algorithm. }
+%  * @remark   { revision history: V1.3, 2017.10.18. Wayne Zang,  MUSIC method peak search optimization and support DoaEstiMaxNumSig feature. }
 %  */
 
 %% Get used field
@@ -35,6 +36,7 @@ ElevationScanAngles = sysPara.ElevationScanAngles;
 NumTarget = sysPara.NumTarget;
 LenWaveform = sysPara.LenWaveform;
 DOAIncludeElementResponse = sysPara.DOAIncludeElementResponse;
+DoaEstiMaxNumSig = sysPara.DoaEstiMaxNumSig;
 
 %% Flags
 GlobalDebugPlot = sysPara.GlobalDebugPlot;
@@ -45,7 +47,7 @@ figureStartNum = 6000;
 switch lower(DoaEstimator)
     case 'toolboxmusicestimator2d'
         spacialSpectrum = zeros(length(ElevationScanAngles), length(AzimuthScanAngles), 1); % this method does not distinguish targets, therefore the third dimension is 1.
-        LenRS = 256;  % RS length
+        LenRS = 512;  % RS length
         if LenWaveform < LenRS, error('Waveform length < RS length!'); end  % check length
         idxRS = (1:LenRS) + 0; % RS indices
         hDoaEstimator = phased.BeamscanEstimator2D('SensorArray',hArray,...
@@ -78,7 +80,7 @@ switch lower(DoaEstimator)
         end
     case 'cbf'
         spacialSpectrum = zeros(length(ElevationScanAngles), length(AzimuthScanAngles), NumTarget);
-        LenRS = 256;  % RS length
+        LenRS = 512;  % RS length
         if LenWaveform < LenRS, error('Waveform length < RS length!'); end  % check length
         idxRS = (1:LenRS) + 0; % RS indices
         Pxs = waveformRx(idxRS,:).'*conj(waveformPilot(idxRS,:))/LenRS;   % cross-correlation vector
@@ -118,7 +120,7 @@ switch lower(DoaEstimator)
         end
     case 'music'
         spacialSpectrum = zeros(length(ElevationScanAngles), length(AzimuthScanAngles), NumTarget);
-        LenRS = 256;  % RS length
+        LenRS = 512;  % RS length
         if LenWaveform < LenRS, error('Waveform length < RS length!'); end  % check length
         idxRS = (1:LenRS) + 0; % RS indices
         hSteeringVector = phased.SteeringVector('SensorArray', hArray,...
@@ -131,30 +133,71 @@ switch lower(DoaEstimator)
         steeringVector = step(hSteeringVector, FreqCenter, angleScanVector.');
         steeringVector = steeringVector*diag(rms(steeringVector).^-1);
         Rxx = waveformRx(idxRS,:).'*conj(waveformRx(idxRS,:))/LenRS;
-        [eigV, eigD] = eig(Rxx);
-        eigD = diag(eigD);
-        [~, idxMaxEig] = sort(eigD, 'descend');
-        unitI = eye(size(Rxx, 1));
-        unitI(idxMaxEig(1:NumTarget), idxMaxEig(1:NumTarget)) = 0;
-        noiseSpace = eigV*unitI*eigV';
-        Pmusic = 1./abs(sum((steeringVector'*noiseSpace.*steeringVector.').').');
-        [~, idxPeak] = findpeaks(Pmusic);
-        [~, idxSortPeak] = sort(Pmusic(idxPeak), 'descend');
-        doa = angleScanVector(idxPeak(idxSortPeak(1:NumTarget)), :).';
+        % eigen value decomposition
+        [eigV, eigD] = eig(Rxx, 'vector');
+        [~, idx] = sort(eigD, 'ascend');
+        eigD = eigD(idx);
+        eigV = eigV(:,idx);
+        % find out the Number of signal.
+        SigThd = 0.8*sum(eigD);        % assume the signals power should exceed certurn percentage of the total power.
+        NumCh = length(eigD);
+        pwrSum = 0;
+        NumSig = NumCh-1;	% at least one column for noise space
+        for idx = 1:NumCh-1 
+            pwrSum = pwrSum + eigD(NumCh-idx+1);
+            if pwrSum>SigThd
+                NumSig = idx;
+                break;
+            end
+        end
+        % noise space construction
+        Vnoise = eigV(:, 1:NumCh-NumSig );
+        Rnn = Vnoise*Vnoise'; 
+        Pmusic = 1./abs(sum((steeringVector'*Rnn.*steeringVector.').').');      
+        
+        if DoaEstiMaxNumSig ==1
+            [~,idxDoa] = max(Pmusic);
+        else
+            processSpectrum = Pmusic.'/max(Pmusic);
+            processSpectrum = pow2db(processSpectrum);
+            processSpectrumExpand = [processSpectrum(2), processSpectrum, processSpectrum(end-1)]; % expand the spectrum so that findpeaks can return peaks at the boundary.
+            % peak para.
+            minPeakHeight = -15;
+            minPeakProminence = .5;
+            minPeakDistance = 1/(AzimuthScanAngles(2)-AzimuthScanAngles(1)); % degrees / reselution
+            % find peaks
+            [~, idxDoa] = findpeaks(processSpectrumExpand, 'NPeaks', min([DoaEstiMaxNumSig,NumSig]), 'MinPeakProminence', minPeakProminence, 'MinPeakHeight', minPeakHeight, 'MinPeakDistance', minPeakDistance);
+            idxDoa = idxDoa - 1;    % index of processSpectrum and processSpectrumExpand differs 1 point
+            % if max is not in the peak list, add max
+            [~,idxMax] = max(processSpectrum);
+            if ~sum(idxDoa == idxMax)
+                idxDoa = [idxMax, idxDoa];
+            end
+        end
+        doaSelect = angleScanVector(idxDoa, :).';
+        % make sure number of DOAs is the same as NumberTarget so that it can be compared in main.
+        if NumTarget > size(doaSelect, 2)
+            doa = [doaSelect,repmat([NaN;NaN], 1, NumTarget - size(doaSelect, 2))];
+        else
+            doa = doaSelect(:,1:NumTarget);
+        end
         spacialSpectrum(:,:,1) = Pmusic;
+        
         if FlagDebugPlot
             TargetAngle = sysPara.TargetAngle;
             figure(figureStartNum);
             hold off;
             plot(AzimuthScanAngles, mag2db(spacialSpectrum(1,:,1)), 'b-');
             hold on;
+            for idxSig = 1:size(doaSelect, 2)
+                plot([doaSelect(1,idxSig), doaSelect(1,idxSig)],...
+                    [min(mag2db(spacialSpectrum(1,:,1))),...
+                    mag2db(spacialSpectrum(1,(doaSelect(1,idxSig) - AzimuthScanAngles(1))/(AzimuthScanAngles(2) - AzimuthScanAngles(1)) + 1,1))], 'bo-');
+            end
             for idxTarget = 1:NumTarget
                 plot([TargetAngle(1,idxTarget), TargetAngle(1,idxTarget)],...
                     [min(mag2db(spacialSpectrum(1,:,1))),...
                     mag2db(spacialSpectrum(1,(TargetAngle(1,idxTarget) - AzimuthScanAngles(1))/(AzimuthScanAngles(2) - AzimuthScanAngles(1)) + 1,1))], 'b-');
-                plot([doa(1,idxTarget), doa(1,idxTarget)],...
-                    [min(mag2db(spacialSpectrum(1,:,1))),...
-                    mag2db(spacialSpectrum(1,(doa(1,idxTarget) - AzimuthScanAngles(1))/(AzimuthScanAngles(2) - AzimuthScanAngles(1)) + 1,1))], 'bo-');
                 grid on;
                 axis([min(AzimuthScanAngles), max(AzimuthScanAngles), min(mag2db(spacialSpectrum(1,:,1))), max(mag2db(spacialSpectrum(1,:,1)))]);
                 title(['Target ', num2str(idxTarget), ': MUSIC Spatial Spectrum at Elevation 0 Degree']);
@@ -165,7 +208,7 @@ switch lower(DoaEstimator)
         end
     case 'antiintermusic'
         spacialSpectrum = zeros(length(ElevationScanAngles), length(AzimuthScanAngles), NumTarget);
-        LenRS = 256;  % RS length
+        LenRS = 512;  % RS length
         if LenWaveform < LenRS, error('Waveform length < RS length!'); end  % check length
         idxRS = (1:LenRS) + 0; % RS indices
         hSteeringVector = phased.SteeringVector('SensorArray', hArray,...

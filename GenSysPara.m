@@ -16,6 +16,7 @@ function [ sysPara] = GenSysPara()
 %  * @remark   { revision history: V1.1, 2017.05.25. Collus Wang,  support multiple targets and interference. use the first NumTarget/NumInterference as valid input. }
 %  * @remark   { revision history: V1.2, 2017.05.25. Collus Wang, 1.steering vector calculation can include element response. StvIncludeElementResponse; 2. add DiagonalLoadingFactor for mvdr}
 %  * @remark   { revision history: V1.3, 2017.09.21. Collus Wang, add flag: sysPara.LcmvPara.FlagSuppressInterference: swith flag of generating interference suppression weight.}
+%  * @remark   { revision history: V1.4, 2017.10.18. Collus Wang and Wayne Zhang, 1. add TargetSigType: 'CustomPilot'. 2. add paramer DoaEstiMaxNumSig: Maximum number of signal(s) for DOA estimation output. 3. default SwitchInterence to false. }
 %  */
 
 %% system parameter settings
@@ -57,7 +58,7 @@ sysPara.ChannelAmpliErr = (rand(sysPara.NumChannel, 1)*2 - 1)*5 + 0;       % dou
 sysPara.ChannelPhaseErr = (rand(sysPara.NumChannel, 1)*2 - 1)*10 + 0;      % double Mx1 vector. channel phase vector. unit in degree . M is number of channel.
 
 % Interfence parameter
-sysPara.SwitchInterence = true;    % boolen scaler. true = enable interference; false = disable interference.
+sysPara.SwitchInterence = false;    % boolen scaler. true = enable interference; false = disable interference.
 sysPara.InterferenceType = 'Sine';  % string. interferece type, valid value = {'Sine'}
 sysPara.NumInterference = 2;        % interger scaler. number of interference
 sysPara.InterferenceFreq = [10e6; 20e6];    % Nx1 double column vector. interfence frequency at baseband, in Hz. N is the number of interference.
@@ -98,6 +99,7 @@ sysPara.DoaEstimator = 'ToolboxMusicEstimator2D';     % string. DOA estimator ty
 												      % 'CBF' = Conventional Beamforming DOA
 													  % 'MUSIC' = MUSIC without interference suppression feature.
 													  % 'AntiInterMUSIC' = MUSIC with interfernece suppression feature.
+sysPara.DoaEstiMaxNumSig = 2;                         % integer scalar. Maximum number of signal(s) for DOA estimation output. 
 sysPara.AzimuthScanAngles = [-30:0.5:30].';           % double vector. Azimuth scan angles, Specify the azimuth scan angles (in degrees) as a real vector. 
                                                       % The angles must be between ¨C180 and 180, inclusive. You must specify the angles in ascending order.
 sysPara.ElevationScanAngles = 0;                    % double vector. Elevation scan angles. Specify the elevation scan angles (in degrees) as a real vector or scalar. 

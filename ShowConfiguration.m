@@ -13,6 +13,7 @@ function [ ] = ShowConfiguration( sysPara)
 %  *  @copyright Collus Wang all rights reserved.
 %  * @remark   { revision history: V1.0, 2017.06.06. Collus Wang,  first draft }
 %  * @remark   { revision history: V1.1, 2017.10.14. Collus Wang,  show channel amplitude/phase error only if channel implementation option is enabled. }
+%  * @remark   { revision history: V1.1, 2017.10.18. Wayne Zhang,  show DOA Estimation maximum number of signal(s). }
 %  */
 
 fprintf('\n------------Configuration Info.----------------\n')
@@ -99,6 +100,7 @@ fprintf('\tNumber of bits for weights quantization (0=No quantization): %d\n',sy
 fprintf('Direction of Arrival Estimation:\n');
 fprintf('\tDOA calculation include element response: %d\n', sysPara.DOAIncludeElementResponse);
 fprintf('\tDOA Estimator: %s\n',sysPara.DoaEstimator);
+fprintf('\tDOA Estimation maximum number of signal(s): %d\n',sysPara.DoaEstiMaxNumSig);
 fprintf('\tAzimuth scan angles in degree:');
 fprintf('\t[%.2f : %.2f : %.2f]\n', sysPara.AzimuthScanAngles(1), sysPara.AzimuthScanAngles(2)-sysPara.AzimuthScanAngles(1), sysPara.AzimuthScanAngles(end)); 
 fprintf('\tElevation scan angles in degree:')

@@ -3,17 +3,20 @@
 This project simulates the multi-antenna system on Matlab.
 
 Main feature includes:
-1. RX beamforming.
+
+1. RX beamforming. 
 2. DOA estimation.
 
 ## System requirement ##
-tested on Matlab version 2016a or later (2017a may have warnings but work.) with PhasedArray toolbox and Communiation toolbox.
+tested on Matlab version 2016a or later (2017a may have warnings but work.) with PhasedArray toolbox and Communication toolbox.
 
-## File descriptions ##
+## File/Folder descriptions ##
 
 1. mainArraySimRxBF.m is the main entry file.
 2. Result folder include multi-antenna performance simulation result and the generated C-file for fixed weights.
 3. Toolkits folder stores some useful tools that relies on the main algorithms.
+4. CodeGen folder stores some specific functions that are further generated into C-code for hardware implementation. Each sub-folder contain one function and its corresponding testing and configuration files.
+
 
 ## Simulation result ##
 

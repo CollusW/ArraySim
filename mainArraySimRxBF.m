@@ -10,6 +10,7 @@
 %  *  @copyright Collus Wang all rights reserved.
 %  *  @remark   { revision history: V1.0 2017.05.25. Collus Wang, first draft }
 %  *  @remark   { revision history: V1.1 2017.06.30. Collus Wang, add ScriptCall feature }
+%  *  @remark   { revision history: V1.2 2017.10.18. Collus Wang, truncate waveformIntChannel and waveformNoise if their size is not equal to waveformArrayChannel. }
 %  */
 
 %% check if this script is called by other script, if not, then clear and defined parameters
@@ -32,7 +33,7 @@ waveformInt = GenInterference(sysPara, hArray); %% Gen. interference
 waveformIntChannel = ChannelImplementation(sysPara, waveformInt);
 waveformNoise = GenNoise(sysPara, hArray);      %% Gen. noise
 %% Rx
-waveformRx = waveformArrayChannel + waveformIntChannel + waveformNoise;           %% Rx waveform
+waveformRx = waveformArrayChannel + waveformIntChannel(1:size(waveformArrayChannel,1),:) + waveformNoise(1:size(waveformArrayChannel,1),:);           %% Rx waveform
 if sysPara.FlagAnalyzeWaveform
     [snrSingle, berSingle, evmSingle] = AnalyzeWaveform(sysPara, waveformRx(:,1)*conj(steeringVector(1)), waveformArrayChannel(:,1)*conj(steeringVector(1)), 10000);  %% analze single antenna result. cal SNR BER EVM etc.
 end
