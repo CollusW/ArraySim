@@ -1,3 +1,7 @@
 
 *.asv
 /Result/SimulationInstructionDocument/~$lti-AntennaSimulationInstructionV1.0.docx
+OGLdpf.log
+/CodeGen/DoaEstimatorMUSICSingal/codegen/mex
+/CodeGen/DoaEstimatorMUSICSingal/codegen/lib
+/CodeGen/DoaEstimatorMUSICSingal/buildInfo.mat

@@ -19,6 +19,7 @@ function [ waveformArray, waveformSignal, steeringVector] = GenSignal(sysPara, h
 %  * @remark   { revision history: V1.1, 2017.06.22. Collus Wang,  support 16QAM and 64QAM }
 %  * @remark   { revision history: V1.2, 2017.07.12. Collus Wang, steering vector calculation can include element response.}
 %  * @remark   { revision history: V1.3, 2017.10.18. Collus Wang and Wayne Zhang, add CustomPilot TargetSigType case.}
+%  * @remark   { revision history: V1.4, 2017.10.20. Wayne Zhang, fix bug in 'custompilot' case: first target should not cirshift.}
 %  */
 
 %% get used field
@@ -69,7 +70,7 @@ switch lower(TargetSigType)
         lenPilotCircShift = lenPilot/8;
         waveformSignal = zeros(lenPilot, NumTarget);
         for idx = 1:NumTarget
-            waveformSignal(:,idx) = circshift(pilotSignal, lenPilotCircShift*idx);
+            waveformSignal(:,idx) = circshift(pilotSignal, lenPilotCircShift*(idx-1));
         end
     otherwise
         error('Unsupported signal type.')

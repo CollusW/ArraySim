@@ -8,17 +8,23 @@
 %  *  @version   1.0
 %  *  @date      2017.10.17
 %  *  @copyright Collus Wang all rights reserved.
-%  * @remark   { revision history: V1.0 2017.08.18. Collus Wang, first draft }
+%  * @remark   { revision history: V1.0 2017.10.18. Collus Wang, first draft }
+%  * @remark   { revision history: V1.1 2017.10.20. Collus Wang, 1. make sure the working folder is current m-file folder. 2. check mex result 3. use anitInterMuisc instead of Music.}
 %  */
 
 %% clear
 clear all %#ok<CLALL>
 close all
 clc
-CurrentDirectory = cd();
+% make sure the working folder is current m-file folder.
+filePath= mfilename('fullpath');
+idx=strfind(filePath,'\');
+CurrentDirectory=filePath(1:idx(end));
+cd(CurrentDirectory)
 addpath(CurrentDirectory)
 cd('..\..')
 ScriptCall = true;
+FlagCompareMex = true;
 
 testTargetAngleRange = [(-20:20); zeros(1,41)];
 for idxAngle = 1:size(testTargetAngleRange,2)
@@ -37,7 +43,7 @@ for idxAngle = 1:size(testTargetAngleRange,2)
     sysPara.SNR = 20;                   % double scaler. SNR, in dB, in-channel SNR. Valid only when SwitchAWGN = true.
     
     sysPara.SwitchInterence = false;    % boolen scaler. true = enable interference; false = disable interference.
-    sysPara.DoaEstimator = 'MUSIC';     % string. DOA estimator type. valid value = {'ToolboxMusicEstimator2D', 'CBF', 'MUSIC', 'AntiInterMUSIC'}
+    sysPara.DoaEstimator = 'AntiInterMUSIC';     % string. DOA estimator type. valid value = {'ToolboxMusicEstimator2D', 'CBF', 'MUSIC', 'AntiInterMUSIC'}
     % 'ToolboxMusicEstimator2D' = using system toolbox for music estimator.
     % 'CBF' = Conventional Beamforming DOA
     % 'MUSIC' = MUSIC without interference suppression feature.
@@ -54,11 +60,13 @@ for idxAngle = 1:size(testTargetAngleRange,2)
     AzimuthScanAngles = (-30:0.5:30).';
     [~, doaImplement]  = DoaEstimatorMUSICSignalImplement(recStvPartition, waveformRx, AzimuthScanAngles, 1);
     if abs(doaImplement - doa(1,1)) > 0.5
-        wanrning('Implementation is inconsistent with simulation!')
-        pause
+        error('Implementation is inconsistent with simulation!')
     end
     
-    
+    [~, doaImplement]  = DoaEstimatorMUSICSignalImplement_mex(recStvPartition, waveformRx, AzimuthScanAngles, 1);
+    if abs(doaImplement - doa(1,1)) > 0.5
+        error('Mex Implementation is inconsistent with simulation!')
+    end
 end
 
 cd(CurrentDirectory);
