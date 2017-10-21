@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.coder" plugin-version="R2016a">
-  <configuration build-checksum="1491305952" file="E:\Work\Matlab\SandboxArraySimGit\CodeGen\DoaEstimatorMUSICSingal\DoaEstimatorMUSICSignalImplement.prj" location="E:\Work\Matlab\SandboxArraySimGit\CodeGen\DoaEstimatorMUSICSingal" name="DoaEstimatorMUSICSignalImplement" preferred-package-location="E:\Work\Matlab\SandboxArraySimGit\CodeGen\DoaEstimatorMUSICSingal\codegen" preferred-package-type="package.type.zip.flat" target="target.unifiedcoder" target-name="MATLAB Coder">
+  <configuration build-checksum="104303774" file="E:\Work\Matlab\SandboxArraySimGit\CodeGen\DoaEstimatorMUSICSingal\DoaEstimatorMUSICSignalImplement.prj" location="E:\Work\Matlab\SandboxArraySimGit\CodeGen\DoaEstimatorMUSICSingal" name="DoaEstimatorMUSICSignalImplement" preferred-package-location="E:\Work\Matlab\SandboxArraySimGit\CodeGen\DoaEstimatorMUSICSingal\codegen" preferred-package-type="package.type.zip" target="target.unifiedcoder" target-name="MATLAB Coder">
     <profile key="profile.mex">
       <param.BuiltInstrumentedMex>false</param.BuiltInstrumentedMex>
       <param.RanInstrumentedMex>false</param.RanInstrumentedMex>
@@ -17,14 +17,13 @@
       <param.DynamicMemoryAllocation>option.DynamicMemoryAllocation.Threshold</param.DynamicMemoryAllocation>
       <param.DynamicMemoryAllocationThreshold>65536</param.DynamicMemoryAllocationThreshold>
       <param.StackUsageMax>200000</param.StackUsageMax>
-      <param.FilePartitionMethod>option.FilePartitionMethod.MapMFileToCFile</param.FilePartitionMethod>
+      <param.FilePartitionMethod />
       <param.GenerateComments>true</param.GenerateComments>
-      <param.MATLABSourceComments>false</param.MATLABSourceComments>
+      <param.MATLABSourceComments />
       <param.ReservedNameArray />
       <param.EnableDebugging>false</param.EnableDebugging>
       <param.GenerateReport>true</param.GenerateReport>
-      <param.LaunchReport>false</param.LaunchReport>
-      <param.ReportPotentialDifferences>false</param.ReportPotentialDifferences>
+      <param.LaunchReport />
       <param.DefaultTestFile />
       <param.MergeInstrumentationResults>false</param.MergeInstrumentationResults>
       <param.VerificationMode>option.VerificationMode.None</param.VerificationMode>
@@ -39,9 +38,8 @@
       <param.PostCodeGenCommand />
       <param.mex.GenCodeOnly>false</param.mex.GenCodeOnly>
       <param.ConstantFoldingTimeout>40000</param.ConstantFoldingTimeout>
-      <param.CompileTimeRecursionLimit>50</param.CompileTimeRecursionLimit>
-      <param.EnableRuntimeRecursion>true</param.EnableRuntimeRecursion>
-      <param.PreserveVariableNames>option.PreserveVariableNames.None</param.PreserveVariableNames>
+      <param.RecursionLimit>100</param.RecursionLimit>
+      <param.PreserveVariableNames>option.PreserveVariableNames.UserNames</param.PreserveVariableNames>
       <param.TargetLang>option.TargetLang.C</param.TargetLang>
       <param.EchoExpressions>true</param.EchoExpressions>
       <param.InlineThreshold>10</param.InlineThreshold>
@@ -53,9 +51,6 @@
       <param.InitFltsAndDblsToZero>true</param.InitFltsAndDblsToZero>
       <param.ConstantInputs>option.ConstantInputs.CheckValues</param.ConstantInputs>
       <param.EnableCRICodeCoverage>true</param.EnableCRICodeCoverage>
-      <param.EnableJIT>false</param.EnableJIT>
-      <param.EnableJITSilentBailOut>false</param.EnableJITSilentBailOut>
-      <param.CheckForIssuesJIT>true</param.CheckForIssuesJIT>
       <unset>
         <param.BuiltInstrumentedMex />
         <param.RanInstrumentedMex />
@@ -68,7 +63,6 @@
         <param.ExtrinsicCalls />
         <param.IntegrityChecks />
         <param.SaturateOnIntegerOverflow />
-        <param.GlobalDataSyncMethod />
         <param.EnableVariableSizing />
         <param.DynamicMemoryAllocation />
         <param.DynamicMemoryAllocationThreshold />
@@ -80,10 +74,8 @@
         <param.EnableDebugging />
         <param.GenerateReport />
         <param.LaunchReport />
-        <param.ReportPotentialDifferences />
         <param.DefaultTestFile />
         <param.MergeInstrumentationResults />
-        <param.VerificationMode />
         <param.CustomSourceCode />
         <param.CustomHeaderCode />
         <param.CustomInitializer />
@@ -94,8 +86,7 @@
         <param.PostCodeGenCommand />
         <param.mex.GenCodeOnly />
         <param.ConstantFoldingTimeout />
-        <param.CompileTimeRecursionLimit />
-        <param.EnableRuntimeRecursion />
+        <param.RecursionLimit />
         <param.PreserveVariableNames />
         <param.TargetLang />
         <param.EchoExpressions />
@@ -108,9 +99,6 @@
         <param.InitFltsAndDblsToZero />
         <param.ConstantInputs />
         <param.EnableCRICodeCoverage />
-        <param.EnableJIT />
-        <param.EnableJITSilentBailOut />
-        <param.CheckForIssuesJIT />
       </unset>
     </profile>
     <profile key="profile.c">
@@ -156,7 +144,6 @@
       <param.GenerateCodeReplacementReport>false</param.GenerateCodeReplacementReport>
       <param.HighlightPotentialDataTypeIssues>true</param.HighlightPotentialDataTypeIssues>
       <param.LaunchReport>true</param.LaunchReport>
-      <param.ReportPotentialDifferences>true</param.ReportPotentialDifferences>
       <param.SILDebugging>false</param.SILDebugging>
       <param.CodeExecutionProfiling>false</param.CodeExecutionProfiling>
       <param.DefaultTestFile />
@@ -209,8 +196,6 @@
       <param.HardwareSizeDouble.Production>64</param.HardwareSizeDouble.Production>
       <param.HardwareSizeWord.Production>32</param.HardwareSizeWord.Production>
       <param.HardwareSizePointer.Production>32</param.HardwareSizePointer.Production>
-      <param.HardwareSizeSizeT.Production>32</param.HardwareSizeSizeT.Production>
-      <param.HardwareSizePtrDiffT.Production>32</param.HardwareSizePtrDiffT.Production>
       <param.HardwareEndianness.Production>option.HardwareEndianness.Little</param.HardwareEndianness.Production>
       <param.HardwareArithmeticRightShift.Production>true</param.HardwareArithmeticRightShift.Production>
       <param.HardwareLongLongMode.Production>false</param.HardwareLongLongMode.Production>
@@ -230,8 +215,6 @@
       <param.HardwareSizeDouble.Target>64</param.HardwareSizeDouble.Target>
       <param.HardwareSizeWord.Target>32</param.HardwareSizeWord.Target>
       <param.HardwareSizePointer.Target>32</param.HardwareSizePointer.Target>
-      <param.HardwareSizeSizeT.Target>32</param.HardwareSizeSizeT.Target>
-      <param.HardwareSizePtrDiffT.Target>32</param.HardwareSizePtrDiffT.Target>
       <param.HardwareEndianness.Target>option.HardwareEndianness.Little</param.HardwareEndianness.Target>
       <param.HardwareArithmeticRightShift.Target>true</param.HardwareArithmeticRightShift.Target>
       <param.HardwareLongLongMode.Target>false</param.HardwareLongLongMode.Target>
@@ -242,11 +225,10 @@
       <param.IndentStyle>option.IndentStyle.K&amp;R</param.IndentStyle>
       <param.IndentSize>2</param.IndentSize>
       <param.ConstantFoldingTimeout>40000</param.ConstantFoldingTimeout>
-      <param.CompileTimeRecursionLimit>50</param.CompileTimeRecursionLimit>
-      <param.EnableRuntimeRecursion>true</param.EnableRuntimeRecursion>
+      <param.RecursionLimit>100</param.RecursionLimit>
       <param.IncludeTerminateFcn>true</param.IncludeTerminateFcn>
       <param.GenerateExampleMain>option.GenerateExampleMain.GenerateCodeOnly</param.GenerateExampleMain>
-      <param.PreserveVariableNames>option.PreserveVariableNames.None</param.PreserveVariableNames>
+      <param.PreserveVariableNames>option.PreserveVariableNames.UserNames</param.PreserveVariableNames>
       <param.TargetLang>option.TargetLang.C</param.TargetLang>
       <param.CCompilerOptimization>option.CCompilerOptimization.Off</param.CCompilerOptimization>
       <param.CCompilerCustomOptimizations />
@@ -258,7 +240,6 @@
       <param.InlineThreshold>10</param.InlineThreshold>
       <param.InlineThresholdMax>200</param.InlineThresholdMax>
       <param.InlineStackLimit>4000</param.InlineStackLimit>
-      <param.EnableStrengthReduction>false</param.EnableStrengthReduction>
       <param.EnableMemcpy>true</param.EnableMemcpy>
       <param.MemcpyThreshold>64</param.MemcpyThreshold>
       <param.EnableOpenMP>true</param.EnableOpenMP>
@@ -303,7 +284,6 @@
         <param.DefaultTestFile />
         <param.MergeInstrumentationResults />
         <param.RanPilSilVerification />
-        <param.VerificationMode />
         <param.VerificationStatus />
         <param.CustomSourceCode />
         <param.CustomHeaderCode />
@@ -321,40 +301,13 @@
         <param.target.ActiveTarget />
         <param.HWDeviceType.Production />
         <var.instance.enabled.Production />
-        <param.HardwareSizeChar.Production />
-        <param.HardwareSizeShort.Production />
-        <param.HardwareSizeInt.Production />
-        <param.HardwareSizeLongLong.Production />
-        <param.HardwareSizeFloat.Production />
-        <param.HardwareSizeDouble.Production />
-        <param.HardwareSizeWord.Production />
-        <param.HardwareSizePointer.Production />
-        <param.HardwareSizeSizeT.Production />
-        <param.HardwareSizePtrDiffT.Production />
-        <param.HardwareEndianness.Production />
-        <param.HardwareLongLongMode.Production />
-        <param.HardwareAtomicFloatSize.Production />
         <param.HWDeviceType.Target />
         <var.instance.enabled.Target />
-        <param.HardwareSizeChar.Target />
-        <param.HardwareSizeShort.Target />
-        <param.HardwareSizeInt.Target />
-        <param.HardwareSizeLongLong.Target />
-        <param.HardwareSizeFloat.Target />
-        <param.HardwareSizeDouble.Target />
-        <param.HardwareSizeWord.Target />
-        <param.HardwareSizePointer.Target />
-        <param.HardwareSizeSizeT.Target />
-        <param.HardwareSizePtrDiffT.Target />
-        <param.HardwareEndianness.Target />
-        <param.HardwareLongLongMode.Target />
-        <param.HardwareAtomicFloatSize.Target />
         <param.CastingMode />
         <param.IndentStyle />
         <param.IndentSize />
         <param.ConstantFoldingTimeout />
-        <param.CompileTimeRecursionLimit />
-        <param.EnableRuntimeRecursion />
+        <param.RecursionLimit />
         <param.IncludeTerminateFcn />
         <param.GenerateExampleMain />
         <param.PreserveVariableNames />
@@ -369,7 +322,6 @@
         <param.InlineThreshold />
         <param.InlineThresholdMax />
         <param.InlineStackLimit />
-        <param.EnableStrengthReduction />
         <param.EnableMemcpy />
         <param.MemcpyThreshold />
         <param.EnableOpenMP />
@@ -428,7 +380,7 @@
       <param.hdl.ConstantMultiplierOptimization />
       <param.hdl.LoopOptimization />
       <param.GenerateComments>true</param.GenerateComments>
-      <param.MATLABSourceComments>false</param.MATLABSourceComments>
+      <param.MATLABSourceComments />
       <param.hdl.VHDLFileExt />
       <param.hdl.VerilogFileExt />
       <param.hdl.DateComment />
@@ -547,7 +499,6 @@
       <param.hdl.InitializeBlockRAM />
       <param.hdl.RAMArchitecture />
       <param.hdl.PartitionFunctions />
-      <param.hdl.InstantiateFunctions />
       <param.hdl.GenerateMLFcnBlock />
       <param.hdl.GenerateXSGBlock />
       <unset>
@@ -718,7 +669,6 @@
         <param.hdl.InitializeBlockRAM />
         <param.hdl.RAMArchitecture />
         <param.hdl.PartitionFunctions />
-        <param.hdl.InstantiateFunctions />
         <param.hdl.GenerateMLFcnBlock />
         <param.hdl.GenerateXSGBlock />
       </unset>
@@ -729,14 +679,10 @@
       <item>testDoaEstimatorMUSICSignalImplement</item>
     </param.TestSnippets>
     <param.DefaultImportExportVariable>config</param.DefaultImportExportVariable>
-    <param.RowMajor>false</param.RowMajor>
-    <param.HighlightPotentialRowMajorIssues>false</param.HighlightPotentialRowMajorIssues>
-    <param.ExternalFcnMajority>column</param.ExternalFcnMajority>
     <param.UseGlobals>option.UseGlobals.No</param.UseGlobals>
     <param.outputfile>${PROJECT_ROOT}\codegen\lib\DoaEstimatorMUSICSignalImplement\DoaEstimatorMUSICSignalImplement.lib</param.outputfile>
     <param.version>R2012a</param.version>
     <param.HasECoderFeatures>true</param.HasECoderFeatures>
-    <param.HasGpuCoder>true</param.HasGpuCoder>
     <param.mex.mainhtml />
     <param.grt.mainhtml />
     <param.CallGeneratedCodeFromTest>true</param.CallGeneratedCodeFromTest>
@@ -755,13 +701,12 @@
     <var.DismissScreener>true</var.DismissScreener>
     <param.unifiedParamStorage />
     <var.gc.lastOutputRoot>codegen\lib\DoaEstimatorMUSICSignalImplement</var.gc.lastOutputRoot>
-    <var.gc.lastOutputType>C_CODE</var.gc.lastOutputType>
-    <var.gc.preBuildChecksum>2942893431</var.gc.preBuildChecksum>
+    <var.gc.preBuildChecksum>3296195068</var.gc.preBuildChecksum>
     <var.cfi.lastOutputRoot>codegen\mex\DoaEstimatorMUSICSignalImplement</var.cfi.lastOutputRoot>
-    <var.cfi.preBuildChecksum>4022616537</var.cfi.preBuildChecksum>
+    <var.cfi.preBuildChecksum>1962190159</var.cfi.preBuildChecksum>
     <var.lastCfiTestSnippet>testDoaEstimatorMUSICSignalImplement</var.lastCfiTestSnippet>
     <var.outdatedOnRestore>false</var.outdatedOnRestore>
-    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;E:\Work\Matlab\SandboxArraySimGit\CodeGen\DoaEstimatorMUSICSingal\DoaEstimatorMUSICSignalImplement.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;2442857613&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
+    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;E:\Work\Matlab\SandboxArraySimGit\CodeGen\DoaEstimatorMUSICSingal\DoaEstimatorMUSICSignalImplement.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;516499348&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
     <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;E:\Work\Matlab\SandboxArraySimGit\CodeGen\DoaEstimatorMUSICSingal\DoaEstimatorMUSICSignalImplement.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
     <param.forceMexBuild>false</param.forceMexBuild>
     <param.configImportActive>false</param.configImportActive>
@@ -811,22 +756,14 @@
     <param.fpDataRoot />
     <param.fpUserFileChecksum />
     <var.snapshotChecksum />
-    <param.fpLastConvertChecksum />
     <var.functionBlockSid />
     <param.fptSignedness>false</param.fptSignedness>
-    <var.FixedPointAnalysisMode>option.FixedPointAnalysisMode.Sim</var.FixedPointAnalysisMode>
-    <param.FixedPointUseDesignRanges>false</param.FixedPointUseDesignRanges>
     <unset>
-      <param.objective />
       <param.DefaultImportExportVariable />
-      <param.RowMajor />
-      <param.HighlightPotentialRowMajorIssues />
-      <param.ExternalFcnMajority />
       <param.UseGlobals />
       <param.outputfile />
       <param.version />
       <param.HasECoderFeatures />
-      <param.HasGpuCoder />
       <param.mex.mainhtml />
       <param.grt.mainhtml />
       <param.CallGeneratedCodeFromTest />
@@ -843,7 +780,6 @@
       <var.redirectedInputTypeData />
       <param.unifiedParamStorage />
       <var.outdatedOnRestore />
-      <param.forceMexBuild />
       <param.configImportActive />
       <param.mex.outputfile />
       <param.grt.outputfile />
@@ -864,7 +800,6 @@
       <param.LogAllIOValues />
       <param.DetectOverflows />
       <param.LogHistogram />
-      <param.ShowCoverage />
       <param.ExcludedFixedPointVerificationFiles />
       <param.ExcludedFixedPointSimulationFiles />
       <param.InstrumentedBuildChecksum />
@@ -887,11 +822,8 @@
       <param.fpDataRoot />
       <param.fpUserFileChecksum />
       <var.snapshotChecksum />
-      <param.fpLastConvertChecksum />
       <var.functionBlockSid />
       <param.fptSignedness />
-      <var.FixedPointAnalysisMode />
-      <param.FixedPointUseDesignRanges />
     </unset>
     <fileset.entrypoints>
       <file custom-data-expanded="false" value="${PROJECT_ROOT}\DoaEstimatorMUSICSignalImplement.m">
@@ -950,7 +882,7 @@
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>D:\Program Files\MATLAB\R2017a</root>
+      <root>D:\Program Files\MATLAB\R2016a</root>
       <toolboxes>
         <toolbox name="fixedpoint" />
         <toolbox name="matlabcoder" />
