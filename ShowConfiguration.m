@@ -94,6 +94,9 @@ fprintf('\tSNR: %.2f dB\n',sysPara.SNR);
 
 fprintf('Beamformer:\n');
 fprintf('\tBeamformer type: %s\n',sysPara.BeamformerType);
+if strcmp(sysPara.BeamformerType, 'MMSE')
+    fprintf('\tDiagonal Loading SNR: %.2f dB\n',sysPara.MmsePara.DiagonalLoadingSNR);
+end
 fprintf('\tWeights normalization: %s\n',sysPara.WeightsNormalization);
 fprintf('\tNumber of bits for weights quantization (0=No quantization): %d\n',sysPara.NumWeightsQuantizationBits);
 

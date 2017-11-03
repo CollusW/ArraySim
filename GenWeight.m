@@ -26,6 +26,7 @@ function [ weight, errVector] = GenWeight(sysPara, hArray, waveformRx, waveformP
 %  * @remark   { revision history: V1.2, 2017.07.14. Wayne Zhang, lms method add break }
 %  * @remark   { revision history: V1.3, 2017.07.28. Wayne Zhang, modify lms variable step lenght strategy }
 %  * @remark   { revision history: V1.4, 2017.09.21. Collus Wang, add method 2 for MRC (commented). }
+%  * @remark   { revision history: V1.5, 2017.11.03. Collus Wang and Wanyne Zhang, 1.add diagonal loading for MMSE weights. 2. RS length set to 512, compatible with real FPGA data. 3. Rxx and Pxs does not need to be normalized by length.}
 %  */
 
 %% Get used field
@@ -45,7 +46,7 @@ FlagDebugPlot = true && GlobalDebugPlot;
 figureStartNum = 5000;
 
 %% process
-LenRS = 256;  % RS length
+LenRS = 512;  % RS length
 idxRS = (1:LenRS) + 0; % RS indices
 switch lower(BeamformerType)
     case 'mvdr'
@@ -101,10 +102,14 @@ switch lower(BeamformerType)
         end
         errVector = abs(waveformPilot(idxRS,:).' - weight'*waveformRx(idxRS,:).').';
     case 'mmse'
-        if LenWaveform < LenRS, error('Waveform length < RS length!'); end  % check length
-        Rxx = waveformRx(idxRS,:).'*conj(waveformRx(idxRS,:))/LenRS;    % auto-correlation matix
-        Pxs = waveformRx(idxRS,:).'*conj(waveformPilot(idxRS,:))/LenRS;   % cross-correlation vector
-        if FlagDebugPlot
+        DiagonalLoadingSNR = sysPara.MmsePara.DiagonalLoadingSNR;
+		if LenWaveform < LenRS, error('Waveform length < RS length!'); end  % check length
+        Rxx = waveformRx(idxRS,:).'*conj(waveformRx(idxRS,:));    % auto-correlation matix
+        Pxs = waveformRx(idxRS,:).'*conj(waveformPilot(idxRS,:));   % cross-correlation vector
+        if DiagonalLoadingSNR~=inf % Diagnal loading noise power to lower high SNR to specific threshold. 
+        	Rxx = Rxx + sum(diag(Rxx))/NumChannel/DiagonalLoadingSNR*diag(ones(1,NumChannel));     
+        end
+        if ~FlagDebugPlot
             fprintf('Condition number of Rxx = %f\n', cond(Rxx));
             fprintf('Eigen value decomposition of Rxx:\n');
             [V,D] = eig(Rxx)   %#ok<ASGLU,NOPRT>
@@ -198,7 +203,7 @@ if NumWeightsQuantizationBits>0
 end
 
 % Plot beam pattern
-if FlagDebugPlot
+if ~FlagDebugPlot
     ELofAZCut = 0;
     AZofELCut = 0;
     for idx = 1:size(TargetAngle,2)

@@ -17,6 +17,7 @@ function [ sysPara] = GenSysPara()
 %  * @remark   { revision history: V1.2, 2017.05.25. Collus Wang, 1.steering vector calculation can include element response. StvIncludeElementResponse; 2. add DiagonalLoadingFactor for mvdr}
 %  * @remark   { revision history: V1.3, 2017.09.21. Collus Wang, add flag: sysPara.LcmvPara.FlagSuppressInterference: swith flag of generating interference suppression weight.}
 %  * @remark   { revision history: V1.4, 2017.10.18. Collus Wang and Wayne Zhang, 1. add TargetSigType: 'CustomPilot'. 2. add paramer DoaEstiMaxNumSig: Maximum number of signal(s) for DOA estimation output. 3. default SwitchInterence to false. }
+%  * @remark   { revision history: V1.5, 2017.11.03. Collus Wang and Wayne Zhang, 1. add diagonal loading for MMSE weight generation. }
 %  */
 
 %% system parameter settings
@@ -44,7 +45,7 @@ sysPara.StvIncludeElementResponse = true; % boolen scaler. Include individual el
                                           % If this property is false, the computation of the steering vector assumes the elements are isotropic.
 
 % Target parameter
-sysPara.TargetSigType = 'QPSK';     % string. target singal type. valid value = {'QPSK', '16QAM', '64QAM'}
+sysPara.TargetSigType = 'QPSK';     % string. target singal type. valid value = {'QPSK', '16QAM', '64QAM', 'custompilot'}
 sysPara.NumTarget = 1;              % interger scaler. number of target
 sysPara.TargetAngle = [[-10; 0], [+10;0]];      % double 2xN matrix. incoming wave direction in degree, [azimuth; elevation]. Each column represents one target.
                                                 % The azimuth angle must be between ¨C180 and 180 degrees, and the elevation angle must be between ¨C90 and 90 degrees.
@@ -76,6 +77,9 @@ sysPara.SNR = 30;                   % double scaler. SNR, in dB, in-channel SNR.
 % beamformer
 sysPara.BeamformerType = 'MMSE';        % string. beamformer type. valid value = {'MVDR', 'LCMV', 'MRC', 'MMSE'}
 % beamformer para.
+sysPara.MmsePara.DiagonalLoadingSNR = inf; % double scaler. Specify the diagonal loading SNR (in dB) as a positive scalar. 
+										  % Diagonal loading is a technique used to achieve robust beamforming performance, especially when the raw SNR is too high.
+										  % Typical value can be 10 dB. If set to 'inf', then no diagonal loading is performed.
 sysPara.LcmvPara.AngleToleranceAZ = 15; % double scaler. The angle (in degree) tolerance for LCVM constraints. The desired azimuth angle is set to [TargetAngle, TargetAngle-AngleToleranceAZ, TargetAngle+AngleToleranceAZ] with response of [1;1;1]
 sysPara.LcmvPara.FlagSuppressInterference = false;  % boolen scaler. swith flag of generating interference suppression weight.
 sysPara.MvdrPara.DiagonalLoadingFactor = 0; % double scaler. Specify the diagonal loading factor as a positive scalar. Diagonal loading is a technique used to achieve robust beamforming performance, especially when the sample support is small.

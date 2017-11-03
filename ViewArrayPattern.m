@@ -18,9 +18,11 @@ function [ PATAZ, PATEL ] = ViewArrayPattern( hArray, FreqCenter , ELofAZCut, AZ
 % 2017-07-05 V1.0 Collus Wang, add pattern normalize = false.
 % 2017-07-08 V1.1 Collus Wang, add pattern type switch.
 % 2017-10-14 V1.2 Collus Wang, export pattern.
+% 2017-11-03 V1.3 Collus Wang, add FlagMax0dB so as to normalize the max AZ and EL cut to 0dB.
 
 % Flags and Switches
 SwitchPattern = 'powerdb';    % control the AZ and EL cut pattern type {'directivity' | 'powerdb'}
+FlagMax0dB = true;			% true = normalize the max AZ and EL cut to 0dB.
 
 % view array geometry
 figure(figureStartNum)
@@ -61,7 +63,7 @@ switch SwitchPattern
             'Weight', weight);
 end
 figure(figureStartNum+21)
-plot(AZ_ANG,PAT.', 'LineWidth', 1.5);
+if FlagMax0dB, plot(AZ_ANG,PAT.'-max(PAT.'), 'LineWidth', 1.5); end
 hold on
 plot(AZ_ANG,-3*ones(size(AZ_ANG)), 'r--', 'LineWidth', 1.5);
 xlim([min(AZ_ANG), max(AZ_ANG)])
@@ -105,7 +107,7 @@ switch SwitchPattern
             'Weight', weight);
 end
 figure(figureStartNum+31)
-plot(EL_ANG,PAT.', 'LineWidth', 1.5);
+if FlagMax0dB, plot(EL_ANG,PAT.'-max(PAT.'), 'LineWidth', 1.5); end
 hold on
 plot(EL_ANG,-3*ones(size(EL_ANG)), 'r--', 'LineWidth', 1.5);
 xlim([min(EL_ANG), max(EL_ANG)])

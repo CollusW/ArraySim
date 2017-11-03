@@ -19,6 +19,7 @@ function [snr, ber, evm] = AnalyzeWaveform(sysPara, waveformRx, waveformRef, fig
 %  *  @copyright Collus Wang all rights reserved.
 %  * @remark   { revision history: V1.0, 2017.05.25. Collus Wang,  first draft }
 %  * @remark   { revision history: V1.1, 2017.06.22. Collus Wang,  support 16QAM and 64QAM }
+%  * @remark   { revision history: V1.2, 2017.11.03. Wayne Zhang,  support custom pilot case. Not accurate BER and EVM results. Need to fix code. Just able to able proceed the test case }
 %  */
 
 %% get used field
@@ -166,6 +167,35 @@ for idxTarget = 1: size(waveformRx,2)
             bits(:,5) = floor(temp/2);
             temp = mod(temp, 2);
             bits(:,6) = temp;
+            decodeBits = reshape(bits.', [], 1);
+            rxBits = decodeBits;
+        case 'custompilot'	% need fix
+            warning('Over sampled custom pilot decode according to QPSK temporarily. BER is not accurate because of constellation point near origin');
+            waveformNorm = waveformRef(:,idxTarget);
+            GenSymbolMap;
+            idxSymDemod = zeros(length(waveformNorm),1);
+            for idx = 1:length(waveformNorm)
+                dis = CalDistance(waveformNorm(idx), SymbolMapQPSK);
+                [~, idxMin] = min(dis);
+                idxSymDemod(idx) = idxMin-1;
+            end
+            bits = zeros(length(waveformNorm),2);
+            bits(:,1) = floor(idxSymDemod/2);
+            bits(:,2) = mod(idxSymDemod,2);
+            decodeBits = reshape(bits.', [], 1);
+            txBits = decodeBits;
+            
+            waveformNorm = waveformRx(:,idxTarget);
+            GenSymbolMap;
+            idxSymDemod = zeros(length(waveformNorm),1);
+            for idx = 1:length(waveformNorm)
+                dis = CalDistance(waveformNorm(idx), SymbolMapQPSK);
+                [~, idxMin] = min(dis);
+                idxSymDemod(idx) = idxMin-1;
+            end
+            bits = zeros(length(waveformNorm),2);
+            bits(:,1) = floor(idxSymDemod/2);
+            bits(:,2) = mod(idxSymDemod,2);
             decodeBits = reshape(bits.', [], 1);
             rxBits = decodeBits;
         otherwise
