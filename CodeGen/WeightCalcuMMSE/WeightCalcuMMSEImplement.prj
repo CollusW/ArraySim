@@ -1,5 +1,5 @@
 <deployment-project plugin="plugin.coder" plugin-version="R2016a">
-  <configuration build-checksum="1023892402" file="F:\matlab\ArraySim\CodeGen\DoaEstimatorMUSICSingal\DoaEstimatorMUSICSignalImplement.prj" location="F:\matlab\ArraySim\CodeGen\DoaEstimatorMUSICSingal" name="DoaEstimatorMUSICSignalImplement" preferred-package-location="F:\matlab\ArraySim\CodeGen\DoaEstimatorMUSICSingal\codegen" preferred-package-type="package.type.zip" target="target.unifiedcoder" target-name="MATLAB Coder">
+  <configuration build-checksum="38820286" file="F:\matlab\ArraySim\CodeGen\WeightCalcuMMSE\WeightCalcuMMSEImplement.prj" location="F:\matlab\ArraySim\CodeGen\WeightCalcuMMSE" name="WeightCalcuMMSEImplement" preferred-package-location="F:\matlab\ArraySim\CodeGen\WeightCalcuMMSE\codegen" preferred-package-type="package.type.zip" target="target.unifiedcoder" target-name="MATLAB Coder">
     <profile key="profile.mex">
       <param.BuiltInstrumentedMex>false</param.BuiltInstrumentedMex>
       <param.RanInstrumentedMex>false</param.RanInstrumentedMex>
@@ -128,12 +128,12 @@
       <param.EnableSignedRightShifts>true</param.EnableSignedRightShifts>
       <param.ParenthesesLevel>option.ParenthesesLevel.Nominal</param.ParenthesesLevel>
       <param.MaxIdLength>31</param.MaxIdLength>
-      <param.CustomSymbolStrGlobalVar>$M$N_DoaMusicSignal</param.CustomSymbolStrGlobalVar>
-      <param.CustomSymbolStrType>$M$N_DoaMusicSignal</param.CustomSymbolStrType>
-      <param.CustomSymbolStrField>$M$N_DoaMusicSignal</param.CustomSymbolStrField>
+      <param.CustomSymbolStrGlobalVar>$M$N_WeightCalcuMMSE</param.CustomSymbolStrGlobalVar>
+      <param.CustomSymbolStrType>$M$N__WeightCalcuMMSE</param.CustomSymbolStrType>
+      <param.CustomSymbolStrField>$M$N_WeightCalcuMMSE</param.CustomSymbolStrField>
       <param.CustomSymbolStrFcn>$M$N</param.CustomSymbolStrFcn>
       <param.CustomSymbolStrTmpVar>$M$N</param.CustomSymbolStrTmpVar>
-      <param.CustomSymbolStrMacro>$M$N_DoaMusicSignal</param.CustomSymbolStrMacro>
+      <param.CustomSymbolStrMacro>$M$N_WeightCalcuMMSE</param.CustomSymbolStrMacro>
       <param.CustomSymbolStrEMXArray>emxArray_$M$N</param.CustomSymbolStrEMXArray>
       <param.CustomSymbolStrEMXArrayFcn>emx$M$N</param.CustomSymbolStrEMXArrayFcn>
       <param.ReservedNameArray />
@@ -264,7 +264,6 @@
         <param.DefaultTestFile />
         <param.MergeInstrumentationResults />
         <param.RanPilSilVerification />
-        <param.VerificationStatus />
         <param.CustomSourceCode />
         <param.CustomHeaderCode />
         <param.CustomInitializer />
@@ -658,11 +657,11 @@
     <param.objective>option.objective.c</param.objective>
     <param.WorkflowStep>workflowSummary</param.WorkflowStep>
     <param.TestSnippets>
-      <item>testDoaEstimatorMUSICSignalImplement</item>
+      <item>testWeightCalcuMMSEImplement</item>
     </param.TestSnippets>
     <param.DefaultImportExportVariable>config</param.DefaultImportExportVariable>
     <param.UseGlobals>option.UseGlobals.No</param.UseGlobals>
-    <param.outputfile>${PROJECT_ROOT}\codegen\lib\DoaEstimatorMUSICSignalImplement\DoaEstimatorMUSICSignalImplement.lib</param.outputfile>
+    <param.outputfile>${PROJECT_ROOT}\codegen\lib\WeightCalcuMMSEImplement\WeightCalcuMMSEImplement.lib</param.outputfile>
     <param.version>R2012a</param.version>
     <param.HasECoderFeatures>true</param.HasECoderFeatures>
     <param.mex.mainhtml />
@@ -675,28 +674,28 @@
     <param.AutoInferUnboundedSizeThreshold>2048</param.AutoInferUnboundedSizeThreshold>
     <param.EnableFixedPointStep>false</param.EnableFixedPointStep>
     <param.EnableScreener>true</param.EnableScreener>
-    <param.AnnotationChecksum>1135348652</param.AnnotationChecksum>
+    <param.AnnotationChecksum>182575733</param.AnnotationChecksum>
     <var.LegacyTarget />
     <var.MirrorOnOpen>false</var.MirrorOnOpen>
     <param.FixedPointEnabled>false</param.FixedPointEnabled>
     <var.redirectedInputTypeData />
     <var.DismissScreener>true</var.DismissScreener>
     <param.unifiedParamStorage />
-    <var.gc.lastOutputRoot>codegen\lib\DoaEstimatorMUSICSignalImplement</var.gc.lastOutputRoot>
-    <var.gc.preBuildChecksum>3021482881</var.gc.preBuildChecksum>
-    <var.cfi.lastOutputRoot>codegen\mex\DoaEstimatorMUSICSignalImplement</var.cfi.lastOutputRoot>
-    <var.cfi.preBuildChecksum>3205466397</var.cfi.preBuildChecksum>
-    <var.lastCfiTestSnippet>testDoaEstimatorMUSICSignalImplement</var.lastCfiTestSnippet>
+    <var.gc.lastOutputRoot>codegen\lib\WeightCalcuMMSEImplement</var.gc.lastOutputRoot>
+    <var.gc.preBuildChecksum>518194538</var.gc.preBuildChecksum>
+    <var.cfi.lastOutputRoot>codegen\mex\WeightCalcuMMSEImplement</var.cfi.lastOutputRoot>
+    <var.cfi.preBuildChecksum>2162825546</var.cfi.preBuildChecksum>
+    <var.lastCfiTestSnippet>testWeightCalcuMMSEImplement</var.lastCfiTestSnippet>
     <var.outdatedOnRestore>false</var.outdatedOnRestore>
-    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;F:\matlab\ArraySim\CodeGen\DoaEstimatorMUSICSingal\DoaEstimatorMUSICSignalImplement.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;3900376774&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
-    <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;F:\matlab\ArraySim\CodeGen\DoaEstimatorMUSICSingal\DoaEstimatorMUSICSignalImplement.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
+    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;F:\matlab\ArraySim\CodeGen\WeightCalcuMMSE\WeightCalcuMMSEImplement.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;3177272530&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
+    <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;F:\matlab\ArraySim\CodeGen\WeightCalcuMMSE\WeightCalcuMMSEImplement.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
     <param.forceMexBuild>false</param.forceMexBuild>
     <param.configImportActive>false</param.configImportActive>
     <var.boundToGui>true</var.boundToGui>
-    <param.mex.outputfile>DoaEstimatorMUSICSignalImplement_mex</param.mex.outputfile>
-    <param.grt.outputfile>DoaEstimatorMUSICSignalImplement</param.grt.outputfile>
+    <param.mex.outputfile>WeightCalcuMMSEImplement_mex</param.mex.outputfile>
+    <param.grt.outputfile>WeightCalcuMMSEImplement</param.grt.outputfile>
     <param.artifact>option.target.artifact.lib</param.artifact>
-    <param.outputfile>${PROJECT_ROOT}\codegen\lib\DoaEstimatorMUSICSignalImplement\DoaEstimatorMUSICSignalImplement.lib</param.outputfile>
+    <param.outputfile>${PROJECT_ROOT}\codegen\lib\WeightCalcuMMSEImplement\WeightCalcuMMSEImplement.lib</param.outputfile>
     <param.EnableAutoExtrinsicCalls>true</param.EnableAutoExtrinsicCalls>
     <param.UsePreconditions>false</param.UsePreconditions>
     <param.FeatureFlags />
@@ -808,32 +807,21 @@
       <param.fptSignedness />
     </unset>
     <fileset.entrypoints>
-      <file custom-data-expanded="false" value="${PROJECT_ROOT}\DoaEstimatorMUSICSignalImplement.m">
-        <Marker>1509085788367</Marker>
+      <file custom-data-expanded="false" value="${PROJECT_ROOT}\WeightCalcuMMSEImplement.m">
+        <Marker>1509609393859</Marker>
       </file>
     </fileset.entrypoints>
     <fileset.testbench>
-      <file>${PROJECT_ROOT}\testDoaEstimatorMUSICSignalImplement.m</file>
+      <file>${PROJECT_ROOT}\testWeightCalcuMMSEImplement.m</file>
     </fileset.testbench>
     <fileset.inputtypes>
-      <file custom-data-expanded="false" value="${PROJECT_ROOT}\DoaEstimatorMUSICSignalImplement.m">
-        <Inputs fileName="DoaEstimatorMUSICSignalImplement.m" functionName="DoaEstimatorMUSICSignalImplement">
-          <Input Name="recStvPartition" typeId="0" />
-          <Input Name="rxSigNoise" typeId="1" />
-          <Input Name="PilotSequence" typeId="2" />
-          <Input Name="AzimuthScanAngles" typeId="3" />
-          <Input Name="MaxNumSig" typeId="4" />
-          <Input Name="FilterFlag" typeId="4" />
+      <file custom-data-expanded="false" value="${PROJECT_ROOT}\WeightCalcuMMSEImplement.m">
+        <Inputs fileName="WeightCalcuMMSEImplement.m" functionName="WeightCalcuMMSEImplement">
+          <Input Name="rxSigNoise" typeId="0" />
+          <Input Name="PilotSequence" typeId="1" />
+          <Input Name="SNRThreshold" typeId="2" />
           <idpTable>
             <type typeId="0">
-              <Class>double</Class>
-              <Size>4 x 121</Size>
-              <Value />
-              <InitialValue />
-              <UserDefined>false</UserDefined>
-              <Complex>true</Complex>
-            </type>
-            <type typeId="1">
               <Class>double</Class>
               <Size>512 x 4</Size>
               <Value />
@@ -841,7 +829,7 @@
               <UserDefined>false</UserDefined>
               <Complex>true</Complex>
             </type>
-            <type typeId="2">
+            <type typeId="1">
               <Class>double</Class>
               <Size>512 x 1</Size>
               <Value />
@@ -849,15 +837,7 @@
               <UserDefined>false</UserDefined>
               <Complex>true</Complex>
             </type>
-            <type typeId="3">
-              <Class>double</Class>
-              <Size>121 x 1</Size>
-              <Value />
-              <InitialValue />
-              <UserDefined>false</UserDefined>
-              <Complex>false</Complex>
-            </type>
-            <type typeId="4">
+            <type typeId="2">
               <Class>double</Class>
               <Size>1 x 1</Size>
               <Value />
@@ -870,7 +850,7 @@
       </file>
     </fileset.inputtypes>
     <build-deliverables>
-      <file location="${PROJECT_ROOT}\codegen\lib\DoaEstimatorMUSICSignalImplement" name="DoaEstimatorMUSICSignalImplement.lib" optional="false">F:\matlab\ArraySim\CodeGen\DoaEstimatorMUSICSingal\codegen\lib\DoaEstimatorMUSICSignalImplement\DoaEstimatorMUSICSignalImplement.lib</file>
+      <file location="${PROJECT_ROOT}\codegen\lib\WeightCalcuMMSEImplement" name="WeightCalcuMMSEImplement.lib" optional="false">F:\matlab\ArraySim\CodeGen\WeightCalcuMMSE\codegen\lib\WeightCalcuMMSEImplement\WeightCalcuMMSEImplement.lib</file>
     </build-deliverables>
     <workflow />
     <matlab>

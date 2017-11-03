@@ -109,7 +109,7 @@ switch lower(BeamformerType)
         if DiagonalLoadingSNR~=inf % Diagnal loading noise power to lower high SNR to specific threshold. 
         	Rxx = Rxx + sum(diag(Rxx))/NumChannel/DiagonalLoadingSNR*diag(ones(1,NumChannel));     
         end
-        if ~FlagDebugPlot
+        if FlagDebugPlot
             fprintf('Condition number of Rxx = %f\n', cond(Rxx));
             fprintf('Eigen value decomposition of Rxx:\n');
             [V,D] = eig(Rxx)   %#ok<ASGLU,NOPRT>
@@ -203,7 +203,7 @@ if NumWeightsQuantizationBits>0
 end
 
 % Plot beam pattern
-if ~FlagDebugPlot
+if FlagDebugPlot
     ELofAZCut = 0;
     AZofELCut = 0;
     for idx = 1:size(TargetAngle,2)

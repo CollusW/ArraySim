@@ -77,7 +77,7 @@ sysPara.SNR = 30;                   % double scaler. SNR, in dB, in-channel SNR.
 % beamformer
 sysPara.BeamformerType = 'MMSE';        % string. beamformer type. valid value = {'MVDR', 'LCMV', 'MRC', 'MMSE'}
 % beamformer para.
-sysPara.MmsePara.DiagonalLoadingSNR = inf; % double scaler. Specify the diagonal loading SNR (in dB) as a positive scalar. 
+sysPara.MmsePara.DiagonalLoadingSNR = 10; % double scaler. Specify the diagonal loading SNR (in dB) as a positive scalar. 
 										  % Diagonal loading is a technique used to achieve robust beamforming performance, especially when the raw SNR is too high.
 										  % Typical value can be 10 dB. If set to 'inf', then no diagonal loading is performed.
 sysPara.LcmvPara.AngleToleranceAZ = 15; % double scaler. The angle (in degree) tolerance for LCVM constraints. The desired azimuth angle is set to [TargetAngle, TargetAngle-AngleToleranceAZ, TargetAngle+AngleToleranceAZ] with response of [1;1;1]
