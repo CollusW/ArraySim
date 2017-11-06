@@ -16,7 +16,7 @@
 clear all %#ok<CLALL>
 close all
 clc
-
+currentDir = cd('..');
 %% declare 'ScriptCall'
 % declare this var to call mainArraySimRxBF using the parameter specified by this script.
 ScriptCall = 1;
@@ -1118,3 +1118,4 @@ title('SINR Gain Std Err - Channel Phase Err');
 xlabel('Channel Phase Err/degree');
 ylabel('SINR Gain Std Err/dB');
 
+cd(currentDir);

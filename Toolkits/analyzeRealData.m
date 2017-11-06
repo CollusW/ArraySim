@@ -24,7 +24,7 @@ cd(CurrentDirectory)
 
 %% System para.
 % recorded data file path and name
-PathName = '..\Result\20171026_RealDataAnalysis\Degree0\Degree0SMA_80dBm\';
+PathName = 'RawData\20171026_RealDataAnalysis\Degree0\Degree0SMA_80dBm\';
 FileNameDoa = 'doaEstiTest.dat';    % file name of the DOA value. Each line contain one DOA estimation result.
 FileNameMaxSS = 'spacialEstiTest.dat';  % file name of the max spacial spectrum value. Each line contain one max spectrum value.
 FileNameWeight = 'weightCalcuTest.dat'; % file name of the weight. Format: {I1,Q1,I2,Q2,I3,Q3,I4,Q4}, {I1,Q1,I2,Q2,I3,Q3,I4,Q4}, ...

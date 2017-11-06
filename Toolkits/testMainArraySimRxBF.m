@@ -16,7 +16,7 @@
 clear all %#ok<CLALL>
 close all
 clc
-
+currentDir = cd('..');
 %% declare 'ScriptCall'
 % declare this var to call mainArraySimRxBF using the parameter specified by this script.
 ScriptCall = 1;
@@ -441,3 +441,4 @@ clear ScriptCall    % clear ScriptCall so that simSystem can use its own setting
 fprintf('############################### Autotest Finished ###############################\n')
 tElapsed = toc(tStart);
 fprintf('Total elapsed time = %.2fsec = %dmin %.2fsec\n', tElapsed, floor(tElapsed/60), tElapsed-floor(tElapsed/60)*60);
+cd(currentDir);
