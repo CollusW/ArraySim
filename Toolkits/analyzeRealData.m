@@ -9,6 +9,7 @@
 %  *  @date      2017.10.27
 %  *  @copyright Collus Wang all rights reserved.
 %  *  @remark   { revision history: V1.0, 2017.10.27. Collus Wang, first draft.}
+%  *  @remark   { revision history: V1.1, 2017.10.27. Wayne Zhang, 1.add directivity calculation. 2. flexible file path generation.}
 %  */
 
 %% Clear
@@ -24,7 +25,10 @@ cd(CurrentDirectory)
 
 %% System para.
 % recorded data file path and name
-PathName = 'RawData\20171026_RealDataAnalysis\Degree0\Degree0SMA_80dBm\';
+IsSync = 'Sync';
+TargetDegree = '10';
+SMAPower = '80';
+PathName = ['RawData\20171109_RealDataAnalysis_', IsSync, '\Degree', TargetDegree, '\Degree', TargetDegree, 'SMA_', SMAPower, 'dBm\'];
 FileNameDoa = 'doaEstiTest.dat';    % file name of the DOA value. Each line contain one DOA estimation result.
 FileNameMaxSS = 'spacialEstiTest.dat';  % file name of the max spacial spectrum value. Each line contain one max spectrum value.
 FileNameWeight = 'weightCalcuTest.dat'; % file name of the weight. Format: {I1,Q1,I2,Q2,I3,Q3,I4,Q4}, {I1,Q1,I2,Q2,I3,Q3,I4,Q4}, ...
@@ -67,15 +71,17 @@ sysPara = GenSysPara();                         %% Gen. System para.
 ShowConfiguration(sysPara);                     %% print simulation configuration.
 hAntennaElement = GenAntennaElement(sysPara);   %% Gen. antenna element
 hArray = GenArray(sysPara, hAntennaElement);    %% Gen. array
-FreqCenter=sysPara.FreqCenter
+FreqCenter=sysPara.FreqCenter;
 ELofAZCut = 0;
 AZofELCut = 0;
 SwitchPattern = 'directivity';
 AZ = -180:0.1:180;
 PATRec = zeros(length(AZ), NumWeight);
+DirectivityVector = zeros(NumWeight, 1);
 for idxWeight = 1:NumWeight
-    idxWeight
+    idxWeight %#ok<NOPTS>
     weight = dataWeight(:,idxWeight);
+    DirectivityVector(idxWeight) = directivity(hArray, sysPara.FreqCenter, [str2double(TargetDegree);-3.5], 'Weights', weight);
     switch SwitchPattern
         case 'powerdb'
             [PAT,AZ_ANG,EL_ANG] = pattern(hArray, FreqCenter, AZ, ELofAZCut,...
@@ -91,8 +97,11 @@ for idxWeight = 1:NumWeight
                 'Plotstyle', 'overlay', ...
                 'Weight', weight);
     end
-    PATRec(:,idxWeight) = PAT;    
+    PATRec(:,idxWeight) = PAT - max(PAT);
 end
+meanDirectivity = mean(DirectivityVector);
+stdDirectivity = std(DirectivityVector);
+fprintf('Directivity:\nMean = %.2f\nStd = %.2f\n', meanDirectivity, stdDirectivity);
 figure(figureStartNum+21); clf;
 plot(AZ_ANG,PATRec.', 'LineWidth', 1);
 hold on
