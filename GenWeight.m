@@ -27,6 +27,7 @@ function [ weight, errVector] = GenWeight(sysPara, hArray, waveformRx, waveformP
 %  * @remark   { revision history: V1.3, 2017.07.28. Wayne Zhang, modify lms variable step lenght strategy }
 %  * @remark   { revision history: V1.4, 2017.09.21. Collus Wang, add method 2 for MRC (commented). }
 %  * @remark   { revision history: V1.5, 2017.11.03. Collus Wang and Wanyne Zhang, 1.add diagonal loading for MMSE weights. 2. RS length set to 512, compatible with real FPGA data. 3. Rxx and Pxs does not need to be normalized by length.}
+%  * @remark   { revision history: V1.5, 2017.11.30. Collus Wang, add 'lcmv-custom' case for aribitary LCMV constrains.}
 %  */
 
 %% Get used field
@@ -100,6 +101,21 @@ switch lower(BeamformerType)
             hBeamformer.DesiredResponse = DesiredResponse;
             [~, weight(:,idxTarget)] = step(hBeamformer,waveformRx);
         end
+        errVector = abs(waveformPilot(idxRS,:).' - weight'*waveformRx(idxRS,:).').';
+    case 'lcmv-custom'
+        % get used field.
+        ConstraintAngle = sysPara.LcmvPara.ConstraintAngle;
+        DesiredResponse = sysPara.LcmvPara.DesiredResponse;
+        hBeamformer = phased.LCMVBeamformer('WeightsOutputPort',true);
+        hSteeringVector = phased.SteeringVector('SensorArray',hArray, ...
+            'IncludeElementResponse', StvIncludeElementResponse);
+        weight = zeros(NumChannel, NumTarget);
+        if isLocked(hBeamformer)
+            release(hBeamformer);
+        end
+        hBeamformer.Constraint = step(hSteeringVector, FreqCenter, ConstraintAngle);
+        hBeamformer.DesiredResponse = DesiredResponse;
+        [~, weight] = step(hBeamformer,waveformRx);
         errVector = abs(waveformPilot(idxRS,:).' - weight'*waveformRx(idxRS,:).').';
     case 'mmse'
         DiagonalLoadingSNR = sysPara.MmsePara.DiagonalLoadingSNR;
@@ -204,7 +220,7 @@ end
 
 % Plot beam pattern
 if FlagDebugPlot
-    ELofAZCut = 0;
+    ELofAZCut = -3.5;
     AZofELCut = 0;
     for idx = 1:size(TargetAngle,2)
         ViewArrayPattern(hArray, FreqCenter , ELofAZCut, AZofELCut, weight(:,idx), figureStartNum+idx*100+100);

@@ -10,6 +10,7 @@
 %  *  @copyright Collus Wang all rights reserved.
 %  *  @remark   { revision history: V1.0, 2017.09.21. Collus Wang, first draft. inherited from Tag_MainArraySimToolBox_HNRWeight.m in ArraySim project. }
 %  *  @remark   { revision history: V1.1, 2017.09.22. Collus Wang, add header file generation. }
+%  *  @remark   { revision history: V1.2, 2017.11.30. Collus Wang, 1.conjugate the weight. 2.add CSMA wide beam weight generation. }
 %  */
 
 %% clear
@@ -26,6 +27,7 @@ fprintf('############################### Begin ###############################\n
 %% Flags
 FlagFixedNarrowBeam = true; % true = creat narrow beam using MRC method.
 FlagFixedWideBeam = true;       % true = creat wide beam using LCMV method.
+FlagFixedWideBeamCSMA = true;   % true = creat wide beam using LCMV method for CSMA directional coverage. 4 wide beams at each frequency.
 FlagFixedIntCanceller = true;  % true = creat fixed interference/signal search beam using LCMV method.
 FlagExportToC = true;      % true = export to C file for const generation.
 
@@ -156,6 +158,115 @@ if FlagFixedWideBeam
     end
 end
 
+%% Fixed Wide Beam for CSMA directional coverage
+if FlagFixedWideBeamCSMA
+    % Parameter init.
+    sysPara = GenSysPara();                         %% Gen. System para.
+    sysPara.NumTarget = size(TargetAngleWideBeam,2);
+    sysPara.TargetPower = zeros(size(TargetAngleWideBeam,2),1);                % double vector. target relative power above 1W in dB.
+    sysPara.GlobalDebugPlot = false;
+    sysPara.BeamformerType = 'LCMV-custom';
+
+    % noise parameter
+    sysPara.SwitchAWGN = true;          % boolen scaler. switch flag of AWGN.  true = add noise; false = not add noise.
+    sysPara.SNR = 0;                   % double scaler. SNR, in dB, in-channel SNR. Valid only when SwitchAWGN = true.
+    sysPara.SwitchInterence = false;    % boolen scaler. true = enable interference; false = disable interference.
+    
+    sysPara.StvIncludeElementResponse = ~false;
+    sysPara.WeightsNormalization = 'bypass';
+    sysPara.NumWeightsQuantizationBits = 0;
+    sysPara.GlobalDebugPlot = ~true;
+    % some generated para.
+    NumQuantizedBit = 15;   % number of quantized bit for the weight
+    FullScale = 2^NumQuantizedBit-1; % FullScale of the quantized weights
+    NumChannel = sysPara.NumChannel;
+    recWideCSMAWeightI = zeros(NumChannel, 4, length(RecFreqCenter));  % pre-allocation of memory
+    recWideCSMAWeightQ = zeros(NumChannel, 4, length(RecFreqCenter));  % pre-allocation of memory
+    
+    ShowConfiguration(sysPara);                     %% print simulation configuration.
+    hAntennaElement = GenAntennaElement(sysPara);   %% Gen. antenna element
+    hArray = GenArray(sysPara, hAntennaElement);    %% Gen. array
+    [waveformArray, waveformSignal, steeringVector] = GenSignal(sysPara, hArray);       %% Gen. signal
+    waveformArrayChannel = ChannelImplementation(sysPara, waveformArray);
+    waveformInt = GenInterference(sysPara, hArray); %% Gen. interference
+    waveformIntChannel = ChannelImplementation(sysPara, waveformInt);
+    waveformNoise = GenNoise(sysPara, hArray);      %% Gen. noise
+    waveformRx = waveformArrayChannel + waveformIntChannel + waveformNoise;           %% Rx waveform
+    
+    for idxFreq = 1:length(RecFreqCenter)
+        sysPara.FreqCenter = RecFreqCenter(idxFreq);    % double scaler. Center frequency, Unit in Hz.  e.g. 5725e6, 34e9
+        fprintf('Processing center frequency:\t %.2f MHz\n', sysPara.FreqCenter/1e6);
+        
+        % beam #1    -60~-30 degree
+        sysPara.LcmvPara.ConstraintAngle = [-50; -3.5];  % -60~-30
+        sysPara.LcmvPara.DesiredResponse = db2mag([0;]);
+        sysPara.TargetAngle = sysPara.LcmvPara.ConstraintAngle(:,1);
+        [weight, errVector] = GenWeight(sysPara, hArray, waveformRx, waveformSignal);             %% Gen. Beamforming weight
+		weight = conj(weight);
+        weight = weight./repmat( weight(1,:), sysPara.NumChannel, 1);   % normalize channel #1 to zero phase
+        weight = weight./repmat( max(abs(weight)), sysPara.NumChannel, 1);  % normalize max abs to 1.
+        weightQuant = fix(weight*FullScale);    % Quantization to integer
+        weightI = real(weightQuant);
+        weightQ = imag(weightQuant);
+        if  sum( sum( abs(weightI + 1j*weightQ)>(2^NumQuantizedBit-1) ) )
+            error('Quantized weights exceed full scasle.')
+        end
+        recWideCSMAWeightI(:,1, idxFreq) = weightI;     % just record the weights
+        recWideCSMAWeightQ(:,1, idxFreq) = weightQ;
+        
+        % beam #2    -30~0 degree
+        sysPara.LcmvPara.ConstraintAngle = [-20, -8; -3.5,   -3.5]; %% -30~-0
+        sysPara.LcmvPara.DesiredResponse = db2mag([0;0]);
+        sysPara.TargetAngle = sysPara.LcmvPara.ConstraintAngle(:,1);
+        [weight, errVector] = GenWeight(sysPara, hArray, waveformRx, waveformSignal);             %% Gen. Beamforming weight
+		weight = conj(weight);        
+        weight = weight./repmat( weight(1,:), sysPara.NumChannel, 1);   % normalize channel #1 to zero phase
+        weight = weight./repmat( max(abs(weight)), sysPara.NumChannel, 1);  % normalize max abs to 1.
+        weightQuant = fix(weight*FullScale);    % Quantization to integer
+        weightI = real(weightQuant);
+        weightQ = imag(weightQuant);
+        if  sum( sum( abs(weightI + 1j*weightQ)>(2^NumQuantizedBit-1) ) )
+            error('Quantized weights exceed full scasle.')
+        end
+        recWideCSMAWeightI(:,2, idxFreq) = weightI;     % just record the weights
+        recWideCSMAWeightQ(:,2, idxFreq) = weightQ;
+
+        % beam #3    0~+30 degree
+        sysPara.LcmvPara.ConstraintAngle = [22,5, ; -3.5, -3.5]; %% 0~30
+        sysPara.LcmvPara.DesiredResponse = db2mag([0;0;]);
+        sysPara.TargetAngle = sysPara.LcmvPara.ConstraintAngle(:,1);
+        [weight, errVector] = GenWeight(sysPara, hArray, waveformRx, waveformSignal);             %% Gen. Beamforming weight
+		weight = conj(weight);        
+        weight = weight./repmat( weight(1,:), sysPara.NumChannel, 1);   % normalize channel #1 to zero phase
+        weight = weight./repmat( max(abs(weight)), sysPara.NumChannel, 1);  % normalize max abs to 1.
+        weightQuant = fix(weight*FullScale);    % Quantization to integer
+        weightI = real(weightQuant);
+        weightQ = imag(weightQuant);
+        if  sum( sum( abs(weightI + 1j*weightQ)>(2^NumQuantizedBit-1) ) )
+            error('Quantized weights exceed full scasle.')
+        end
+        recWideCSMAWeightI(:,3, idxFreq) = weightI;     % just record the weights
+        recWideCSMAWeightQ(:,3, idxFreq) = weightQ;
+        
+        % beam #4    +30~+60 degree
+        sysPara.LcmvPara.ConstraintAngle = [50; -3.5];  % +30~+60
+        sysPara.LcmvPara.DesiredResponse = db2mag([0;]);
+        sysPara.TargetAngle = sysPara.LcmvPara.ConstraintAngle(:,1);
+        [weight, errVector] = GenWeight(sysPara, hArray, waveformRx, waveformSignal);             %% Gen. Beamforming weight
+		weight = conj(weight);        
+        weight = weight./repmat( weight(1,:), sysPara.NumChannel, 1);   % normalize channel #1 to zero phase
+        weight = weight./repmat( max(abs(weight)), sysPara.NumChannel, 1);  % normalize max abs to 1.
+        weightQuant = fix(weight*FullScale);    % Quantization to integer
+        weightI = real(weightQuant);
+        weightQ = imag(weightQuant);
+        if  sum( sum( abs(weightI + 1j*weightQ)>(2^NumQuantizedBit-1) ) )
+            error('Quantized weights exceed full scasle.')
+        end
+        recWideCSMAWeightI(:,4, idxFreq) = weightI;     % just record the weights
+        recWideCSMAWeightQ(:,4, idxFreq) = weightQ;
+    end    
+end
+
 %% Fixed interference search beam
 if FlagFixedIntCanceller
     % Parameter init.
@@ -277,13 +388,25 @@ if FlagExportToC
     if FlagFixedWideBeam
         % wide beam
         fprintf(fileID, '\n/* Fixed Wide Beam:*/\n');        
-        fprintf(fileID, '/*Number of Freq = %d, Number of TargetAngle =%d*/\n', length(RecFreqCenter), size(TargetAngleWideBeam, 2));
+        fprintf(fileID, '/*Number of Freq = %d, Number of TargetAngle = %d*/\n', length(RecFreqCenter), size(TargetAngleWideBeam, 2));
         fprintf(fileID, '/*FreqCenter(MHz)= %.1f:%.1f:%.1f*/\n', RecFreqCenter(1)/1e6, RecFreqCenter(2)/1e6-RecFreqCenter(1)/1e6,RecFreqCenter(end)/1e6);
         fprintf(fileID, '/*TargetAngle(degree)= %.2f:%.2f:%.2f*/\n', TargetAngleWideBeam(1,1), 0,TargetAngleWideBeam(1,end));        
         fprintf(fileID, '/* Real part of the weights*/\n');
         fprintf(fileID, 'extern const int16_t Tx_WBF_Wide_Table_Real[%d][%d][%d];\n', length(RecFreqCenter), size(TargetAngleWideBeam, 2), NumChannel);
         fprintf(fileID, '/* Imag part of the weights*/\n');
         fprintf(fileID, 'extern const int16_t Tx_WBF_Wide_Table_Imag[%d][%d][%d];\n', length(RecFreqCenter), size(TargetAngleWideBeam, 2), NumChannel);
+    end
+
+    if FlagFixedWideBeamCSMA
+        % wide beam for CSMA directional reception
+        fprintf(fileID, '\n/* Fixed CSMA Wide Beam:*/\n');        
+        fprintf(fileID, '/*Number of Freq = %d, Number of TargetAngle = %d*/\n', length(RecFreqCenter), size(recWideCSMAWeightI, 2) );
+        fprintf(fileID, '/*FreqCenter(MHz)= %.1f:%.1f:%.1f*/\n', RecFreqCenter(1)/1e6, RecFreqCenter(2)/1e6-RecFreqCenter(1)/1e6,RecFreqCenter(end)/1e6);
+        fprintf(fileID, '/*TargetAngle(degree)= [-60~-30, -30~0, 0~+30, +30~+60]*/\n');        
+        fprintf(fileID, '/* Real part of the weights*/\n');
+        fprintf(fileID, 'extern const int16_t Tx_WBF_CSMA_Wide_Table_Real[%d][%d][%d];\n', length(RecFreqCenter), size(recWideCSMAWeightI, 2), NumChannel);
+        fprintf(fileID, '/* Imag part of the weights*/\n');
+        fprintf(fileID, 'extern const int16_t Tx_WBF_CSMA_Wide_Table_Imag[%d][%d][%d];\n', length(RecFreqCenter), size(recWideCSMAWeightQ, 2), NumChannel);
     end
     
     if FlagFixedIntCanceller
@@ -424,6 +547,59 @@ if FlagExportToC
         fprintf(fileID, '};\n');
     end
 
+    % Wide Beam for CSMA directional reception
+    if FlagFixedWideBeamCSMA
+        fprintf(fileID, '\n\n\n');
+        % write I-weight
+        fprintf(fileID, '\n/* Fixed CSMA Wide Beam:*/\n');
+    
+        fprintf(fileID, '/*Number of Freq = %d, Number of TargetAngle = %d*/\n', length(RecFreqCenter), size(recWideCSMAWeightI, 2) );
+        fprintf(fileID, '/*FreqCenter(MHz)= %.1f:%.1f:%.1f*/\n', RecFreqCenter(1)/1e6, RecFreqCenter(2)/1e6-RecFreqCenter(1)/1e6,RecFreqCenter(end)/1e6);
+        fprintf(fileID, '/*TargetAngle(degree)= [-60~-30, -30~0, 0~+30, +30~+60]*/\n');       
+    
+        fprintf(fileID, '\n/* Real part of the weights*/');
+        fprintf(fileID, '\nconst int16_t Tx_WBF_Wide_Table_Real[%d][%d][%d]= \n', length(RecFreqCenter), size(recWideCSMAWeightI, 2), NumChannel);
+        fprintf(fileID, '{\n');
+        for idxFreq = 1:length(RecFreqCenter)
+            fprintf(fileID, '\t{ /* Freq (MHz) = %.1f*/\n\t\t', RecFreqCenter(idxFreq)/1e6 );
+            for idxAngle = 1:size(recWideCSMAWeightI, 2)
+                if idxAngle ~=size(recWideCSMAWeightI, 2)
+                    fprintf(fileID, '{%d,%d,%d,%d},', recWideCSMAWeightI(:,idxAngle,idxFreq));
+                else
+                    fprintf(fileID, '{%d,%d,%d,%d}', recWideCSMAWeightI(:,idxAngle,idxFreq));
+                end
+            end
+            if idxFreq ~= length(RecFreqCenter)
+                fprintf(fileID, '\n\t},\n');
+            else
+                fprintf(fileID, '\n\t}\n');
+            end
+        end
+        fprintf(fileID, '};\n');
+    
+        % write Q-weight
+        fprintf(fileID, '\n/* Imag part of the weights*/');
+        fprintf(fileID, '\nconst int16_t Tx_WBF_Wide_Table_Imag[%d][%d][%d]= \n', length(RecFreqCenter), size(recWideCSMAWeightQ, 2), NumChannel);
+        fprintf(fileID, '{\n');
+        for idxFreq = 1:length(RecFreqCenter)
+            fprintf(fileID, '\t{ /* Freq (MHz) = %.1f*/\n\t\t', RecFreqCenter(idxFreq)/1e6 );
+            
+            for idxAngle = 1:size(recWideCSMAWeightQ, 2)
+                if idxAngle ~=size(recWideCSMAWeightQ, 2)
+                    fprintf(fileID, '{%d,%d,%d,%d},', recWideCSMAWeightQ(:,idxAngle,idxFreq));
+                else
+                    fprintf(fileID, '{%d,%d,%d,%d}', recWideCSMAWeightQ(:,idxAngle,idxFreq));
+                end
+            end
+            if idxFreq ~= length(RecFreqCenter)
+                fprintf(fileID, '\n\t},\n');
+            else
+                fprintf(fileID, '\n\t}\n');
+            end
+        end
+        fprintf(fileID, '};\n');
+    end
+    
     % Interference Search Beam:
     if FlagFixedIntCanceller
         % interference search beam (left)

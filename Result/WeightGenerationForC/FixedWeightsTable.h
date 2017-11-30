@@ -17,13 +17,22 @@ extern const int16_t Tx_WBF_Table_Real[201][81][4];
 extern const int16_t Tx_WBF_Table_Imag[201][81][4];
 
 /* Fixed Wide Beam:*/
-/*Number of Freq = 201, Number of TargetAngle =1*/
+/*Number of Freq = 201, Number of TargetAngle = 1*/
 /*FreqCenter(MHz)= 5625.0:1.0:5825.0*/
 /*TargetAngle(degree)= 0.00:0.00:0.00*/
 /* Real part of the weights*/
 extern const int16_t Tx_WBF_Wide_Table_Real[201][1][4];
 /* Imag part of the weights*/
 extern const int16_t Tx_WBF_Wide_Table_Imag[201][1][4];
+
+/* Fixed CSMA Wide Beam:*/
+/*Number of Freq = 201, Number of TargetAngle = 4*/
+/*FreqCenter(MHz)= 5625.0:1.0:5825.0*/
+/*TargetAngle(degree)= [-60~-30, -30~0, 0~+30, +30~+60]*/
+/* Real part of the weights*/
+extern const int16_t Tx_WBF_CSMA_Wide_Table_Real[201][4][4];
+/* Imag part of the weights*/
+extern const int16_t Tx_WBF_CSMA_Wide_Table_Imag[201][4][4];
 
 /* Fixed Interference Search Beam (left):*/
 /*Number of Freq = 201, Number of TargetAngle =81*/

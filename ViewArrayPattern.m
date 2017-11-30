@@ -121,5 +121,5 @@ PATEL.PAT = PAT;
 PATEL.AZ_ANG = AZ_ANG;
 PATEL.EL_ANG = EL_ANG;
 
-
+figure(figureStartNum+21) % display AZ cut
 end
