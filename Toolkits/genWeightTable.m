@@ -11,6 +11,7 @@
 %  *  @remark   { revision history: V1.0, 2017.09.21. Collus Wang, first draft. inherited from Tag_MainArraySimToolBox_HNRWeight.m in ArraySim project. }
 %  *  @remark   { revision history: V1.1, 2017.09.22. Collus Wang, add header file generation. }
 %  *  @remark   { revision history: V1.2, 2017.11.30. Collus Wang, 1.conjugate the weight. 2.add CSMA wide beam weight generation. }
+%  *  @remark   { revision history: V1.2, 2017.12.01. Collus Wang, Fix CSMA wide beam weight C variable name. }
 %  */
 
 %% clear
@@ -558,7 +559,7 @@ if FlagExportToC
         fprintf(fileID, '/*TargetAngle(degree)= [-60~-30, -30~0, 0~+30, +30~+60]*/\n');       
     
         fprintf(fileID, '\n/* Real part of the weights*/');
-        fprintf(fileID, '\nconst int16_t Tx_WBF_Wide_Table_Real[%d][%d][%d]= \n', length(RecFreqCenter), size(recWideCSMAWeightI, 2), NumChannel);
+        fprintf(fileID, '\nconst int16_t Tx_WBF_CSMA_Wide_Table_Real[%d][%d][%d]= \n', length(RecFreqCenter), size(recWideCSMAWeightI, 2), NumChannel);
         fprintf(fileID, '{\n');
         for idxFreq = 1:length(RecFreqCenter)
             fprintf(fileID, '\t{ /* Freq (MHz) = %.1f*/\n\t\t', RecFreqCenter(idxFreq)/1e6 );
@@ -579,7 +580,7 @@ if FlagExportToC
     
         % write Q-weight
         fprintf(fileID, '\n/* Imag part of the weights*/');
-        fprintf(fileID, '\nconst int16_t Tx_WBF_Wide_Table_Imag[%d][%d][%d]= \n', length(RecFreqCenter), size(recWideCSMAWeightQ, 2), NumChannel);
+        fprintf(fileID, '\nconst int16_t Tx_WBF_CSMA_Wide_Table_Imag[%d][%d][%d]= \n', length(RecFreqCenter), size(recWideCSMAWeightQ, 2), NumChannel);
         fprintf(fileID, '{\n');
         for idxFreq = 1:length(RecFreqCenter)
             fprintf(fileID, '\t{ /* Freq (MHz) = %.1f*/\n\t\t', RecFreqCenter(idxFreq)/1e6 );
