@@ -1,0 +1,165 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Fixed-Point Report for FindOptiSyncFixedPointImplement</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style>
+	body { font-family: monospace; }
+	h2 { font-family: Arial, Helvetica, sans-serif; color: #990000; margin-top: 50px; }
+	table,th,td { border: 1px solid black; }
+	table { margin-top: 30px; }
+	th { align: center; font-weight: bold; }
+	tr.h { background-color: #99CCFF; }
+	tr.a { background-color: #EEEEFF; }
+	tr.b { background-color: #FFFFFF; }
+	tr.c { background-color: #FFA500; }
+	tr.a td, tr.b td { border-style: none; }
+	td.left { text-align: left; }
+	td.right { text-align: right; }
+	td.center { text-align: center; }
+	td.bold { font-weight: bold; }
+	pre { padding: 0px; margin: 0px; }
+	span { font-style: italic; }
+	.code, .code tr, .code th, .code td { border: none; border-collapse: collapse; }
+	.padd { padding-left: 5px; }
+	td.cov, th.cov { width: 50px; height: 20px; text-align: center; font-weight: bold; border-right: 2px solid black; cell-spacing: 0px; }
+	td.cov { vertical-align: top; }
+	td.black { color: #000000; font-weight: bold; padding-top: 4px; }
+	td.white { color: #FFFFFF; font-weight: bold; padding-top: 4px; }
+	.code th { font-weight: bold; border-bottom: 2px solid black; }
+</style>
+</head>
+<body>
+<h3>Generated on  2018-01-25 22:08:38</h3>
+<p>The following table shows fixed point instrumentation results</p>
+<h2>Fixed-Point Report <span>FindOptiSyncFixedPointImplement<span></h2>
+<TABLE class="code">
+<TR>
+<TH class="cov padd">Simulation Coverage</TH>
+<TH>Code</TH>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(5,112,9);">100%</TD>
+<TD class="padd"><pre>function [pilotSequence, numSyncChannel, circShiftSelect] = FindOptiSyncFixedPointImplement(rxSigNoise, pilotSequenceUpSample)
+% Find Optimum Synchronization Sample Point.
+% input: 
+%    % rxSigNoise: NxM complex, N is the number of snapshots, M is the number of channel. each colum is one snapshot
+%    % pilotSequenceUpSample: (UpSampleTimesxN)x1 complex, N is the length of pilot.
+%    % UpSampleTimes: 1x1 integer, upsample factor.Fixed 3 for fixed point.
+%    % LenSearch: 1x1 odd integer, search range of finding optimum synchronization sample point under upsampled symbols.Fixed 7 for fixed point.
+% output:  
+%    % pilotSequence, Nx1 complex, N is the length of pilot, pilot sequence downsampled according to optimum synchronization sample.
+%    % numSyncChannel: 1x1 integer, number of synchronized channel after adjust optimum synchronization sample.
+%    % circShiftSelect: 1x1 integer, pilot circle shift index.
+%    
+% 2018-01-25 V1.0 Wayne Zhang. draft.
+
+circShiftPattern = -3:3;
+
+[LenPilot, NumChannel] = size(rxSigNoise);
+syncIndexMat = zeros(NumChannel, 7);
+pilotSequenceUpSampleShift = zeros(LenPilot*3, 1);
+rxSigNoiseUpSample = upsample(rxSigNoise, 3);
+
+pilotSequenceUpSampleMat = complex(zeros(LenPilot*3, 7));
+for idxShift = 1:7
+    circShiftCurr = circShiftPattern(idxShift);
+    if circShiftCurr == 0
+        pilotSequenceUpSampleMat(:,idxShift) = pilotSequenceUpSample;
+</pre></TD>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(-455,-148,-431);">300%</TD>
+<TD class="padd"><pre>    elseif circShiftCurr &gt; 0
+        pilotSequenceUpSampleMat(:,idxShift) = [pilotSequenceUpSample(end - circShiftCurr + 1:end);pilotSequenceUpSample(1:end - circShiftCurr)];
+</pre></TD>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(5,112,9);">100%</TD>
+<TD class="padd"><pre>    elseif circShiftCurr &lt; 0
+        pilotSequenceUpSampleMat(:,idxShift) = [pilotSequenceUpSample(-circShiftCurr + 1:end);pilotSequenceUpSample(1:-circShiftCurr)];
+    end
+end
+
+xcorrMat = rxSigNoiseUpSample'*pilotSequenceUpSampleMat;
+[~, idxSyncIndexVec] = max(abs(xcorrMat.'));
+
+for idxChannel = 1:NumChannel
+    syncIndexMat(idxChannel,idxSyncIndexVec(idxChannel)) = 1;
+end
+
+[numSyncChannel, idxShift] = max(sum(syncIndexMat));
+circShiftSelect = circShiftPattern(idxShift);
+</pre></TD>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(92,161,93);">62%</TD>
+<TD class="padd"><pre>if circShiftSelect == 0
+    pilotSequenceUpSampleShift = pilotSequenceUpSample;
+</pre></TD>
+</TR>
+<TR>
+<TD class="cov black" style="background-color: rgb(212,229,207);">10%</TD>
+<TD class="padd"><pre>elseif circShiftSelect &gt; 0
+    pilotSequenceUpSampleShift = [pilotSequenceUpSample(end - circShiftSelect + 1:end);pilotSequenceUpSample(1:end - circShiftSelect)];
+</pre></TD>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(92,161,93);">62%</TD>
+<TD class="padd"><pre>elseif circShiftSelect &lt; 0
+    pilotSequenceUpSampleShift = [pilotSequenceUpSample(-circShiftSelect + 1:end);pilotSequenceUpSample(1:-circShiftSelect)];
+end</pre></TD>
+</TR>
+<TR>
+<TD class="cov white" style="background-color: rgb(5,112,9);">100%</TD>
+<TD class="padd"><pre>
+% for fixed point
+pilotSequence = complex(zeros(LenPilot, 1));
+for idxDownSample = 1:LenPilot
+    pilotSequence(idxDownSample) = pilotSequenceUpSampleShift(idxDownSample*3 - 2);
+end
+
+
+end</pre></TD>
+</TR>
+</TABLE>
+<TABLE><TR class="h"><th>Variable Name</th><th>Type</th><th>Sim Min</th><th>Sim Max</th><th>Static Min</th><th>Static Max</th><th>Whole Number</th><th>ProposedType <BR /> (Best For FL = 4)</th></TR><TR class="a">
+<TD class="left">LenPilot</TD><TD class="left">double</TD><TD class="right">512</TD><TD class="right">512</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 16, 0)</TD></TR>
+<TR class="b">
+<TD class="left">NumChannel</TD><TD class="left">double</TD><TD class="right">4</TD><TD class="right">4</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 8, 0)</TD></TR>
+<TR class="a">
+<TD class="left">circShiftCurr</TD><TD class="left">double</TD><TD class="right">-3</TD><TD class="right">3</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(1, 8, 0)</TD></TR>
+<TR class="b">
+<TD class="left">circShiftPattern</TD><TD class="left">double 1 x 7 </TD><TD class="right">-3</TD><TD class="right">3</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(1, 8, 0)</TD></TR>
+<TR class="a">
+<TD class="left">circShiftSelect</TD><TD class="left">double</TD><TD class="right">-3</TD><TD class="right">3</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(1, 8, 0)</TD></TR>
+<TR class="b">
+<TD class="left">idxChannel</TD><TD class="left">double</TD><TD class="right">1</TD><TD class="right">4</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 8, 0)</TD></TR>
+<TR class="a">
+<TD class="left">idxDownSample</TD><TD class="left">double</TD><TD class="right">1</TD><TD class="right">512</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 16, 0)</TD></TR>
+<TR class="b">
+<TD class="left">idxShift</TD><TD class="left">double</TD><TD class="right">1</TD><TD class="right">7</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 8, 0)</TD></TR>
+<TR class="a">
+<TD class="left">idxSyncIndexVec</TD><TD class="left">double 1 x 4 </TD><TD class="right">1</TD><TD class="right">7</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 8, 0)</TD></TR>
+<TR class="b">
+<TD class="left">numSyncChannel</TD><TD class="left">double</TD><TD class="right">4</TD><TD class="right">4</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 8, 0)</TD></TR>
+<TR class="a">
+<TD class="left">pilotSequence</TD><TD class="left">double 512 x 1 complex </TD><TD class="right">-32721</TD><TD class="right">32767</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(1, 16, 0)</TD></TR>
+<TR class="b">
+<TD class="left">pilotSequenceUpSample</TD><TD class="left">double 1536 x 1 complex </TD><TD class="right">-32721</TD><TD class="right">32767</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(1, 16, 0)</TD></TR>
+<TR class="a">
+<TD class="left">pilotSequenceUpSampleMat</TD><TD class="left">double 1536 x 7 complex </TD><TD class="right">-32721</TD><TD class="right">32767</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(1, 16, 0)</TD></TR>
+<TR class="b">
+<TD class="left">pilotSequenceUpSampleShift</TD><TD class="left">double :1538 x 1 complex </TD><TD class="right">-32721</TD><TD class="right">32767</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(1, 16, 0)</TD></TR>
+<TR class="a">
+<TD class="left">rxSigNoise</TD><TD class="left">double 512 x 4 complex </TD><TD class="right">-25286</TD><TD class="right">25103</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(1, 16, 0)</TD></TR>
+<TR class="b">
+<TD class="left">rxSigNoiseUpSample</TD><TD class="left">double 1536 x 4 complex </TD><TD class="right">-25286</TD><TD class="right">25103</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(1, 16, 0)</TD></TR>
+<TR class="a">
+<TD class="left">syncIndexMat</TD><TD class="left">double 4 x 7 </TD><TD class="right">0</TD><TD class="right">1</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(0, 8, 0)</TD></TR>
+<TR class="b">
+<TD class="left bold">xcorrMat*</TD><TD class="left">double 4 x 7 complex </TD><TD class="right">-155186944554</TD><TD class="right">237127049597</TD><TD class="right"></TD><TD class="right"></TD><TD class="left">Yes</TD><TD class="left">numerictype(1, 56, 0)</TD></TR>
+</TABLE>
+
+</body>
+</html>
