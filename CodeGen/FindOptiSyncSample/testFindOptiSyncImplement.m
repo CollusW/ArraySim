@@ -9,6 +9,7 @@
 %  *  @date      2018.01.25
 %  *  @copyright Wayne Zhang all rights reserved.
 %  * @remark   { revision history: V1.0 2018.01.25. Wayne Zhang, first draft }
+%  * @remark   { revision history: V1.1 2018.05.25. Collus Wang, add sync error message. }
 %  */
 
 %% clear
@@ -73,7 +74,9 @@ for idxAngle = 1:size(testTargetAngleRange,2)
  
     [pilotSequence, numSyncChannel, circShiftSelect] = FindOptiSyncImplement(waveformRx, pilotSequenceUpSample, UpSampleTimes, LenSearch);
     fprintf('circShiftSim : %d circShiftSelect : %d numSyncChannel: %d\n', circShiftSim*UpSampleTimes, circShiftSelect, numSyncChannel);
-    
+    if circShiftSim*UpSampleTimes~=circShiftSelect
+        error('Sync Find error.')
+    end
 end
 
 cd(CurrentDirectory);

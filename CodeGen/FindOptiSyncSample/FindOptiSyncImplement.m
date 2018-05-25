@@ -11,6 +11,7 @@ function [pilotSequence, numSyncChannel, circShiftSelect] = FindOptiSyncImplemen
 %    % circShiftSelect: 1x1 integer, pilot circle shift index.
 %    
 % 2018-01-25 V1.0 Wayne Zhang. draft.
+% 2018-05-25 V1.1 Collus Wang. remove unnecessary multiplication operations for speed. 30ms->10ms.
 
 circShiftPattern = (1:LenSearch) - (LenSearch + 1)/2;
 
@@ -24,7 +25,7 @@ for idxShift = 1:LenSearch
     pilotSequenceUpSampleMat(:,idxShift) = circshift(pilotSequenceUpSample, circShiftPattern(idxShift));
 end
 
-xcorrMat = rxSigNoiseUpSample'*pilotSequenceUpSampleMat;
+xcorrMat = rxSigNoiseUpSample(1:UpSampleTimes:end,:)'*pilotSequenceUpSampleMat(1:UpSampleTimes:end,:);
 [~, idxSyncIndexVec] = max(abs(xcorrMat.'));
 
 for idxChannel = 1:NumChannel

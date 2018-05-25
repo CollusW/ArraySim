@@ -1,29 +1,32 @@
 <deployment-project plugin="plugin.coder" plugin-version="R2016a">
-  <configuration build-checksum="2332191785" file="C:\Users\WaynEArcheR\Desktop\ArraySim\CodeGen\FindOptiSyncSample\FindOptiSyncImplement.prj" location="C:\Users\WaynEArcheR\Desktop\ArraySim\CodeGen\FindOptiSyncSample" name="FindOptiSyncImplement" preferred-package-location="C:\Users\WaynEArcheR\Desktop\ArraySim\CodeGen\FindOptiSyncSample\codegen" preferred-package-type="package.type.zip" target="target.unifiedcoder" target-name="MATLAB Coder">
+  <configuration build-checksum="1227280126" file="E:\Work\Matlab\SandboxArraySimGit\CodeGen\FindOptiSyncSample\FindOptiSyncImplement.prj" location="E:\Work\Matlab\SandboxArraySimGit\CodeGen\FindOptiSyncSample" name="FindOptiSyncImplement" preferred-package-location="E:\Work\Matlab\SandboxArraySimGit\CodeGen\FindOptiSyncSample\codegen" preferred-package-type="package.type.zip.flat" target="target.unifiedcoder" target-name="MATLAB Coder">
     <profile key="profile.mex">
-      <param.BuiltInstrumentedMex>false</param.BuiltInstrumentedMex>
+      <param.BuiltInstrumentedMex />
       <param.RanInstrumentedMex>false</param.RanInstrumentedMex>
       <param.WorkingFolder>option.WorkingFolder.Project</param.WorkingFolder>
       <param.SpecifiedWorkingFolder />
       <param.BuildFolder>option.BuildFolder.Project</param.BuildFolder>
       <param.SpecifiedBuildFolder />
       <param.SearchPaths />
-      <param.ResponsivenessChecks>true</param.ResponsivenessChecks>
-      <param.ExtrinsicCalls>true</param.ExtrinsicCalls>
-      <param.IntegrityChecks>true</param.IntegrityChecks>
+      <param.ResponsivenessChecks />
+      <param.ExtrinsicCalls />
+      <param.IntegrityChecks />
       <param.SaturateOnIntegerOverflow>true</param.SaturateOnIntegerOverflow>
       <param.GlobalDataSyncMethod>option.GlobalDataSyncMethod.SyncAlways</param.GlobalDataSyncMethod>
       <param.EnableVariableSizing>true</param.EnableVariableSizing>
       <param.DynamicMemoryAllocation>option.DynamicMemoryAllocation.Threshold</param.DynamicMemoryAllocation>
       <param.DynamicMemoryAllocationThreshold>65536</param.DynamicMemoryAllocationThreshold>
+      <param.RowMajor>option.RowMajor.ColumnMajor</param.RowMajor>
+      <param.HighlightPotentialRowMajorIssues>false</param.HighlightPotentialRowMajorIssues>
       <param.StackUsageMax>200000</param.StackUsageMax>
-      <param.FilePartitionMethod>option.FilePartitionMethod.MapMFileToCFile</param.FilePartitionMethod>
+      <param.FilePartitionMethod>option.FilePartitionMethod.SingleFile</param.FilePartitionMethod>
       <param.GenerateComments>true</param.GenerateComments>
-      <param.MATLABSourceComments>false</param.MATLABSourceComments>
+      <param.MATLABSourceComments />
       <param.ReservedNameArray />
-      <param.EnableDebugging>false</param.EnableDebugging>
+      <param.EnableDebugging />
       <param.GenerateReport>true</param.GenerateReport>
-      <param.LaunchReport>false</param.LaunchReport>
+      <param.LaunchReport />
+      <param.ReportPotentialDifferences>false</param.ReportPotentialDifferences>
       <param.DefaultTestFile />
       <param.MergeInstrumentationResults>false</param.MergeInstrumentationResults>
       <param.VerificationMode>option.VerificationMode.None</param.VerificationMode>
@@ -36,12 +39,13 @@
       <param.CustomSource />
       <param.CustomLibrary />
       <param.PostCodeGenCommand />
-      <param.mex.GenCodeOnly>false</param.mex.GenCodeOnly>
+      <param.mex.GenCodeOnly />
       <param.ConstantFoldingTimeout>40000</param.ConstantFoldingTimeout>
-      <param.RecursionLimit>100</param.RecursionLimit>
-      <param.PreserveVariableNames>option.PreserveVariableNames.UserNames</param.PreserveVariableNames>
+      <param.CompileTimeRecursionLimit>50</param.CompileTimeRecursionLimit>
+      <param.EnableRuntimeRecursion>true</param.EnableRuntimeRecursion>
+      <param.PreserveVariableNames>option.PreserveVariableNames.None</param.PreserveVariableNames>
       <param.TargetLang>option.TargetLang.C</param.TargetLang>
-      <param.EchoExpressions>true</param.EchoExpressions>
+      <param.EchoExpressions />
       <param.InlineThreshold>10</param.InlineThreshold>
       <param.InlineThresholdMax>200</param.InlineThresholdMax>
       <param.InlineStackLimit>4000</param.InlineStackLimit>
@@ -49,8 +53,11 @@
       <param.MemcpyThreshold>64</param.MemcpyThreshold>
       <param.EnableOpenMP>true</param.EnableOpenMP>
       <param.InitFltsAndDblsToZero>true</param.InitFltsAndDblsToZero>
-      <param.ConstantInputs>option.ConstantInputs.CheckValues</param.ConstantInputs>
-      <param.EnableCRICodeCoverage>true</param.EnableCRICodeCoverage>
+      <param.ConstantInputs />
+      <param.EnableCRICodeCoverage />
+      <param.EnableJIT>false</param.EnableJIT>
+      <param.EnableJITSilentBailOut />
+      <param.CheckForIssuesJIT />
       <unset>
         <param.BuiltInstrumentedMex />
         <param.RanInstrumentedMex />
@@ -66,16 +73,19 @@
         <param.EnableVariableSizing />
         <param.DynamicMemoryAllocation />
         <param.DynamicMemoryAllocationThreshold />
+        <param.RowMajor />
+        <param.HighlightPotentialRowMajorIssues />
         <param.StackUsageMax />
-        <param.FilePartitionMethod />
         <param.GenerateComments />
         <param.MATLABSourceComments />
         <param.ReservedNameArray />
         <param.EnableDebugging />
         <param.GenerateReport />
         <param.LaunchReport />
+        <param.ReportPotentialDifferences />
         <param.DefaultTestFile />
         <param.MergeInstrumentationResults />
+        <param.VerificationMode />
         <param.CustomSourceCode />
         <param.CustomHeaderCode />
         <param.CustomInitializer />
@@ -86,7 +96,8 @@
         <param.PostCodeGenCommand />
         <param.mex.GenCodeOnly />
         <param.ConstantFoldingTimeout />
-        <param.RecursionLimit />
+        <param.CompileTimeRecursionLimit />
+        <param.EnableRuntimeRecursion />
         <param.PreserveVariableNames />
         <param.TargetLang />
         <param.EchoExpressions />
@@ -99,6 +110,9 @@
         <param.InitFltsAndDblsToZero />
         <param.ConstantInputs />
         <param.EnableCRICodeCoverage />
+        <param.EnableJIT />
+        <param.EnableJITSilentBailOut />
+        <param.CheckForIssuesJIT />
       </unset>
     </profile>
     <profile key="profile.c">
@@ -114,6 +128,8 @@
       <param.EnableVariableSizing>true</param.EnableVariableSizing>
       <param.DynamicMemoryAllocation>option.DynamicMemoryAllocation.Threshold</param.DynamicMemoryAllocation>
       <param.DynamicMemoryAllocationThreshold>65536</param.DynamicMemoryAllocationThreshold>
+      <param.RowMajor>option.RowMajor.ColumnMajor</param.RowMajor>
+      <param.HighlightPotentialRowMajorIssues>false</param.HighlightPotentialRowMajorIssues>
       <param.StackUsageMax>200000</param.StackUsageMax>
       <param.MultiInstanceCode>false</param.MultiInstanceCode>
       <param.FilePartitionMethod>option.FilePartitionMethod.SingleFile</param.FilePartitionMethod>
@@ -127,13 +143,13 @@
       <param.EnableSignedLeftShifts>true</param.EnableSignedLeftShifts>
       <param.EnableSignedRightShifts>true</param.EnableSignedRightShifts>
       <param.ParenthesesLevel>option.ParenthesesLevel.Nominal</param.ParenthesesLevel>
-      <param.MaxIdLength>31</param.MaxIdLength>
-      <param.CustomSymbolStrGlobalVar>$M$N_FindOptiSync</param.CustomSymbolStrGlobalVar>
-      <param.CustomSymbolStrType>$M$N_FindOptiSync</param.CustomSymbolStrType>
-      <param.CustomSymbolStrField>$M$N_FindOptiSync</param.CustomSymbolStrField>
-      <param.CustomSymbolStrFcn>$M$N_FindOptiSync</param.CustomSymbolStrFcn>
-      <param.CustomSymbolStrTmpVar>$M$N_FindOptiSync</param.CustomSymbolStrTmpVar>
-      <param.CustomSymbolStrMacro>$M$N_FindOptiSync</param.CustomSymbolStrMacro>
+      <param.MaxIdLength>50</param.MaxIdLength>
+      <param.CustomSymbolStrGlobalVar>$M$N_FindOptSync</param.CustomSymbolStrGlobalVar>
+      <param.CustomSymbolStrType>$M$N_FindOptSync</param.CustomSymbolStrType>
+      <param.CustomSymbolStrField>$M$N_FindOptSync</param.CustomSymbolStrField>
+      <param.CustomSymbolStrFcn>$M$N_FindOptSync</param.CustomSymbolStrFcn>
+      <param.CustomSymbolStrTmpVar>$M$N_FindOptSync</param.CustomSymbolStrTmpVar>
+      <param.CustomSymbolStrMacro>$M$N_FindOptSync</param.CustomSymbolStrMacro>
       <param.CustomSymbolStrEMXArray>emxArray_$M$N</param.CustomSymbolStrEMXArray>
       <param.CustomSymbolStrEMXArrayFcn>emx$M$N</param.CustomSymbolStrEMXArrayFcn>
       <param.ReservedNameArray />
@@ -144,7 +160,10 @@
       <param.GenerateCodeReplacementReport>false</param.GenerateCodeReplacementReport>
       <param.HighlightPotentialDataTypeIssues>true</param.HighlightPotentialDataTypeIssues>
       <param.LaunchReport>true</param.LaunchReport>
+      <param.ReportPotentialDifferences>false</param.ReportPotentialDifferences>
       <param.SILDebugging>false</param.SILDebugging>
+      <param.SILPILCheckConstantInputs>true</param.SILPILCheckConstantInputs>
+      <param.SILPILSyncGlobalData>true</param.SILPILSyncGlobalData>
       <param.CodeExecutionProfiling>false</param.CodeExecutionProfiling>
       <param.DefaultTestFile />
       <param.MergeInstrumentationResults>false</param.MergeInstrumentationResults>
@@ -167,55 +186,60 @@
       <param.BuildConfiguration>Faster Runs</param.BuildConfiguration>
       <param.CustomToolchainOptions />
       <var.ToolchainSettingsVisible>true</var.ToolchainSettingsVisible>
-      <param.target.Data />
-      <param.target.ActiveType>option.target.TargetType.MatlabHost</param.target.ActiveType>
+      <param.target.Data>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;ctdata&gt;&lt;configuredHardware/&gt;&lt;/ctdata&gt;</param.target.Data>
+      <param.target.ActiveType>option.target.TargetType.Custom</param.target.ActiveType>
       <param.target.ActiveTarget />
-      <param.HardwareVendor.Production>Generic</param.HardwareVendor.Production>
-      <param.HardwareType.Production>MATLAB Host Computer</param.HardwareType.Production>
-      <param.HWDeviceType.Production />
+      <param.HardwareVendor.Production>Texas Instruments</param.HardwareVendor.Production>
+      <param.HardwareType.Production>C6000</param.HardwareType.Production>
+      <param.HWDeviceType.Production>Texas Instruments-&gt;C6000</param.HWDeviceType.Production>
       <var.instance.enabled.Production>true</var.instance.enabled.Production>
       <param.HardwareSizeChar.Production>8</param.HardwareSizeChar.Production>
       <param.HardwareSizeShort.Production>16</param.HardwareSizeShort.Production>
       <param.HardwareSizeInt.Production>32</param.HardwareSizeInt.Production>
-      <param.HardwareSizeLong.Production>32</param.HardwareSizeLong.Production>
+      <param.HardwareSizeLong.Production>40</param.HardwareSizeLong.Production>
       <param.HardwareSizeLongLong.Production>64</param.HardwareSizeLongLong.Production>
       <param.HardwareSizeFloat.Production>32</param.HardwareSizeFloat.Production>
       <param.HardwareSizeDouble.Production>64</param.HardwareSizeDouble.Production>
-      <param.HardwareSizeWord.Production>64</param.HardwareSizeWord.Production>
-      <param.HardwareSizePointer.Production>64</param.HardwareSizePointer.Production>
+      <param.HardwareSizeWord.Production>32</param.HardwareSizeWord.Production>
+      <param.HardwareSizePointer.Production>32</param.HardwareSizePointer.Production>
+      <param.HardwareSizeSizeT.Production>32</param.HardwareSizeSizeT.Production>
+      <param.HardwareSizePtrDiffT.Production>32</param.HardwareSizePtrDiffT.Production>
       <param.HardwareEndianness.Production>option.HardwareEndianness.Little</param.HardwareEndianness.Production>
       <param.HardwareArithmeticRightShift.Production>true</param.HardwareArithmeticRightShift.Production>
-      <param.HardwareLongLongMode.Production>true</param.HardwareLongLongMode.Production>
-      <param.HardwareAtomicIntegerSize.Production>option.HardwareAtomicIntegerSize.Char</param.HardwareAtomicIntegerSize.Production>
+      <param.HardwareLongLongMode.Production>false</param.HardwareLongLongMode.Production>
+      <param.HardwareAtomicIntegerSize.Production>option.HardwareAtomicIntegerSize.Int</param.HardwareAtomicIntegerSize.Production>
       <param.HardwareAtomicFloatSize.Production>option.HardwareAtomicFloatSize.None</param.HardwareAtomicFloatSize.Production>
       <param.HardwareDivisionRounding.Production>option.HardwareDivisionRounding.Zero</param.HardwareDivisionRounding.Production>
-      <param.HardwareVendor.Target>Generic</param.HardwareVendor.Target>
-      <param.HardwareType.Target>MATLAB Host Computer</param.HardwareType.Target>
-      <param.HWDeviceType.Target />
+      <param.HardwareVendor.Target>Texas Instruments</param.HardwareVendor.Target>
+      <param.HardwareType.Target>C6000</param.HardwareType.Target>
+      <param.HWDeviceType.Target>Texas Instruments-&gt;C6000</param.HWDeviceType.Target>
       <var.instance.enabled.Target>false</var.instance.enabled.Target>
       <param.HardwareSizeChar.Target>8</param.HardwareSizeChar.Target>
       <param.HardwareSizeShort.Target>16</param.HardwareSizeShort.Target>
       <param.HardwareSizeInt.Target>32</param.HardwareSizeInt.Target>
-      <param.HardwareSizeLong.Target>32</param.HardwareSizeLong.Target>
+      <param.HardwareSizeLong.Target>40</param.HardwareSizeLong.Target>
       <param.HardwareSizeLongLong.Target>64</param.HardwareSizeLongLong.Target>
       <param.HardwareSizeFloat.Target>32</param.HardwareSizeFloat.Target>
       <param.HardwareSizeDouble.Target>64</param.HardwareSizeDouble.Target>
-      <param.HardwareSizeWord.Target>64</param.HardwareSizeWord.Target>
-      <param.HardwareSizePointer.Target>64</param.HardwareSizePointer.Target>
+      <param.HardwareSizeWord.Target>32</param.HardwareSizeWord.Target>
+      <param.HardwareSizePointer.Target>32</param.HardwareSizePointer.Target>
+      <param.HardwareSizeSizeT.Target>32</param.HardwareSizeSizeT.Target>
+      <param.HardwareSizePtrDiffT.Target>32</param.HardwareSizePtrDiffT.Target>
       <param.HardwareEndianness.Target>option.HardwareEndianness.Little</param.HardwareEndianness.Target>
       <param.HardwareArithmeticRightShift.Target>true</param.HardwareArithmeticRightShift.Target>
-      <param.HardwareLongLongMode.Target>true</param.HardwareLongLongMode.Target>
-      <param.HardwareAtomicIntegerSize.Target>option.HardwareAtomicIntegerSize.Char</param.HardwareAtomicIntegerSize.Target>
+      <param.HardwareLongLongMode.Target>false</param.HardwareLongLongMode.Target>
+      <param.HardwareAtomicIntegerSize.Target>option.HardwareAtomicIntegerSize.Int</param.HardwareAtomicIntegerSize.Target>
       <param.HardwareAtomicFloatSize.Target>option.HardwareAtomicFloatSize.None</param.HardwareAtomicFloatSize.Target>
       <param.HardwareDivisionRounding.Target>option.HardwareDivisionRounding.Zero</param.HardwareDivisionRounding.Target>
       <param.CastingMode>option.CastingMode.Nominal</param.CastingMode>
       <param.IndentStyle>option.IndentStyle.K&amp;R</param.IndentStyle>
       <param.IndentSize>2</param.IndentSize>
       <param.ConstantFoldingTimeout>40000</param.ConstantFoldingTimeout>
-      <param.RecursionLimit>100</param.RecursionLimit>
+      <param.CompileTimeRecursionLimit>50</param.CompileTimeRecursionLimit>
+      <param.EnableRuntimeRecursion>true</param.EnableRuntimeRecursion>
       <param.IncludeTerminateFcn>true</param.IncludeTerminateFcn>
       <param.GenerateExampleMain>option.GenerateExampleMain.GenerateCodeOnly</param.GenerateExampleMain>
-      <param.PreserveVariableNames>option.PreserveVariableNames.UserNames</param.PreserveVariableNames>
+      <param.PreserveVariableNames>option.PreserveVariableNames.None</param.PreserveVariableNames>
       <param.TargetLang>option.TargetLang.C</param.TargetLang>
       <param.CCompilerOptimization>option.CCompilerOptimization.Off</param.CCompilerOptimization>
       <param.CCompilerCustomOptimizations />
@@ -227,12 +251,15 @@
       <param.InlineThreshold>10</param.InlineThreshold>
       <param.InlineThresholdMax>200</param.InlineThresholdMax>
       <param.InlineStackLimit>4000</param.InlineStackLimit>
+      <param.EnableStrengthReduction>false</param.EnableStrengthReduction>
       <param.EnableMemcpy>true</param.EnableMemcpy>
       <param.MemcpyThreshold>64</param.MemcpyThreshold>
       <param.EnableOpenMP>true</param.EnableOpenMP>
       <param.InitFltsAndDblsToZero>true</param.InitFltsAndDblsToZero>
       <param.PassStructByReference>true</param.PassStructByReference>
       <param.CustomLAPACKCallback />
+      <param.CustomFFTCallback />
+      <param.GenerateDefaultInSwitch>false</param.GenerateDefaultInSwitch>
       <param.UseECoderFeatures>true</param.UseECoderFeatures>
       <unset>
         <param.WorkingFolder />
@@ -244,7 +271,10 @@
         <param.PurelyIntegerCode />
         <param.SupportNonFinite />
         <param.EnableVariableSizing />
+        <param.DynamicMemoryAllocation />
         <param.DynamicMemoryAllocationThreshold />
+        <param.RowMajor />
+        <param.HighlightPotentialRowMajorIssues />
         <param.StackUsageMax />
         <param.MultiInstanceCode />
         <param.GenerateComments />
@@ -254,16 +284,19 @@
         <param.PreserveExternInFcnDecls />
         <param.EnableSignedLeftShifts />
         <param.EnableSignedRightShifts />
-        <param.MaxIdLength />
         <param.ReservedNameArray />
         <param.GenerateReport />
         <param.GenerateCodeMetricsReport />
         <param.GenerateCodeReplacementReport />
+        <param.ReportPotentialDifferences />
         <param.SILDebugging />
+        <param.SILPILCheckConstantInputs />
+        <param.SILPILSyncGlobalData />
         <param.CodeExecutionProfiling />
         <param.DefaultTestFile />
         <param.MergeInstrumentationResults />
         <param.RanPilSilVerification />
+        <param.VerificationMode />
         <param.VerificationStatus />
         <param.CustomSourceCode />
         <param.CustomHeaderCode />
@@ -280,22 +313,23 @@
         <param.Toolchain />
         <param.CustomToolchainOptions />
         <var.ToolchainSettingsVisible />
-        <param.target.Data />
-        <param.target.ActiveType />
         <param.target.ActiveTarget />
-        <param.HardwareVendor.Production />
-        <param.HardwareType.Production />
         <param.HWDeviceType.Production />
         <var.instance.enabled.Production />
-        <param.HardwareVendor.Target />
-        <param.HardwareType.Target />
+        <param.HardwareSizeSizeT.Production />
+        <param.HardwareSizePtrDiffT.Production />
+        <param.HardwareLongLongMode.Production />
         <param.HWDeviceType.Target />
         <var.instance.enabled.Target />
+        <param.HardwareSizeSizeT.Target />
+        <param.HardwareSizePtrDiffT.Target />
+        <param.HardwareLongLongMode.Target />
         <param.CastingMode />
         <param.IndentStyle />
         <param.IndentSize />
         <param.ConstantFoldingTimeout />
-        <param.RecursionLimit />
+        <param.CompileTimeRecursionLimit />
+        <param.EnableRuntimeRecursion />
         <param.IncludeTerminateFcn />
         <param.GenerateExampleMain />
         <param.PreserveVariableNames />
@@ -310,12 +344,15 @@
         <param.InlineThreshold />
         <param.InlineThresholdMax />
         <param.InlineStackLimit />
+        <param.EnableStrengthReduction />
         <param.EnableMemcpy />
         <param.MemcpyThreshold />
         <param.EnableOpenMP />
         <param.InitFltsAndDblsToZero />
         <param.PassStructByReference />
         <param.CustomLAPACKCallback />
+        <param.CustomFFTCallback />
+        <param.GenerateDefaultInSwitch />
         <param.UseECoderFeatures />
       </unset>
     </profile>
@@ -368,7 +405,7 @@
       <param.hdl.ConstantMultiplierOptimization />
       <param.hdl.LoopOptimization />
       <param.GenerateComments>true</param.GenerateComments>
-      <param.MATLABSourceComments>false</param.MATLABSourceComments>
+      <param.MATLABSourceComments />
       <param.hdl.VHDLFileExt />
       <param.hdl.VerilogFileExt />
       <param.hdl.DateComment />
@@ -487,6 +524,7 @@
       <param.hdl.InitializeBlockRAM />
       <param.hdl.RAMArchitecture />
       <param.hdl.PartitionFunctions />
+      <param.hdl.InstantiateFunctions />
       <param.hdl.GenerateMLFcnBlock />
       <param.hdl.GenerateXSGBlock />
       <unset>
@@ -657,6 +695,7 @@
         <param.hdl.InitializeBlockRAM />
         <param.hdl.RAMArchitecture />
         <param.hdl.PartitionFunctions />
+        <param.hdl.InstantiateFunctions />
         <param.hdl.GenerateMLFcnBlock />
         <param.hdl.GenerateXSGBlock />
       </unset>
@@ -667,10 +706,12 @@
       <item>testFindOptiSyncImplement</item>
     </param.TestSnippets>
     <param.DefaultImportExportVariable>config</param.DefaultImportExportVariable>
+    <param.ExternalFcnMajority>column</param.ExternalFcnMajority>
     <param.UseGlobals>option.UseGlobals.No</param.UseGlobals>
     <param.outputfile>${PROJECT_ROOT}\codegen\lib\FindOptiSyncImplement\FindOptiSyncImplement.lib</param.outputfile>
     <param.version>R2012a</param.version>
     <param.HasECoderFeatures>true</param.HasECoderFeatures>
+    <param.HasGpuCoder>true</param.HasGpuCoder>
     <param.mex.mainhtml />
     <param.grt.mainhtml />
     <param.CallGeneratedCodeFromTest>true</param.CallGeneratedCodeFromTest>
@@ -681,7 +722,7 @@
     <param.AutoInferUnboundedSizeThreshold>2048</param.AutoInferUnboundedSizeThreshold>
     <param.EnableFixedPointStep>false</param.EnableFixedPointStep>
     <param.EnableScreener>true</param.EnableScreener>
-    <param.AnnotationChecksum>2694570003</param.AnnotationChecksum>
+    <param.AnnotationChecksum>229857924</param.AnnotationChecksum>
     <var.LegacyTarget />
     <var.MirrorOnOpen>false</var.MirrorOnOpen>
     <param.FixedPointEnabled>false</param.FixedPointEnabled>
@@ -689,15 +730,18 @@
     <var.DismissScreener>true</var.DismissScreener>
     <param.unifiedParamStorage />
     <var.gc.lastOutputRoot>codegen\lib\FindOptiSyncImplement</var.gc.lastOutputRoot>
-    <var.gc.preBuildChecksum>15977333</var.gc.preBuildChecksum>
+    <var.gc.lastOutputType>C_CODE</var.gc.lastOutputType>
+    <var.gc.preBuildChecksum>1420858646</var.gc.preBuildChecksum>
     <var.cfi.lastOutputRoot>codegen\mex\FindOptiSyncImplement</var.cfi.lastOutputRoot>
-    <var.cfi.preBuildChecksum>4125245465</var.cfi.preBuildChecksum>
+    <var.cfi.preBuildChecksum>3819387290</var.cfi.preBuildChecksum>
     <var.lastCfiTestSnippet>testFindOptiSyncImplement</var.lastCfiTestSnippet>
     <var.outdatedOnRestore>false</var.outdatedOnRestore>
-    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;C:\Users\WaynEArcheR\Desktop\ArraySim\CodeGen\FindOptiSyncSample\FindOptiSyncImplement.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;3870882975&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
-    <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;C:\Users\WaynEArcheR\Desktop\ArraySim\CodeGen\FindOptiSyncSample\FindOptiSyncImplement.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
+    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;E:\Work\Matlab\SandboxArraySimGit\CodeGen\FindOptiSyncSample\FindOptiSyncImplement.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;3559613513&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
+    <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;E:\Work\Matlab\SandboxArraySimGit\CodeGen\FindOptiSyncSample\FindOptiSyncImplement.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
     <param.forceMexBuild>false</param.forceMexBuild>
     <param.configImportActive>false</param.configImportActive>
+    <var.isGpuCoder>false</var.isGpuCoder>
+    <var.notGpuCoder>true</var.notGpuCoder>
     <var.boundToGui>true</var.boundToGui>
     <param.mex.outputfile>FindOptiSyncImplement_mex</param.mex.outputfile>
     <param.grt.outputfile>FindOptiSyncImplement</param.grt.outputfile>
@@ -744,14 +788,35 @@
     <param.fpDataRoot />
     <param.fpUserFileChecksum />
     <var.snapshotChecksum />
+    <param.fpLastConvertChecksum />
     <var.functionBlockSid />
     <param.fptSignedness>false</param.fptSignedness>
+    <var.FixedPointAnalysisMode>option.FixedPointAnalysisMode.Sim</var.FixedPointAnalysisMode>
+    <param.FixedPointUseDesignRanges>false</param.FixedPointUseDesignRanges>
+    <param.gpu.Enabled>false</param.gpu.Enabled>
+    <param.gpu.KernelNamePrefix />
+    <param.gpu.MallocMode>discrete</param.gpu.MallocMode>
+    <param.gpu.MallocThreshold>200</param.gpu.MallocThreshold>
+    <param.gpu.StackLimitPerThread>1024</param.gpu.StackLimitPerThread>
+    <param.gpu.EnableCUBLAS>true</param.gpu.EnableCUBLAS>
+    <param.gpu.EnableCUSOLVER>true</param.gpu.EnableCUSOLVER>
+    <param.gpu.EnableCUFFT>true</param.gpu.EnableCUFFT>
+    <param.gpu.Benchmarking>false</param.gpu.Benchmarking>
+    <param.gpu.SafeBuild>false</param.gpu.SafeBuild>
+    <param.gpu.ComputeCapability>3.5</param.gpu.ComputeCapability>
+    <param.gpu.CustomComputeCapability />
+    <param.gpu.CompilerFlags />
+    <var.checkIssuesGpu>false</var.checkIssuesGpu>
+    <var.hasGpu>false</var.hasGpu>
     <unset>
+      <param.objective />
       <param.DefaultImportExportVariable />
+      <param.ExternalFcnMajority />
       <param.UseGlobals />
       <param.outputfile />
       <param.version />
       <param.HasECoderFeatures />
+      <param.HasGpuCoder />
       <param.mex.mainhtml />
       <param.grt.mainhtml />
       <param.CallGeneratedCodeFromTest />
@@ -768,7 +833,10 @@
       <var.redirectedInputTypeData />
       <param.unifiedParamStorage />
       <var.outdatedOnRestore />
+      <param.forceMexBuild />
       <param.configImportActive />
+      <var.isGpuCoder />
+      <var.notGpuCoder />
       <param.mex.outputfile />
       <param.grt.outputfile />
       <param.EnableAutoExtrinsicCalls />
@@ -788,6 +856,7 @@
       <param.LogAllIOValues />
       <param.DetectOverflows />
       <param.LogHistogram />
+      <param.ShowCoverage />
       <param.ExcludedFixedPointVerificationFiles />
       <param.ExcludedFixedPointSimulationFiles />
       <param.InstrumentedBuildChecksum />
@@ -810,12 +879,30 @@
       <param.fpDataRoot />
       <param.fpUserFileChecksum />
       <var.snapshotChecksum />
+      <param.fpLastConvertChecksum />
       <var.functionBlockSid />
       <param.fptSignedness />
+      <var.FixedPointAnalysisMode />
+      <param.FixedPointUseDesignRanges />
+      <param.gpu.Enabled />
+      <param.gpu.KernelNamePrefix />
+      <param.gpu.MallocMode />
+      <param.gpu.MallocThreshold />
+      <param.gpu.StackLimitPerThread />
+      <param.gpu.EnableCUBLAS />
+      <param.gpu.EnableCUSOLVER />
+      <param.gpu.EnableCUFFT />
+      <param.gpu.Benchmarking />
+      <param.gpu.SafeBuild />
+      <param.gpu.ComputeCapability />
+      <param.gpu.CustomComputeCapability />
+      <param.gpu.CompilerFlags />
+      <var.checkIssuesGpu />
+      <var.hasGpu />
     </unset>
     <fileset.entrypoints>
       <file custom-data-expanded="false" value="${PROJECT_ROOT}\FindOptiSyncImplement.m">
-        <Marker>1516865616400</Marker>
+        <Marker>1527132656419</Marker>
       </file>
     </fileset.entrypoints>
     <fileset.testbench>
@@ -823,7 +910,7 @@
     </fileset.testbench>
     <fileset.inputtypes>
       <file custom-data-expanded="false" value="${PROJECT_ROOT}\FindOptiSyncImplement.m">
-        <Inputs fileName="FindOptiSyncImplement.m" functionName="FindOptiSyncImplement">
+        <Inputs fileName="FindOptiSyncImplement.m" functionName="FindOptiSyncImplement" nargout="3">
           <Input Name="rxSigNoise" typeId="0" />
           <Input Name="pilotSequenceUpSample" typeId="1" />
           <Input Name="UpSampleTimes" typeId="2" />
@@ -858,16 +945,18 @@
       </file>
     </fileset.inputtypes>
     <build-deliverables>
-      <file location="${PROJECT_ROOT}\codegen\lib\FindOptiSyncImplement" name="FindOptiSyncImplement.lib" optional="false">C:\Users\WaynEArcheR\Desktop\ArraySim\CodeGen\FindOptiSyncSample\codegen\lib\FindOptiSyncImplement\FindOptiSyncImplement.lib</file>
+      <file location="${PROJECT_ROOT}\codegen\lib\FindOptiSyncImplement" name="FindOptiSyncImplement.lib" optional="false">E:\Work\Matlab\SandboxArraySimGit\CodeGen\FindOptiSyncSample\codegen\lib\FindOptiSyncImplement\FindOptiSyncImplement.lib</file>
     </build-deliverables>
     <workflow />
     <matlab>
-      <root>D:\Program Files\MATLAB\R2016a</root>
+      <root>D:\Program Files\MATLAB\R2017b</root>
       <toolboxes>
         <toolbox name="fixedpoint" />
         <toolbox name="matlabcoder" />
         <toolbox name="matlabhdlcoder" />
         <toolbox name="embeddedcoder" />
+        <toolbox name="gpucoder" />
+        <toolbox name="polyspacebugfinder" />
       </toolboxes>
       <toolbox>
         <fixedpoint>
@@ -888,6 +977,16 @@
         <embeddedcoder>
           <enabled>true</enabled>
         </embeddedcoder>
+      </toolbox>
+      <toolbox>
+        <gpucoder>
+          <enabled>true</enabled>
+        </gpucoder>
+      </toolbox>
+      <toolbox>
+        <polyspacebugfinder>
+          <enabled>true</enabled>
+        </polyspacebugfinder>
       </toolbox>
     </matlab>
     <platform>
