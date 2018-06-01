@@ -1,16 +1,16 @@
 <deployment-project plugin="plugin.coder" plugin-version="R2016a">
-  <configuration build-checksum="1227280126" file="E:\Work\Matlab\SandboxArraySimGit\CodeGen\FindOptiSyncSample\FindOptiSyncImplement.prj" location="E:\Work\Matlab\SandboxArraySimGit\CodeGen\FindOptiSyncSample" name="FindOptiSyncImplement" preferred-package-location="E:\Work\Matlab\SandboxArraySimGit\CodeGen\FindOptiSyncSample\codegen" preferred-package-type="package.type.zip.flat" target="target.unifiedcoder" target-name="MATLAB Coder">
+  <configuration build-checksum="241581710" file="E:\Work\Matlab\SandboxArraySimGit\CodeGen\FindOptiSyncSample\FindOptiSyncImplement.prj" location="E:\Work\Matlab\SandboxArraySimGit\CodeGen\FindOptiSyncSample" name="FindOptiSyncImplement" preferred-package-location="E:\Work\Matlab\SandboxArraySimGit\CodeGen\FindOptiSyncSample\codegen" preferred-package-type="package.type.zip.flat" target="target.unifiedcoder" target-name="MATLAB Coder">
     <profile key="profile.mex">
-      <param.BuiltInstrumentedMex />
+      <param.BuiltInstrumentedMex>false</param.BuiltInstrumentedMex>
       <param.RanInstrumentedMex>false</param.RanInstrumentedMex>
       <param.WorkingFolder>option.WorkingFolder.Project</param.WorkingFolder>
       <param.SpecifiedWorkingFolder />
       <param.BuildFolder>option.BuildFolder.Project</param.BuildFolder>
       <param.SpecifiedBuildFolder />
       <param.SearchPaths />
-      <param.ResponsivenessChecks />
-      <param.ExtrinsicCalls />
-      <param.IntegrityChecks />
+      <param.ResponsivenessChecks>true</param.ResponsivenessChecks>
+      <param.ExtrinsicCalls>true</param.ExtrinsicCalls>
+      <param.IntegrityChecks>true</param.IntegrityChecks>
       <param.SaturateOnIntegerOverflow>true</param.SaturateOnIntegerOverflow>
       <param.GlobalDataSyncMethod>option.GlobalDataSyncMethod.SyncAlways</param.GlobalDataSyncMethod>
       <param.EnableVariableSizing>true</param.EnableVariableSizing>
@@ -21,11 +21,11 @@
       <param.StackUsageMax>200000</param.StackUsageMax>
       <param.FilePartitionMethod>option.FilePartitionMethod.SingleFile</param.FilePartitionMethod>
       <param.GenerateComments>true</param.GenerateComments>
-      <param.MATLABSourceComments />
+      <param.MATLABSourceComments>false</param.MATLABSourceComments>
       <param.ReservedNameArray />
-      <param.EnableDebugging />
+      <param.EnableDebugging>false</param.EnableDebugging>
       <param.GenerateReport>true</param.GenerateReport>
-      <param.LaunchReport />
+      <param.LaunchReport>false</param.LaunchReport>
       <param.ReportPotentialDifferences>false</param.ReportPotentialDifferences>
       <param.DefaultTestFile />
       <param.MergeInstrumentationResults>false</param.MergeInstrumentationResults>
@@ -39,13 +39,13 @@
       <param.CustomSource />
       <param.CustomLibrary />
       <param.PostCodeGenCommand />
-      <param.mex.GenCodeOnly />
+      <param.mex.GenCodeOnly>false</param.mex.GenCodeOnly>
       <param.ConstantFoldingTimeout>40000</param.ConstantFoldingTimeout>
       <param.CompileTimeRecursionLimit>50</param.CompileTimeRecursionLimit>
       <param.EnableRuntimeRecursion>true</param.EnableRuntimeRecursion>
       <param.PreserveVariableNames>option.PreserveVariableNames.None</param.PreserveVariableNames>
       <param.TargetLang>option.TargetLang.C</param.TargetLang>
-      <param.EchoExpressions />
+      <param.EchoExpressions>true</param.EchoExpressions>
       <param.InlineThreshold>10</param.InlineThreshold>
       <param.InlineThresholdMax>200</param.InlineThresholdMax>
       <param.InlineStackLimit>4000</param.InlineStackLimit>
@@ -53,11 +53,11 @@
       <param.MemcpyThreshold>64</param.MemcpyThreshold>
       <param.EnableOpenMP>true</param.EnableOpenMP>
       <param.InitFltsAndDblsToZero>true</param.InitFltsAndDblsToZero>
-      <param.ConstantInputs />
-      <param.EnableCRICodeCoverage />
+      <param.ConstantInputs>option.ConstantInputs.CheckValues</param.ConstantInputs>
+      <param.EnableCRICodeCoverage>true</param.EnableCRICodeCoverage>
       <param.EnableJIT>false</param.EnableJIT>
-      <param.EnableJITSilentBailOut />
-      <param.CheckForIssuesJIT />
+      <param.EnableJITSilentBailOut>false</param.EnableJITSilentBailOut>
+      <param.CheckForIssuesJIT>true</param.CheckForIssuesJIT>
       <unset>
         <param.BuiltInstrumentedMex />
         <param.RanInstrumentedMex />
@@ -405,7 +405,7 @@
       <param.hdl.ConstantMultiplierOptimization />
       <param.hdl.LoopOptimization />
       <param.GenerateComments>true</param.GenerateComments>
-      <param.MATLABSourceComments />
+      <param.MATLABSourceComments>false</param.MATLABSourceComments>
       <param.hdl.VHDLFileExt />
       <param.hdl.VerilogFileExt />
       <param.hdl.DateComment />
@@ -731,19 +731,19 @@
     <param.unifiedParamStorage />
     <var.gc.lastOutputRoot>codegen\lib\FindOptiSyncImplement</var.gc.lastOutputRoot>
     <var.gc.lastOutputType>C_CODE</var.gc.lastOutputType>
-    <var.gc.preBuildChecksum>1420858646</var.gc.preBuildChecksum>
+    <var.gc.preBuildChecksum>902491886</var.gc.preBuildChecksum>
     <var.cfi.lastOutputRoot>codegen\mex\FindOptiSyncImplement</var.cfi.lastOutputRoot>
-    <var.cfi.preBuildChecksum>3819387290</var.cfi.preBuildChecksum>
+    <var.cfi.preBuildChecksum>1783632569</var.cfi.preBuildChecksum>
     <var.lastCfiTestSnippet>testFindOptiSyncImplement</var.lastCfiTestSnippet>
     <var.outdatedOnRestore>false</var.outdatedOnRestore>
-    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;E:\Work\Matlab\SandboxArraySimGit\CodeGen\FindOptiSyncSample\FindOptiSyncImplement.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;3559613513&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
+    <var.lastUserSourceChecksum>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;checksum&gt;&lt;includedFiles&gt;&lt;file&gt;E:\Work\Matlab\SandboxArraySimGit\CodeGen\FindOptiSyncSample\FindOptiSyncImplement.m&lt;/file&gt;&lt;/includedFiles&gt;&lt;value&gt;769161524&lt;/value&gt;&lt;/checksum&gt;</var.lastUserSourceChecksum>
     <var.sourceSetState>&lt;?xml version="1.0" encoding="UTF-8" standalone="yes"?&gt;&lt;sourceModel&gt;&lt;primarySourceFiles&gt;&lt;file&gt;E:\Work\Matlab\SandboxArraySimGit\CodeGen\FindOptiSyncSample\FindOptiSyncImplement.m&lt;/file&gt;&lt;/primarySourceFiles&gt;&lt;fixedPointSourceFiles/&gt;&lt;fixedPointSourceRegistered&gt;false&lt;/fixedPointSourceRegistered&gt;&lt;fixedPointSourceSelected&gt;false&lt;/fixedPointSourceSelected&gt;&lt;/sourceModel&gt;</var.sourceSetState>
     <param.forceMexBuild>false</param.forceMexBuild>
     <param.configImportActive>false</param.configImportActive>
     <var.isGpuCoder>false</var.isGpuCoder>
     <var.notGpuCoder>true</var.notGpuCoder>
     <var.boundToGui>true</var.boundToGui>
-    <param.mex.outputfile>FindOptiSyncImplement_mex</param.mex.outputfile>
+    <param.mex.outputfile>FindOptiSyncImplement_mex_opt</param.mex.outputfile>
     <param.grt.outputfile>FindOptiSyncImplement</param.grt.outputfile>
     <param.artifact>option.target.artifact.lib</param.artifact>
     <param.outputfile>${PROJECT_ROOT}\codegen\lib\FindOptiSyncImplement\FindOptiSyncImplement.lib</param.outputfile>
@@ -837,7 +837,6 @@
       <param.configImportActive />
       <var.isGpuCoder />
       <var.notGpuCoder />
-      <param.mex.outputfile />
       <param.grt.outputfile />
       <param.EnableAutoExtrinsicCalls />
       <param.UsePreconditions />

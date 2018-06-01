@@ -73,6 +73,8 @@ for idxAngle = 1:size(testTargetAngleRange,2)
     waveformRx = circshift(waveformRx, circShiftSim);
  
     [pilotSequence, numSyncChannel, circShiftSelect] = FindOptiSyncImplement(waveformRx, pilotSequenceUpSample, UpSampleTimes, LenSearch);
+    [pilotSequence, numSyncChannel, circShiftSelect] = FindOptiSyncImplement_mex_opt0(waveformRx, pilotSequenceUpSample, UpSampleTimes, LenSearch);
+    [pilotSequence, numSyncChannel, circShiftSelect] = FindOptiSyncImplement_mex_opt(waveformRx, pilotSequenceUpSample, UpSampleTimes, LenSearch);
     fprintf('circShiftSim : %d circShiftSelect : %d numSyncChannel: %d\n', circShiftSim*UpSampleTimes, circShiftSelect, numSyncChannel);
     if circShiftSim*UpSampleTimes~=circShiftSelect
         error('Sync Find error.')

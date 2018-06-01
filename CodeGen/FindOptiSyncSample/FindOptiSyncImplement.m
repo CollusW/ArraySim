@@ -12,7 +12,9 @@ function [pilotSequence, numSyncChannel, circShiftSelect] = FindOptiSyncImplemen
 %    
 % 2018-01-25 V1.0 Wayne Zhang. draft.
 % 2018-05-25 V1.1 Collus Wang. remove unnecessary multiplication operations for speed. 30ms->10ms.
+% 2018-06-01 V1.2 Collus Wang. reduce corr length to further optimize speed. 4~5ms.
 
+LenCorr = 64*2;
 circShiftPattern = (1:LenSearch) - (LenSearch + 1)/2;
 
 [LenPilot, NumChannel] = size(rxSigNoise);
@@ -25,7 +27,7 @@ for idxShift = 1:LenSearch
     pilotSequenceUpSampleMat(:,idxShift) = circshift(pilotSequenceUpSample, circShiftPattern(idxShift));
 end
 
-xcorrMat = rxSigNoiseUpSample(1:UpSampleTimes:end,:)'*pilotSequenceUpSampleMat(1:UpSampleTimes:end,:);
+xcorrMat = rxSigNoiseUpSample(1:UpSampleTimes:LenCorr*UpSampleTimes,:)'*pilotSequenceUpSampleMat(1:UpSampleTimes:LenCorr*UpSampleTimes,:);
 [~, idxSyncIndexVec] = max(abs(xcorrMat.'));
 
 for idxChannel = 1:NumChannel
